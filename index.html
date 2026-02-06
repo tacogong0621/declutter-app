@@ -306,6 +306,17 @@
             color: #999;
         }
 
+        .item-note {
+            font-size: 13px;
+            color: #667eea;
+            font-style: italic;
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
         .item-points {
             font-weight: bold;
             color: #667eea;
@@ -608,9 +619,11 @@
         </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('add')">➕ 비우기</button>
-            <button class="tab" onclick="switchTab('history')">📋 기록</button>
-            <button class="tab" onclick="switchTab('leaderboard')">🏆 순위</button>
+            <button class="tab active" id="addTabBtn">➕ 비우기</button>
+            <button class="tab" id="historyTabBtn">📋 기록</button>
+            <button class="tab" id="calendarTabBtn">📅 캘린더</button>
+            <button class="tab" id="leaderboardTabBtn">🏆 순위</button>
+            <button class="tab" id="shareTabBtn">📤 공유</button>
         </div>
 
         <div id="addTab" class="tab-content active">
@@ -661,6 +674,28 @@
             </div>
         </div>
 
+        <div id="calendarTab" class="tab-content">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <button onclick="changeMonth(-1)" style="background: none; border: 2px solid #667eea; color: #667eea; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-weight: 600;">← 이전</button>
+                    <h2 id="calendarTitle" style="color: #333; margin: 0;">2026년 2월</h2>
+                    <button onclick="changeMonth(1)" style="background: none; border: 2px solid #667eea; color: #667eea; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-weight: 600;">다음 →</button>
+                </div>
+                <div id="calendar" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;"></div>
+                <div style="margin-top: 20px; padding: 15px; background: #f8f9ff; border-radius: 10px;">
+                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; font-size: 14px;">
+                        <span>🔥 비운 날</span>
+                        <span style="color: #999;">⚪ 안 비운 날</span>
+                    </div>
+                </div>
+                <div id="monthStats" style="margin-top: 20px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; text-align: center;">
+                    <div style="font-size: 14px; opacity: 0.9;">이번 달 통계</div>
+                    <div style="font-size: 32px; font-weight: bold; margin: 10px 0;" id="monthItemCount">0</div>
+                    <div style="font-size: 14px; opacity: 0.9;">개 비움 • <span id="monthPoints">0</span>점 획득</div>
+                </div>
+            </div>
+        </div>
+
         <div id="leaderboardTab" class="tab-content">
             <div class="card">
                 <h2 style="margin-bottom: 20px; color: #333;">전체 순위</h2>
@@ -673,7 +708,38 @@
             </div>
         </div>
 
-        <div class="version">v2.0 - 배지, 댓글, 좋아요, 스트릭 ✨</div>
+        <div id="shareTab" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 20px; color: #333;">📤 스토리 공유</h2>
+                <p style="color: #666; margin-bottom: 20px; text-align: center;">템플릿을 선택하고 이미지를 다운로드해서 인스타 스토리에 공유하세요!</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <button onclick="generateStoryTemplate('minimal')" style="padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
+                        ✨ 미니멀
+                    </button>
+                    <button onclick="generateStoryTemplate('stats')" style="padding: 15px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
+                        📊 통계
+                    </button>
+                    <button onclick="generateStoryTemplate('streak')" style="padding: 15px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
+                        🔥 연속기록
+                    </button>
+                    <button onclick="generateStoryTemplate('grid')" style="padding: 15px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
+                        📸 사진그리드
+                    </button>
+                </div>
+
+                <canvas id="storyCanvas" style="width: 100%; max-width: 400px; margin: 0 auto; display: none; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);"></canvas>
+                
+                <div id="downloadSection" style="display: none; text-align: center; margin-top: 20px;">
+                    <button onclick="downloadStoryImage()" style="width: 100%; padding: 18px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: 600; cursor: pointer;">
+                        📥 이미지 다운로드
+                    </button>
+                    <p style="color: #999; font-size: 13px; margin-top: 10px;">다운로드 후 인스타그램 스토리에 업로드하세요!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="version">v2.1 - AI 응원 & 스토리 공유 ✨</div>
     </div>
 
     <!-- Badge Modal -->
@@ -772,6 +838,84 @@
             } catch (error) {
                 console.error('프로필 업데이트 실패:', error);
             }
+        }
+
+        // AI 응원 메시지 생성
+        async function generateAIEncouragement(itemName, category, points, totalScore, streak) {
+            try {
+                // 카테고리별 통계 가져오기
+                const itemsQuery = query(
+                    collection(db, 'items'),
+                    where('userId', '==', currentUserId)
+                );
+                const itemsSnapshot = await getDocs(itemsQuery);
+                
+                const categoryCount = {};
+                itemsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    categoryCount[data.category] = (categoryCount[data.category] || 0) + 1;
+                });
+
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'anthropic-version': '2023-06-01'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 150,
+                        messages: [{
+                            role: 'user',
+                            content: `사용자가 미니멀리즘 챌린지에서 "${itemName}" (${getCategoryName(category)})을 비웠습니다.
+
+현재 상태:
+- 획득 점수: ${points}점
+- 총 점수: ${totalScore}점
+- 연속 일수: ${streak}일
+- 카테고리별 통계: ${JSON.stringify(categoryCount)}
+
+짧고 따뜻한 응원 메시지를 한 문장으로 작성해주세요. 이모지 1-2개 포함. 
+스타일: 친근하고 격려하는 톤, 구체적인 칭찬, 가끔 다음 추천.
+예시 스타일:
+- "가구는 비우기 쉽지 않았을 텐데 대단해요! 👏"
+- "${getCategoryName(category)} 카테고리 많이 비우시네요! 미니멀 성향 👍"
+- "연속 ${streak}일 달성! 이 기세로 계속! 🔥"
+단, 예시를 그대로 따라하지 말고 창의적으로 작성하세요.`
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('API 요청 실패');
+                }
+
+                const data = await response.json();
+                return data.content[0].text.trim();
+            } catch (error) {
+                console.error('AI 메시지 생성 실패:', error);
+                // 실패시 기본 메시지
+                const defaultMessages = [
+                    "정리 완료! 한 걸음씩 나아가고 있어요 ✨",
+                    "멋져요! 비우는 습관이 몸에 배고 있네요 💪",
+                    "대단해요! 공간도 마음도 가벼워지고 있어요 🎈",
+                    "잘하고 있어요! 이 속도면 미니멀 달인 🌟",
+                    "훌륭해요! 정리의 즐거움을 느끼고 계시네요 🎯"
+                ];
+                return defaultMessages[Math.floor(Math.random() * defaultMessages.length)];
+            }
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                'clothes': '의류',
+                'books': '책/잡지',
+                'electronics': '전자제품',
+                'furniture': '가구',
+                'kitchen': '주방용품',
+                'etc': '기타'
+            };
+            return names[category] || category;
         }
 
         // 스트릭 계산
@@ -886,68 +1030,80 @@
         };
 
         function playSuccessSound() {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const now = audioContext.currentTime;
-            
-            // "빠" - 첫 번째 음 (C)
-            const osc1 = audioContext.createOscillator();
-            const gain1 = audioContext.createGain();
-            osc1.connect(gain1);
-            gain1.connect(audioContext.destination);
-            osc1.type = 'square';
-            osc1.frequency.setValueAtTime(523.25, now); // C5
-            gain1.gain.setValueAtTime(0.3, now);
-            gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-            osc1.start(now);
-            osc1.stop(now + 0.15);
-            
-            // "빠" - 두 번째 음 (E)
-            const osc2 = audioContext.createOscillator();
-            const gain2 = audioContext.createGain();
-            osc2.connect(gain2);
-            gain2.connect(audioContext.destination);
-            osc2.type = 'square';
-            osc2.frequency.setValueAtTime(659.25, now + 0.15); // E5
-            gain2.gain.setValueAtTime(0.3, now + 0.15);
-            gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-            osc2.start(now + 0.15);
-            osc2.stop(now + 0.3);
-            
-            // "라" - 세 번째 음 (G)
-            const osc3 = audioContext.createOscillator();
-            const gain3 = audioContext.createGain();
-            osc3.connect(gain3);
-            gain3.connect(audioContext.destination);
-            osc3.type = 'square';
-            osc3.frequency.setValueAtTime(783.99, now + 0.3); // G5
-            gain3.gain.setValueAtTime(0.3, now + 0.3);
-            gain3.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
-            osc3.start(now + 0.3);
-            osc3.stop(now + 0.45);
-            
-            // "빰~!" - 마지막 긴 음 (C 옥타브 위)
-            const osc4 = audioContext.createOscillator();
-            const gain4 = audioContext.createGain();
-            osc4.connect(gain4);
-            gain4.connect(audioContext.destination);
-            osc4.type = 'square';
-            osc4.frequency.setValueAtTime(1046.50, now + 0.45); // C6
-            gain4.gain.setValueAtTime(0.35, now + 0.45);
-            gain4.gain.exponentialRampToValueAtTime(0.01, now + 0.9);
-            osc4.start(now + 0.45);
-            osc4.stop(now + 0.9);
-            
-            // 화음 추가 (풍성한 느낌)
-            const osc5 = audioContext.createOscillator();
-            const gain5 = audioContext.createGain();
-            osc5.connect(gain5);
-            gain5.connect(audioContext.destination);
-            osc5.type = 'sine';
-            osc5.frequency.setValueAtTime(1318.51, now + 0.45); // E6
-            gain5.gain.setValueAtTime(0.2, now + 0.45);
-            gain5.gain.exponentialRampToValueAtTime(0.01, now + 0.9);
-            osc5.start(now + 0.45);
-            osc5.stop(now + 0.9);
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // 모바일 대응: AudioContext resume
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                
+                const now = audioContext.currentTime;
+                
+                // "빠" - 첫 번째 음 (C)
+                const osc1 = audioContext.createOscillator();
+                const gain1 = audioContext.createGain();
+                osc1.connect(gain1);
+                gain1.connect(audioContext.destination);
+                osc1.type = 'square';
+                osc1.frequency.setValueAtTime(523.25, now); // C5
+                gain1.gain.setValueAtTime(0.3, now);
+                gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                osc1.start(now);
+                osc1.stop(now + 0.15);
+                
+                // "빠" - 두 번째 음 (E)
+                const osc2 = audioContext.createOscillator();
+                const gain2 = audioContext.createGain();
+                osc2.connect(gain2);
+                gain2.connect(audioContext.destination);
+                osc2.type = 'square';
+                osc2.frequency.setValueAtTime(659.25, now + 0.15); // E5
+                gain2.gain.setValueAtTime(0.3, now + 0.15);
+                gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc2.start(now + 0.15);
+                osc2.stop(now + 0.3);
+                
+                // "라" - 세 번째 음 (G)
+                const osc3 = audioContext.createOscillator();
+                const gain3 = audioContext.createGain();
+                osc3.connect(gain3);
+                gain3.connect(audioContext.destination);
+                osc3.type = 'square';
+                osc3.frequency.setValueAtTime(783.99, now + 0.3); // G5
+                gain3.gain.setValueAtTime(0.3, now + 0.3);
+                gain3.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+                osc3.start(now + 0.3);
+                osc3.stop(now + 0.45);
+                
+                // "빰~!" - 마지막 긴 음 (C 옥타브 위)
+                const osc4 = audioContext.createOscillator();
+                const gain4 = audioContext.createGain();
+                osc4.connect(gain4);
+                gain4.connect(audioContext.destination);
+                osc4.type = 'square';
+                osc4.frequency.setValueAtTime(1046.50, now + 0.45); // C6
+                gain4.gain.setValueAtTime(0.35, now + 0.45);
+                gain4.gain.exponentialRampToValueAtTime(0.01, now + 0.9);
+                osc4.start(now + 0.45);
+                osc4.stop(now + 0.9);
+                
+                // 화음 추가 (풍성한 느낌)
+                const osc5 = audioContext.createOscillator();
+                const gain5 = audioContext.createGain();
+                osc5.connect(gain5);
+                gain5.connect(audioContext.destination);
+                osc5.type = 'sine';
+                osc5.frequency.setValueAtTime(1318.51, now + 0.45); // E6
+                gain5.gain.setValueAtTime(0.2, now + 0.45);
+                gain5.gain.exponentialRampToValueAtTime(0.01, now + 0.9);
+                osc5.start(now + 0.45);
+                osc5.stop(now + 0.9);
+                
+                console.log('🔊 효과음 재생!');
+            } catch (error) {
+                console.error('효과음 재생 실패:', error);
+            }
         }
 
         function compressImage(file, maxSizeKB = 500) {
@@ -1066,6 +1222,9 @@
 
                 playSuccessSound();
 
+                // AI 응원 메시지 생성
+                const aiMessage = await generateAIEncouragement(name, category, points, totalScore, userStreak);
+
                 document.getElementById('itemName').value = '';
                 document.getElementById('itemCategory').value = '';
                 document.getElementById('itemNote').value = '';
@@ -1076,7 +1235,7 @@
                 document.getElementById('pointsInfo').style.display = 'none';
                 currentImage = null;
 
-                alert(`🎉 +${points}점 획득!\n총 ${totalScore}점입니다!`);
+                alert(`🎉 +${points}점 획득!\n\n${aiMessage}\n\n총 ${totalScore}점입니다!`);
                 
                 switchTab('history');
             } catch (error) {
@@ -1281,6 +1440,7 @@
                         const isLiked = (item.likes || []).includes(currentUserId);
                         const likeCount = item.likeCount || 0;
                         const comments = item.comments || [];
+                        const hasNote = item.note && item.note.trim();
                         
                         return `
                             <div class="item" style="${isMyItem ? 'background: #f8f9ff;' : ''}">
@@ -1289,6 +1449,7 @@
                                     <div class="item-info">
                                         <div class="item-name">${item.name}</div>
                                         <div class="item-date">${item.userName || '익명'} • ${dateStr}</div>
+                                        ${hasNote ? `<div class="item-note">💭 "${item.note}"</div>` : ''}
                                     </div>
                                     <div class="item-points">+${item.points}</div>
                                 </div>
@@ -1385,17 +1546,431 @@
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
             if (tab === 'add') {
-                document.querySelector('.tab:nth-child(1)').classList.add('active');
+                document.getElementById('addTabBtn').classList.add('active');
                 document.getElementById('addTab').classList.add('active');
             } else if (tab === 'history') {
-                document.querySelector('.tab:nth-child(2)').classList.add('active');
+                document.getElementById('historyTabBtn').classList.add('active');
                 document.getElementById('historyTab').classList.add('active');
                 loadMyItems();
+            } else if (tab === 'calendar') {
+                document.getElementById('calendarTabBtn').classList.add('active');
+                document.getElementById('calendarTab').classList.add('active');
+                renderCalendar();
             } else if (tab === 'leaderboard') {
-                document.querySelector('.tab:nth-child(3)').classList.add('active');
+                document.getElementById('leaderboardTabBtn').classList.add('active');
                 document.getElementById('leaderboardTab').classList.add('active');
                 loadLeaderboard();
+            } else if (tab === 'share') {
+                document.getElementById('shareTabBtn').classList.add('active');
+                document.getElementById('shareTab').classList.add('active');
             }
+        };
+
+        // 탭 버튼 이벤트 리스너
+        document.getElementById('addTabBtn').addEventListener('click', () => switchTab('add'));
+        document.getElementById('historyTabBtn').addEventListener('click', () => switchTab('history'));
+        document.getElementById('calendarTabBtn').addEventListener('click', () => switchTab('calendar'));
+        document.getElementById('leaderboardTabBtn').addEventListener('click', () => switchTab('leaderboard'));
+        document.getElementById('shareTabBtn').addEventListener('click', () => switchTab('share'));
+
+        // 캘린더 변수
+        let currentCalendarYear = 2026;
+        let currentCalendarMonth = 1; // 2월 (0-indexed)
+        let userItemDates = {};
+
+        // 캘린더 렌더링
+        async function renderCalendar() {
+            const calendar = document.getElementById('calendar');
+            const title = document.getElementById('calendarTitle');
+            
+            // 월/년 표시
+            const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+            title.textContent = `${currentCalendarYear}년 ${monthNames[currentCalendarMonth]}`;
+            
+            // 해당 월의 첫날과 마지막날
+            const firstDay = new Date(currentCalendarYear, currentCalendarMonth, 1);
+            const lastDay = new Date(currentCalendarYear, currentCalendarMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startDayOfWeek = firstDay.getDay();
+            
+            // 사용자 아이템 날짜 가져오기
+            const itemsQuery = query(collection(db, 'items'), where('userId', '==', currentUserId));
+            const itemsSnapshot = await getDocs(itemsQuery);
+            
+            userItemDates = {};
+            let monthItemCount = 0;
+            let monthPoints = 0;
+            
+            itemsSnapshot.forEach(doc => {
+                const item = doc.data();
+                if (item.createdAt) {
+                    const date = item.createdAt.toDate();
+                    const dateKey = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+                    
+                    if (!userItemDates[dateKey]) {
+                        userItemDates[dateKey] = {
+                            count: 0,
+                            points: 0
+                        };
+                    }
+                    userItemDates[dateKey].count += 1;
+                    userItemDates[dateKey].points += item.points || 0;
+                    
+                    // 이번 달 통계
+                    if (date.getFullYear() === currentCalendarYear && date.getMonth() === currentCalendarMonth) {
+                        monthItemCount += 1;
+                        monthPoints += item.points || 0;
+                    }
+                }
+            });
+            
+            // 월 통계 업데이트
+            document.getElementById('monthItemCount').textContent = monthItemCount;
+            document.getElementById('monthPoints').textContent = monthPoints;
+            
+            // 캘린더 그리기
+            calendar.innerHTML = '';
+            
+            // 요일 헤더
+            const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+            dayNames.forEach((day, index) => {
+                const dayHeader = document.createElement('div');
+                dayHeader.style.cssText = 'text-align: center; font-weight: 600; padding: 10px; color: #666; font-size: 14px;';
+                if (index === 0) dayHeader.style.color = '#ff4444'; // 일요일 빨강
+                if (index === 6) dayHeader.style.color = '#4444ff'; // 토요일 파랑
+                dayHeader.textContent = day;
+                calendar.appendChild(dayHeader);
+            });
+            
+            // 빈 칸 (월 시작 전)
+            for (let i = 0; i < startDayOfWeek; i++) {
+                const emptyDay = document.createElement('div');
+                calendar.appendChild(emptyDay);
+            }
+            
+            // 날짜
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateKey = `${currentCalendarYear}-${currentCalendarMonth}-${day}`;
+                const hasItem = userItemDates[dateKey];
+                const isToday = new Date().getDate() === day && 
+                               new Date().getMonth() === currentCalendarMonth && 
+                               new Date().getFullYear() === currentCalendarYear;
+                
+                const dayCell = document.createElement('div');
+                dayCell.style.cssText = `
+                    aspect-ratio: 1;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 12px;
+                    position: relative;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    ${hasItem ? 'background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);' : 'background: #f0f0f0;'}
+                    ${isToday ? 'border: 3px solid #667eea;' : ''}
+                `;
+                
+                const dayNumber = document.createElement('div');
+                dayNumber.style.cssText = `
+                    font-size: 16px;
+                    font-weight: 600;
+                    ${hasItem ? 'color: white;' : 'color: #999;'}
+                `;
+                dayNumber.textContent = day;
+                
+                if (hasItem) {
+                    const flame = document.createElement('div');
+                    flame.style.cssText = 'font-size: 24px; margin-top: 4px;';
+                    flame.textContent = '🔥';
+                    dayCell.appendChild(dayNumber);
+                    dayCell.appendChild(flame);
+                    
+                    const count = document.createElement('div');
+                    count.style.cssText = 'font-size: 11px; color: white; font-weight: 600;';
+                    count.textContent = `${hasItem.count}개`;
+                    dayCell.appendChild(count);
+                } else {
+                    dayCell.appendChild(dayNumber);
+                }
+                
+                dayCell.addEventListener('mouseenter', () => {
+                    dayCell.style.transform = 'scale(1.05)';
+                });
+                dayCell.addEventListener('mouseleave', () => {
+                    dayCell.style.transform = 'scale(1)';
+                });
+                
+                calendar.appendChild(dayCell);
+            }
+        }
+
+        window.changeMonth = function(delta) {
+            currentCalendarMonth += delta;
+            if (currentCalendarMonth > 11) {
+                currentCalendarMonth = 0;
+                currentCalendarYear++;
+            } else if (currentCalendarMonth < 0) {
+                currentCalendarMonth = 11;
+                currentCalendarYear--;
+            }
+            renderCalendar();
+        };
+
+        // 스토리 템플릿 생성
+        window.generateStoryTemplate = async function(template) {
+            const canvas = document.getElementById('storyCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // 인스타 스토리 사이즈 (1080 x 1920)
+            canvas.width = 1080;
+            canvas.height = 1920;
+            
+            // 사용자 데이터 가져오기
+            const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+            const userSnapshot = await getDocs(userQuery);
+            const userData = userSnapshot.empty ? {} : userSnapshot.docs[0].data();
+            
+            const itemsQuery = query(collection(db, 'items'), where('userId', '==', currentUserId));
+            const itemsSnapshot = await getDocs(itemsQuery);
+            const userItems = [];
+            itemsSnapshot.forEach(doc => userItems.push(doc.data()));
+            
+            if (template === 'minimal') {
+                drawMinimalTemplate(ctx, userData, userItems);
+            } else if (template === 'stats') {
+                drawStatsTemplate(ctx, userData, userItems);
+            } else if (template === 'streak') {
+                drawStreakTemplate(ctx, userData);
+            } else if (template === 'grid') {
+                await drawGridTemplate(ctx, userData, userItems);
+            }
+            
+            canvas.style.display = 'block';
+            document.getElementById('downloadSection').style.display = 'block';
+        };
+
+        function drawMinimalTemplate(ctx, userData, items) {
+            // 그라디언트 배경
+            const gradient = ctx.createLinearGradient(0, 0, 0, 1920);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1080, 1920);
+            
+            // 제목
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 80px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('🎯 비우기 챌린지', 540, 300);
+            
+            // 점수
+            ctx.font = 'bold 180px sans-serif';
+            ctx.fillText(userData.score || 0, 540, 800);
+            
+            ctx.font = '60px sans-serif';
+            ctx.fillText('POINTS', 540, 900);
+            
+            // 통계
+            ctx.font = 'bold 50px sans-serif';
+            ctx.fillText(`${items.length}개 비움`, 540, 1100);
+            
+            ctx.font = '50px sans-serif';
+            ctx.fillText(`🔥 ${userData.streak || 0}일 연속`, 540, 1200);
+            
+            // 사용자 이름
+            ctx.font = 'bold 55px sans-serif';
+            ctx.fillText(`- ${userName} -`, 540, 1500);
+            
+            // 하단 텍스트
+            ctx.font = '40px sans-serif';
+            ctx.fillStyle = 'rgba(255,255,255,0.8)';
+            ctx.fillText('미니멀라이프 실천 중', 540, 1700);
+        }
+
+        function drawStatsTemplate(ctx, userData, items) {
+            // 배경
+            ctx.fillStyle = '#f8f9ff';
+            ctx.fillRect(0, 0, 1080, 1920);
+            
+            // 헤더
+            const headerGradient = ctx.createLinearGradient(0, 0, 0, 400);
+            headerGradient.addColorStop(0, '#667eea');
+            headerGradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = headerGradient;
+            ctx.fillRect(0, 0, 1080, 400);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 70px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('📊 나의 비우기 통계', 540, 250);
+            
+            // 카테고리별 통계
+            const categoryCount = {};
+            items.forEach(item => {
+                categoryCount[item.category] = (categoryCount[item.category] || 0) + 1;
+            });
+            
+            const categories = [
+                { key: 'furniture', name: '가구', emoji: '🛋️' },
+                { key: 'electronics', name: '전자제품', emoji: '📱' },
+                { key: 'books', name: '책/잡지', emoji: '📚' },
+                { key: 'clothes', name: '의류', emoji: '👕' },
+                { key: 'kitchen', name: '주방용품', emoji: '🍳' },
+                { key: 'etc', name: '기타', emoji: '📦' }
+            ];
+            
+            let y = 550;
+            ctx.textAlign = 'left';
+            categories.forEach(cat => {
+                const count = categoryCount[cat.key] || 0;
+                
+                // 배경 박스
+                ctx.fillStyle = 'white';
+                ctx.shadowColor = 'rgba(0,0,0,0.1)';
+                ctx.shadowBlur = 20;
+                ctx.fillRect(80, y - 80, 920, 120);
+                ctx.shadowBlur = 0;
+                
+                // 아이콘과 텍스트
+                ctx.font = '60px sans-serif';
+                ctx.fillText(cat.emoji, 120, y);
+                
+                ctx.fillStyle = '#333';
+                ctx.font = 'bold 50px sans-serif';
+                ctx.fillText(cat.name, 220, y);
+                
+                ctx.fillStyle = '#667eea';
+                ctx.font = 'bold 60px sans-serif';
+                ctx.textAlign = 'right';
+                ctx.fillText(`${count}개`, 950, y);
+                ctx.textAlign = 'left';
+                
+                y += 180;
+            });
+            
+            // 하단
+            ctx.fillStyle = '#667eea';
+            ctx.font = 'bold 55px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(`총 ${items.length}개 • ${userData.score || 0}점`, 540, 1750);
+        }
+
+        function drawStreakTemplate(ctx, userData) {
+            // 그라디언트 배경
+            const gradient = ctx.createLinearGradient(0, 0, 0, 1920);
+            gradient.addColorStop(0, '#f093fb');
+            gradient.addColorStop(1, '#f5576c');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1080, 1920);
+            
+            // 불 이모지
+            ctx.font = '300px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('🔥', 540, 650);
+            
+            // 연속 일수
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 200px sans-serif';
+            ctx.fillText(userData.streak || 0, 540, 1000);
+            
+            ctx.font = 'bold 80px sans-serif';
+            ctx.fillText('일 연속', 540, 1120);
+            
+            // 메시지
+            ctx.font = '50px sans-serif';
+            const streak = userData.streak || 0;
+            let message = '매일 조금씩 실천 중!';
+            if (streak >= 30) message = '한 달 달성! 대단해요!';
+            else if (streak >= 7) message = '일주일 달성! 멋져요!';
+            else if (streak >= 3) message = '좋은 습관 만드는 중!';
+            
+            ctx.fillText(message, 540, 1400);
+            
+            // 이름
+            ctx.font = 'bold 55px sans-serif';
+            ctx.fillText(`- ${userName} -`, 540, 1650);
+        }
+
+        async function drawGridTemplate(ctx, userData, items) {
+            // 배경
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, 1080, 1920);
+            
+            // 헤더
+            const headerGradient = ctx.createLinearGradient(0, 0, 0, 350);
+            headerGradient.addColorStop(0, '#43e97b');
+            headerGradient.addColorStop(1, '#38f9d7');
+            ctx.fillStyle = headerGradient;
+            ctx.fillRect(0, 0, 1080, 350);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 70px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(`📸 ${items.length}개 비웠어요!`, 540, 220);
+            
+            // 최근 6개 사진 그리드
+            const recentItems = items.slice(0, 6);
+            const gridSize = 320;
+            const gap = 30;
+            const startX = 60;
+            const startY = 400;
+            
+            for (let i = 0; i < 6; i++) {
+                const row = Math.floor(i / 3);
+                const col = i % 3;
+                const x = startX + col * (gridSize + gap);
+                const y = startY + row * (gridSize + gap);
+                
+                if (i < recentItems.length && recentItems[i].image) {
+                    try {
+                        const img = new Image();
+                        img.src = recentItems[i].image;
+                        await new Promise(resolve => {
+                            img.onload = () => {
+                                ctx.save();
+                                ctx.beginPath();
+                                ctx.roundRect(x, y, gridSize, gridSize, 20);
+                                ctx.clip();
+                                ctx.drawImage(img, x, y, gridSize, gridSize);
+                                ctx.restore();
+                                resolve();
+                            };
+                            img.onerror = resolve;
+                        });
+                    } catch (e) {
+                        // 이미지 로드 실패시 회색 박스
+                        ctx.fillStyle = '#e0e0e0';
+                        ctx.beginPath();
+                        ctx.roundRect(x, y, gridSize, gridSize, 20);
+                        ctx.fill();
+                    }
+                } else {
+                    // 빈 슬롯
+                    ctx.fillStyle = '#f0f0f0';
+                    ctx.beginPath();
+                    ctx.roundRect(x, y, gridSize, gridSize, 20);
+                    ctx.fill();
+                }
+            }
+            
+            // 하단 통계
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 50px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(`🏆 ${userData.score || 0}점`, 270, 1650);
+            ctx.fillText(`🔥 ${userData.streak || 0}일`, 810, 1650);
+            
+            ctx.font = 'bold 55px sans-serif';
+            ctx.fillText(`- ${userName} -`, 540, 1800);
+        }
+
+        window.downloadStoryImage = function() {
+            const canvas = document.getElementById('storyCanvas');
+            const link = document.createElement('a');
+            link.download = `declutter-story-${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
         };
 
         // 초기 로드
