@@ -601,11 +601,213 @@
             color: #666;
             margin-bottom: 20px;
         }
+
+        /* 로그인 화면 */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .login-screen.hidden {
+            display: none;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .login-logo {
+            font-size: 64px;
+            margin-bottom: 10px;
+        }
+
+        .login-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .login-divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #ccc;
+            font-size: 13px;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .login-divider::before { margin-right: 10px; }
+        .login-divider::after { margin-left: 10px; }
+
+        .social-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            margin-bottom: 12px;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .social-btn:active {
+            transform: translateY(0);
+        }
+
+        .social-btn-kakao {
+            background: #FEE500;
+            color: #191919;
+        }
+
+        .social-btn-kakao svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .social-btn-google {
+            background: white;
+            color: #333;
+            border: 2px solid #e0e0e0;
+        }
+
+        .social-btn-google svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* 로그아웃 버튼 */
+        .logout-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .logout-btn:hover {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        /* 사용자 프로필 */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #667eea;
+        }
+
+        .user-avatar-placeholder {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .user-provider-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .user-provider-badge.kakao {
+            background: #FEE500;
+            color: #191919;
+        }
+
+        .user-provider-badge.google {
+            background: #4285F4;
+            color: white;
+        }
     </style>
 </head>
 <body>
+    <!-- 로그인 화면 -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <div class="login-logo">🎯</div>
+            <div class="login-title">물건 비우기 챌린지</div>
+            <div class="login-subtitle">소셜 계정으로 간편하게 시작하세요</div>
+
+            <button class="social-btn social-btn-kakao" id="kakaoLoginBtn" onclick="handleKakaoLogin()">
+                <svg viewBox="0 0 24 24" fill="#191919"><path d="M12 3C6.477 3 2 6.463 2 10.691c0 2.725 1.802 5.117 4.517 6.468-.198.74-.717 2.678-.82 3.093-.13.516.189.508.397.37.163-.108 2.59-1.76 3.641-2.476.735.107 1.49.163 2.265.163 5.523 0 10-3.463 10-7.618C22 6.463 17.523 3 12 3z"/></svg>
+                카카오로 시작하기
+            </button>
+
+            <button class="social-btn social-btn-google" id="googleLoginBtn" onclick="handleGoogleLogin()">
+                <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                Google로 시작하기
+            </button>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
+            <button class="logout-btn" id="logoutBtn" onclick="handleLogout()">로그아웃</button>
             <div class="online-badge">
                 <div class="online-dot"></div>
                 온라인
@@ -614,7 +816,11 @@
             <div class="score-display" id="totalScore">0</div>
             <div class="score-label">총 획득 포인트</div>
             <div class="streak-badge" id="streakBadge">🔥 0일 연속</div>
-            <input type="text" class="username-input" id="usernameInput" placeholder="닉네임 입력" maxlength="15">
+            <div class="user-profile" id="userProfile">
+                <div class="user-avatar-placeholder" id="userAvatar">?</div>
+                <input type="text" class="username-input" id="usernameInput" placeholder="닉네임 입력" maxlength="15">
+                <span class="user-provider-badge" id="providerBadge"></span>
+            </div>
             <div class="badges-container" id="badgesContainer"></div>
         </div>
 
@@ -741,7 +947,7 @@
             </div>
         </div>
 
-        <div class="version">v2.1 - AI 응원 & 스토리 공유 ✨</div>
+        <div class="version">v2.2 - 소셜 로그인 & AI 응원 & 스토리 공유</div>
     </div>
 
     <!-- Badge Modal -->
@@ -753,10 +959,14 @@
         <button class="btn" onclick="closeBadgeModal()">확인</button>
     </div>
 
+    <!-- Kakao SDK -->
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"></script>
+
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getFirestore, collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp, arrayUnion, arrayRemove, increment } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyCgRc0r845aR7tTS7GNUmm8TMdLtSzeljY",
@@ -769,16 +979,164 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
 
         window.db = db;
         window.firestore = { collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp, arrayUnion, arrayRemove, increment };
-        
-        let currentUserId = localStorage.getItem('userId') || generateUserId();
-        let userName = localStorage.getItem('userName') || '익명' + Math.floor(Math.random() * 1000);
+
+        // ====== 소셜 로그인 설정 ======
+        // 카카오 JavaScript 키 (Kakao Developers에서 발급받은 키를 입력하세요)
+        const KAKAO_JS_KEY = 'YOUR_KAKAO_JAVASCRIPT_KEY';
+        if (typeof Kakao !== 'undefined' && !Kakao.isInitialized()) {
+            Kakao.init(KAKAO_JS_KEY);
+        }
+
+        let currentUserId = localStorage.getItem('userId') || null;
+        let userName = localStorage.getItem('userName') || '';
         let totalScore = 0;
         let currentImage = null;
         let userStreak = 0;
         let userBadges = [];
+
+        // 로그인 화면 표시/숨김
+        function showLoginScreen() {
+            document.getElementById('loginScreen').classList.remove('hidden');
+        }
+
+        function hideLoginScreen() {
+            document.getElementById('loginScreen').classList.add('hidden');
+        }
+
+        // 사용자 프로필 UI 업데이트
+        function updateProfileUI() {
+            const provider = localStorage.getItem('authProvider');
+            const photo = localStorage.getItem('userPhoto');
+            const avatarEl = document.getElementById('userAvatar');
+            const badgeEl = document.getElementById('providerBadge');
+
+            // 프로필 사진
+            if (photo) {
+                avatarEl.outerHTML = `<img src="${photo}" alt="프로필" class="user-avatar" id="userAvatar" referrerpolicy="no-referrer">`;
+            } else {
+                avatarEl.outerHTML = `<div class="user-avatar-placeholder" id="userAvatar">${(userName || '?').charAt(0)}</div>`;
+            }
+
+            // 제공자 배지
+            if (provider === 'kakao') {
+                badgeEl.textContent = 'Kakao';
+                badgeEl.className = 'user-provider-badge kakao';
+            } else if (provider === 'google') {
+                badgeEl.textContent = 'Google';
+                badgeEl.className = 'user-provider-badge google';
+            }
+        }
+
+        // Google 로그인
+        window.handleGoogleLogin = async function() {
+            const btn = document.getElementById('googleLoginBtn');
+            btn.disabled = true;
+            btn.textContent = '로그인 중...';
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                currentUserId = 'google_' + user.uid;
+                userName = user.displayName || 'Google사용자';
+                localStorage.setItem('userId', currentUserId);
+                localStorage.setItem('userName', userName);
+                localStorage.setItem('authProvider', 'google');
+                localStorage.setItem('userPhoto', user.photoURL || '');
+                document.getElementById('usernameInput').value = userName;
+                updateProfileUI();
+                hideLoginScreen();
+                await initApp();
+            } catch (error) {
+                console.error('Google 로그인 실패:', error);
+                if (error.code === 'auth/popup-closed-by-user') {
+                    // 사용자가 팝업을 닫음 - 에러 표시하지 않음
+                } else {
+                    alert('Google 로그인에 실패했습니다. Firebase 콘솔에서 Google 로그인을 활성화했는지 확인하세요.');
+                }
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<svg viewBox="0 0 24 24" width="20" height="20"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Google로 시작하기`;
+            }
+        };
+
+        // 카카오 로그인
+        window.handleKakaoLogin = async function() {
+            const btn = document.getElementById('kakaoLoginBtn');
+            btn.disabled = true;
+            btn.textContent = '로그인 중...';
+            try {
+                // 카카오 로그인 팝업
+                await new Promise((resolve, reject) => {
+                    Kakao.Auth.login({
+                        success: resolve,
+                        fail: reject
+                    });
+                });
+
+                // 사용자 정보 가져오기
+                const userInfo = await new Promise((resolve, reject) => {
+                    Kakao.API.request({
+                        url: '/v2/user/me',
+                        success: resolve,
+                        fail: reject
+                    });
+                });
+
+                currentUserId = 'kakao_' + userInfo.id;
+                userName = userInfo.kakao_account?.profile?.nickname || '카카오사용자';
+                const profileImage = userInfo.kakao_account?.profile?.profile_image_url || '';
+
+                localStorage.setItem('userId', currentUserId);
+                localStorage.setItem('userName', userName);
+                localStorage.setItem('authProvider', 'kakao');
+                localStorage.setItem('userPhoto', profileImage);
+                document.getElementById('usernameInput').value = userName;
+                updateProfileUI();
+                hideLoginScreen();
+                await initApp();
+            } catch (error) {
+                console.error('카카오 로그인 실패:', error);
+                alert('카카오 로그인에 실패했습니다. Kakao Developers에서 앱 설정을 확인하세요.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<svg viewBox="0 0 24 24" width="20" height="20" fill="#191919"><path d="M12 3C6.477 3 2 6.463 2 10.691c0 2.725 1.802 5.117 4.517 6.468-.198.74-.717 2.678-.82 3.093-.13.516.189.508.397.37.163-.108 2.59-1.76 3.641-2.476.735.107 1.49.163 2.265.163 5.523 0 10-3.463 10-7.618C22 6.463 17.523 3 12 3z"/></svg> 카카오로 시작하기`;
+            }
+        };
+
+        // 로그아웃
+        window.handleLogout = async function() {
+            if (!confirm('로그아웃 하시겠습니까?')) return;
+            const provider = localStorage.getItem('authProvider');
+
+            try {
+                if (provider === 'google') {
+                    await signOut(auth);
+                } else if (provider === 'kakao') {
+                    if (typeof Kakao !== 'undefined' && Kakao.Auth && Kakao.Auth.getAccessToken()) {
+                        await new Promise((resolve) => {
+                            Kakao.Auth.logout(resolve);
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('로그아웃 에러:', error);
+            }
+
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('authProvider');
+            localStorage.removeItem('userPhoto');
+            currentUserId = null;
+            userName = '';
+            totalScore = 0;
+            userStreak = 0;
+            userBadges = [];
+            showLoginScreen();
+        };
 
         const categoryPoints = {
             'clothes': 10,
@@ -802,17 +1160,13 @@
             'streak_30': { icon: '🏅', name: '달인', desc: '30일 연속', condition: (streak) => streak >= 30, isStreak: true }
         };
 
-        function generateUserId() {
-            const id = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem('userId', id);
-            return id;
-        }
-
-        document.getElementById('usernameInput').value = userName;
+        // 닉네임 변경 이벤트 (로그인 후 활성화)
         document.getElementById('usernameInput').addEventListener('change', function(e) {
-            userName = e.target.value.trim() || '익명' + Math.floor(Math.random() * 1000);
+            userName = e.target.value.trim() || userName;
             localStorage.setItem('userName', userName);
-            updateUserProfile();
+            if (currentUserId) {
+                updateUserProfile();
+            }
         });
 
         async function updateUserProfile() {
@@ -1979,11 +2333,14 @@
             link.click();
         };
 
-        // 초기 로드
-        async function init() {
+        // 앱 초기화 (로그인 후 호출)
+        async function initApp() {
+            if (!currentUserId) return;
+            document.getElementById('usernameInput').value = userName;
+            updateProfileUI();
             await updateUserProfile();
             await loadMyItems();
-            
+
             // 사용자 데이터 로드
             const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
             const userSnapshot = await getDocs(userQuery);
@@ -1995,8 +2352,23 @@
                 renderBadges();
             }
         }
-        
-        init();
+
+        // 페이지 로드 시 로그인 상태 확인
+        (function checkAuthState() {
+            const savedUserId = localStorage.getItem('userId');
+            const savedProvider = localStorage.getItem('authProvider');
+
+            if (savedUserId && savedProvider) {
+                // 이전 로그인 세션 복원
+                currentUserId = savedUserId;
+                userName = localStorage.getItem('userName') || '';
+                hideLoginScreen();
+                initApp();
+            } else {
+                // 로그인 필요
+                showLoginScreen();
+            }
+        })();
     </script>
 </body>
 </html>
