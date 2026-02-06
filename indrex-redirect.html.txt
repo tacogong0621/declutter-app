@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Declutter Challenge</title>
+</head>
+<body>
+    <script>
+        // 브라우저 언어 감지
+        const userLang = navigator.language || navigator.userLanguage;
+        
+        // 한국어면 ko.html, 아니면 en.html로 이동
+        if (userLang.startsWith('ko')) {
+            window.location.href = 'ko.html';
+        } else {
+            window.location.href = 'en.html';
+        }
+    </script>
+</body>
+</html>
