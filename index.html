@@ -141,19 +141,22 @@
             padding: 5px;
             margin-bottom: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow-x: auto;
         }
 
         .tab {
             flex: 1;
-            padding: 15px;
+            padding: 10px 4px;
             background: none;
             border: none;
             border-radius: 15px;
-            font-size: 16px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             color: #666;
+            white-space: nowrap;
+            min-width: 60px;
         }
 
         .tab.active {
@@ -327,6 +330,7 @@
             display: flex;
             gap: 10px;
             margin-top: 10px;
+            flex-wrap: wrap;
         }
 
         .like-btn {
@@ -602,7 +606,6 @@
             margin-bottom: 20px;
         }
 
-        /* 로그인 화면 */
         .login-screen {
             position: fixed;
             top: 0;
@@ -648,25 +651,6 @@
             margin-bottom: 30px;
         }
 
-        .login-divider {
-            display: flex;
-            align-items: center;
-            margin: 20px 0;
-            color: #ccc;
-            font-size: 13px;
-        }
-
-        .login-divider::before,
-        .login-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #e0e0e0;
-        }
-
-        .login-divider::before { margin-right: 10px; }
-        .login-divider::after { margin-left: 10px; }
-
         .social-btn {
             width: 100%;
             padding: 16px;
@@ -692,16 +676,6 @@
             transform: translateY(0);
         }
 
-        .social-btn-kakao {
-            background: #FEE500;
-            color: #191919;
-        }
-
-        .social-btn-kakao svg {
-            width: 20px;
-            height: 20px;
-        }
-
         .social-btn-google {
             background: white;
             color: #333;
@@ -713,7 +687,6 @@
             height: 20px;
         }
 
-        /* 로그아웃 버튼 */
         .logout-btn {
             position: absolute;
             top: 15px;
@@ -737,7 +710,6 @@
             color: #333;
         }
 
-        /* 사용자 프로필 */
         .user-profile {
             display: flex;
             align-items: center;
@@ -772,14 +744,6 @@
             padding: 3px 8px;
             border-radius: 10px;
             font-weight: 600;
-        }
-
-        .user-provider-badge.kakao {
-            background: #FEE500;
-            color: #191919;
-        }
-
-        .user-provider-badge.google {
             background: #4285F4;
             color: white;
         }
@@ -792,11 +756,6 @@
             <div class="login-logo">🎯</div>
             <div class="login-title">물건 비우기 챌린지</div>
             <div class="login-subtitle">소셜 계정으로 간편하게 시작하세요</div>
-
-            <button class="social-btn social-btn-kakao" id="kakaoLoginBtn" onclick="handleKakaoLogin()">
-                <svg viewBox="0 0 24 24" fill="#191919"><path d="M12 3C6.477 3 2 6.463 2 10.691c0 2.725 1.802 5.117 4.517 6.468-.198.74-.717 2.678-.82 3.093-.13.516.189.508.397.37.163-.108 2.59-1.76 3.641-2.476.735.107 1.49.163 2.265.163 5.523 0 10-3.463 10-7.618C22 6.463 17.523 3 12 3z"/></svg>
-                카카오로 시작하기
-            </button>
 
             <button class="social-btn social-btn-google" id="googleLoginBtn" onclick="handleGoogleLogin()">
                 <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
@@ -883,23 +842,23 @@
         </div>
 
         <div id="calendarTab" class="tab-content">
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <button onclick="changeMonth(-1)" style="background: none; border: 2px solid #667eea; color: #667eea; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-weight: 600;">← 이전</button>
-                    <h2 id="calendarTitle" style="color: #333; margin: 0;">2026년 2월</h2>
-                    <button onclick="changeMonth(1)" style="background: none; border: 2px solid #667eea; color: #667eea; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-weight: 600;">다음 →</button>
+            <div class="card" style="padding: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <button onclick="changeMonth(-1)" style="background: none; border: 2px solid #667eea; color: #667eea; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px;">←</button>
+                    <h2 id="calendarTitle" style="color: #333; margin: 0; font-size: 16px;">2026년 2월</h2>
+                    <button onclick="changeMonth(1)" style="background: none; border: 2px solid #667eea; color: #667eea; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px;">→</button>
                 </div>
-                <div id="calendar" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;"></div>
-                <div style="margin-top: 20px; padding: 15px; background: #f8f9ff; border-radius: 10px;">
-                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; font-size: 14px;">
+                <div id="calendar" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px;"></div>
+                <div style="margin-top: 12px; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                    <div style="display: flex; gap: 10px; justify-content: center; font-size: 11px;">
                         <span>🔥 비운 날</span>
                         <span style="color: #999;">⚪ 안 비운 날</span>
                     </div>
                 </div>
-                <div id="monthStats" style="margin-top: 20px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; text-align: center;">
-                    <div style="font-size: 14px; opacity: 0.9;">이번 달 통계</div>
-                    <div style="font-size: 32px; font-weight: bold; margin: 10px 0;" id="monthItemCount">0</div>
-                    <div style="font-size: 14px; opacity: 0.9;">개 비움 • <span id="monthPoints">0</span>점 획득</div>
+                <div id="monthStats" style="margin-top: 12px; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white; text-align: center;">
+                    <div style="font-size: 11px; opacity: 0.9;">이번 달 통계</div>
+                    <div style="font-size: 24px; font-weight: bold; margin: 6px 0;" id="monthItemCount">0</div>
+                    <div style="font-size: 11px; opacity: 0.9;">개 비움 • <span id="monthPoints">0</span>점 획득</div>
                 </div>
             </div>
         </div>
@@ -947,7 +906,7 @@
             </div>
         </div>
 
-        <div class="version">v2.2 - 소셜 로그인 & AI 응원 & 스토리 공유</div>
+        <div class="version">v2.2 - 소셜 로그인 & 모바일 최적화</div>
     </div>
 
     <!-- Badge Modal -->
@@ -959,14 +918,11 @@
         <button class="btn" onclick="closeBadgeModal()">확인</button>
     </div>
 
-    <!-- Kakao SDK -->
-    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"></script>
-
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getFirestore, collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp, arrayUnion, arrayRemove, increment } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyCgRc0r845aR7tTS7GNUmm8TMdLtSzeljY",
@@ -985,13 +941,6 @@
         window.db = db;
         window.firestore = { collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp, arrayUnion, arrayRemove, increment };
 
-        // ====== 소셜 로그인 설정 ======
-        // 카카오 JavaScript 키 (Kakao Developers에서 발급받은 키를 입력하세요)
-        const KAKAO_JS_KEY = 'YOUR_KAKAO_JAVASCRIPT_KEY';
-        if (typeof Kakao !== 'undefined' && !Kakao.isInitialized()) {
-            Kakao.init(KAKAO_JS_KEY);
-        }
-
         let currentUserId = localStorage.getItem('userId') || null;
         let userName = localStorage.getItem('userName') || '';
         let totalScore = 0;
@@ -999,7 +948,6 @@
         let userStreak = 0;
         let userBadges = [];
 
-        // 로그인 화면 표시/숨김
         function showLoginScreen() {
             document.getElementById('loginScreen').classList.remove('hidden');
         }
@@ -1008,31 +956,24 @@
             document.getElementById('loginScreen').classList.add('hidden');
         }
 
-        // 사용자 프로필 UI 업데이트
         function updateProfileUI() {
             const provider = localStorage.getItem('authProvider');
             const photo = localStorage.getItem('userPhoto');
             const avatarEl = document.getElementById('userAvatar');
             const badgeEl = document.getElementById('providerBadge');
 
-            // 프로필 사진
             if (photo) {
                 avatarEl.outerHTML = `<img src="${photo}" alt="프로필" class="user-avatar" id="userAvatar" referrerpolicy="no-referrer">`;
             } else {
                 avatarEl.outerHTML = `<div class="user-avatar-placeholder" id="userAvatar">${(userName || '?').charAt(0)}</div>`;
             }
 
-            // 제공자 배지
-            if (provider === 'kakao') {
-                badgeEl.textContent = 'Kakao';
-                badgeEl.className = 'user-provider-badge kakao';
-            } else if (provider === 'google') {
+            if (provider === 'google') {
                 badgeEl.textContent = 'Google';
-                badgeEl.className = 'user-provider-badge google';
+                badgeEl.style.display = 'inline-block';
             }
         }
 
-        // Google 로그인
         window.handleGoogleLogin = async function() {
             const btn = document.getElementById('googleLoginBtn');
             btn.disabled = true;
@@ -1052,62 +993,15 @@
                 await initApp();
             } catch (error) {
                 console.error('Google 로그인 실패:', error);
-                if (error.code === 'auth/popup-closed-by-user') {
-                    // 사용자가 팝업을 닫음 - 에러 표시하지 않음
-                } else {
+                if (error.code !== 'auth/popup-closed-by-user') {
                     alert('Google 로그인에 실패했습니다. Firebase 콘솔에서 Google 로그인을 활성화했는지 확인하세요.');
                 }
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = `<svg viewBox="0 0 24 24" width="20" height="20"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Google로 시작하기`;
+                btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Google로 시작하기`;
             }
         };
 
-        // 카카오 로그인
-        window.handleKakaoLogin = async function() {
-            const btn = document.getElementById('kakaoLoginBtn');
-            btn.disabled = true;
-            btn.textContent = '로그인 중...';
-            try {
-                // 카카오 로그인 팝업
-                await new Promise((resolve, reject) => {
-                    Kakao.Auth.login({
-                        success: resolve,
-                        fail: reject
-                    });
-                });
-
-                // 사용자 정보 가져오기
-                const userInfo = await new Promise((resolve, reject) => {
-                    Kakao.API.request({
-                        url: '/v2/user/me',
-                        success: resolve,
-                        fail: reject
-                    });
-                });
-
-                currentUserId = 'kakao_' + userInfo.id;
-                userName = userInfo.kakao_account?.profile?.nickname || '카카오사용자';
-                const profileImage = userInfo.kakao_account?.profile?.profile_image_url || '';
-
-                localStorage.setItem('userId', currentUserId);
-                localStorage.setItem('userName', userName);
-                localStorage.setItem('authProvider', 'kakao');
-                localStorage.setItem('userPhoto', profileImage);
-                document.getElementById('usernameInput').value = userName;
-                updateProfileUI();
-                hideLoginScreen();
-                await initApp();
-            } catch (error) {
-                console.error('카카오 로그인 실패:', error);
-                alert('카카오 로그인에 실패했습니다. Kakao Developers에서 앱 설정을 확인하세요.');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<svg viewBox="0 0 24 24" width="20" height="20" fill="#191919"><path d="M12 3C6.477 3 2 6.463 2 10.691c0 2.725 1.802 5.117 4.517 6.468-.198.74-.717 2.678-.82 3.093-.13.516.189.508.397.37.163-.108 2.59-1.76 3.641-2.476.735.107 1.49.163 2.265.163 5.523 0 10-3.463 10-7.618C22 6.463 17.523 3 12 3z"/></svg> 카카오로 시작하기`;
-            }
-        };
-
-        // 로그아웃
         window.handleLogout = async function() {
             if (!confirm('로그아웃 하시겠습니까?')) return;
             const provider = localStorage.getItem('authProvider');
@@ -1115,12 +1009,6 @@
             try {
                 if (provider === 'google') {
                     await signOut(auth);
-                } else if (provider === 'kakao') {
-                    if (typeof Kakao !== 'undefined' && Kakao.Auth && Kakao.Auth.getAccessToken()) {
-                        await new Promise((resolve) => {
-                            Kakao.Auth.logout(resolve);
-                        });
-                    }
                 }
             } catch (error) {
                 console.error('로그아웃 에러:', error);
@@ -1149,7 +1037,6 @@
             'etc': 5
         };
 
-        // 배지 정의
         const badges = {
             'first_item': { icon: '🎯', name: '첫 걸음', desc: '첫 물건 비우기', condition: (count) => count >= 1 },
             'five_items': { icon: '⭐', name: '열정', desc: '5개 비우기', condition: (count) => count >= 5 },
@@ -1160,7 +1047,6 @@
             'streak_30': { icon: '🏅', name: '달인', desc: '30일 연속', condition: (streak) => streak >= 30, isStreak: true }
         };
 
-        // 닉네임 변경 이벤트 (로그인 후 활성화)
         document.getElementById('usernameInput').addEventListener('change', function(e) {
             userName = e.target.value.trim() || userName;
             localStorage.setItem('userName', userName);
@@ -1198,14 +1084,9 @@
             }
         }
 
-        // AI 응원 메시지 생성
         async function generateAIEncouragement(itemName, category, points, totalScore, streak) {
             try {
-                // 카테고리별 통계 가져오기
-                const itemsQuery = query(
-                    collection(db, 'items'),
-                    where('userId', '==', currentUserId)
-                );
+                const itemsQuery = query(collection(db, 'items'), where('userId', '==', currentUserId));
                 const itemsSnapshot = await getDocs(itemsQuery);
                 
                 const categoryCount = {};
@@ -1244,15 +1125,11 @@
                     })
                 });
 
-                if (!response.ok) {
-                    throw new Error('API 요청 실패');
-                }
-
+                if (!response.ok) throw new Error('API 요청 실패');
                 const data = await response.json();
                 return data.content[0].text.trim();
             } catch (error) {
                 console.error('AI 메시지 생성 실패:', error);
-                // 실패시 기본 메시지
                 const defaultMessages = [
                     "정리 완료! 한 걸음씩 나아가고 있어요 ✨",
                     "멋져요! 비우는 습관이 몸에 배고 있네요 💪",
@@ -1278,7 +1155,6 @@
             return names[category] || category;
         }
 
-        // 스트릭 계산
         async function calculateStreak() {
             try {
                 const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
@@ -1298,28 +1174,22 @@
                         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                         
                         if (diffDays === 0) {
-                            // 오늘 이미 비움
                             userStreak = userData.streak || 0;
                         } else if (diffDays === 1) {
-                            // 어제 비움 - 스트릭 증가
                             userStreak = (userData.streak || 0) + 1;
                         } else {
-                            // 스트릭 끊김
                             userStreak = 1;
                         }
                     } else {
                         userStreak = 1;
                     }
                     
-                    // 스트릭 업데이트
                     await updateDoc(doc(db, 'users', userSnapshot.docs[0].id), {
                         streak: userStreak,
                         lastDeclutterDate: serverTimestamp()
                     });
                     
                     document.getElementById('streakBadge').textContent = `🔥 ${userStreak}일 연속`;
-                    
-                    // 스트릭 배지 체크
                     checkBadges(null, userStreak);
                 }
             } catch (error) {
@@ -1327,7 +1197,6 @@
             }
         }
 
-        // 배지 체크
         async function checkBadges(itemCount = null, streak = null) {
             try {
                 const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
@@ -1392,75 +1261,64 @@
         function playSuccessSound() {
             try {
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                
-                // 모바일 대응: AudioContext resume
-                if (audioContext.state === 'suspended') {
-                    audioContext.resume();
-                }
+                if (audioContext.state === 'suspended') audioContext.resume();
                 
                 const now = audioContext.currentTime;
                 
-                // "빠" - 첫 번째 음 (C)
                 const osc1 = audioContext.createOscillator();
                 const gain1 = audioContext.createGain();
                 osc1.connect(gain1);
                 gain1.connect(audioContext.destination);
                 osc1.type = 'square';
-                osc1.frequency.setValueAtTime(523.25, now); // C5
+                osc1.frequency.setValueAtTime(523.25, now);
                 gain1.gain.setValueAtTime(0.3, now);
                 gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
                 osc1.start(now);
                 osc1.stop(now + 0.15);
                 
-                // "빠" - 두 번째 음 (E)
                 const osc2 = audioContext.createOscillator();
                 const gain2 = audioContext.createGain();
                 osc2.connect(gain2);
                 gain2.connect(audioContext.destination);
                 osc2.type = 'square';
-                osc2.frequency.setValueAtTime(659.25, now + 0.15); // E5
+                osc2.frequency.setValueAtTime(659.25, now + 0.15);
                 gain2.gain.setValueAtTime(0.3, now + 0.15);
                 gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
                 osc2.start(now + 0.15);
                 osc2.stop(now + 0.3);
                 
-                // "라" - 세 번째 음 (G)
                 const osc3 = audioContext.createOscillator();
                 const gain3 = audioContext.createGain();
                 osc3.connect(gain3);
                 gain3.connect(audioContext.destination);
                 osc3.type = 'square';
-                osc3.frequency.setValueAtTime(783.99, now + 0.3); // G5
+                osc3.frequency.setValueAtTime(783.99, now + 0.3);
                 gain3.gain.setValueAtTime(0.3, now + 0.3);
                 gain3.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
                 osc3.start(now + 0.3);
                 osc3.stop(now + 0.45);
                 
-                // "빰~!" - 마지막 긴 음 (C 옥타브 위)
                 const osc4 = audioContext.createOscillator();
                 const gain4 = audioContext.createGain();
                 osc4.connect(gain4);
                 gain4.connect(audioContext.destination);
                 osc4.type = 'square';
-                osc4.frequency.setValueAtTime(1046.50, now + 0.45); // C6
+                osc4.frequency.setValueAtTime(1046.50, now + 0.45);
                 gain4.gain.setValueAtTime(0.35, now + 0.45);
                 gain4.gain.exponentialRampToValueAtTime(0.01, now + 0.9);
                 osc4.start(now + 0.45);
                 osc4.stop(now + 0.9);
                 
-                // 화음 추가 (풍성한 느낌)
                 const osc5 = audioContext.createOscillator();
                 const gain5 = audioContext.createGain();
                 osc5.connect(gain5);
                 gain5.connect(audioContext.destination);
                 osc5.type = 'sine';
-                osc5.frequency.setValueAtTime(1318.51, now + 0.45); // E6
+                osc5.frequency.setValueAtTime(1318.51, now + 0.45);
                 gain5.gain.setValueAtTime(0.2, now + 0.45);
                 gain5.gain.exponentialRampToValueAtTime(0.01, now + 0.9);
                 osc5.start(now + 0.45);
                 osc5.stop(now + 0.9);
-                
-                console.log('🔊 효과음 재생!');
             } catch (error) {
                 console.error('효과음 재생 실패:', error);
             }
@@ -1582,7 +1440,6 @@
 
                 playSuccessSound();
 
-                // AI 응원 메시지 생성
                 const aiMessage = await generateAIEncouragement(name, category, points, totalScore, userStreak);
 
                 document.getElementById('itemName').value = '';
@@ -1646,7 +1503,6 @@
             }
         }
 
-        // 좋아요 토글
         window.toggleLike = async function(itemId, itemDocId) {
             try {
                 const itemRef = doc(db, 'items', itemDocId);
@@ -1673,7 +1529,6 @@
             }
         };
 
-        // 댓글 토글
         window.toggleComments = function(itemId) {
             const commentsSection = document.getElementById(`comments-${itemId}`);
             if (commentsSection) {
@@ -1681,7 +1536,6 @@
             }
         };
 
-        // 댓글 추가
         window.addComment = async function(itemId, itemDocId) {
             const input = document.getElementById(`comment-input-${itemId}`);
             const commentText = input.value.trim();
@@ -1705,9 +1559,7 @@
             }
         };
 
-        // 아이템 삭제
         window.deleteItem = async function(itemDocId, itemUserId, itemPoints) {
-            // 본인 것만 삭제 가능
             if (itemUserId !== currentUserId) {
                 alert('본인의 물건만 삭제할 수 있습니다!');
                 return;
@@ -1718,11 +1570,9 @@
             }
 
             try {
-                // Firestore에서 삭제
                 const { deleteDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
                 await deleteDoc(doc(db, 'items', itemDocId));
 
-                // 사용자 점수 차감
                 const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
                 const userSnapshot = await getDocs(userQuery);
                 
@@ -1752,10 +1602,7 @@
             const listElement = document.getElementById('itemList');
             
             try {
-                const itemsQuery = query(
-                    collection(db, 'items'),
-                    limit(50)
-                );
+                const itemsQuery = query(collection(db, 'items'), limit(50));
 
                 onSnapshot(itemsQuery, (snapshot) => {
                     const items = [];
@@ -1853,11 +1700,7 @@
             const leaderboardElement = document.getElementById('leaderboardList');
             
             try {
-                const usersQuery = query(
-                    collection(db, 'users'),
-                    orderBy('score', 'desc'),
-                    limit(20)
-                );
+                const usersQuery = query(collection(db, 'users'), orderBy('score', 'desc'), limit(20));
 
                 onSnapshot(usersQuery, (snapshot) => {
                     const users = [];
@@ -1900,7 +1743,6 @@
             }
         }
 
-        // 탭 전환
         window.switchTab = function(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -1926,34 +1768,28 @@
             }
         };
 
-        // 탭 버튼 이벤트 리스너
         document.getElementById('addTabBtn').addEventListener('click', () => switchTab('add'));
         document.getElementById('historyTabBtn').addEventListener('click', () => switchTab('history'));
         document.getElementById('calendarTabBtn').addEventListener('click', () => switchTab('calendar'));
         document.getElementById('leaderboardTabBtn').addEventListener('click', () => switchTab('leaderboard'));
         document.getElementById('shareTabBtn').addEventListener('click', () => switchTab('share'));
 
-        // 캘린더 변수
         let currentCalendarYear = 2026;
-        let currentCalendarMonth = 1; // 2월 (0-indexed)
+        let currentCalendarMonth = 1;
         let userItemDates = {};
 
-        // 캘린더 렌더링
         async function renderCalendar() {
             const calendar = document.getElementById('calendar');
             const title = document.getElementById('calendarTitle');
             
-            // 월/년 표시
             const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
             title.textContent = `${currentCalendarYear}년 ${monthNames[currentCalendarMonth]}`;
             
-            // 해당 월의 첫날과 마지막날
             const firstDay = new Date(currentCalendarYear, currentCalendarMonth, 1);
             const lastDay = new Date(currentCalendarYear, currentCalendarMonth + 1, 0);
             const daysInMonth = lastDay.getDate();
             const startDayOfWeek = firstDay.getDay();
             
-            // 사용자 아이템 날짜 가져오기
             const itemsQuery = query(collection(db, 'items'), where('userId', '==', currentUserId));
             const itemsSnapshot = await getDocs(itemsQuery);
             
@@ -1976,7 +1812,6 @@
                     userItemDates[dateKey].count += 1;
                     userItemDates[dateKey].points += item.points || 0;
                     
-                    // 이번 달 통계
                     if (date.getFullYear() === currentCalendarYear && date.getMonth() === currentCalendarMonth) {
                         monthItemCount += 1;
                         monthPoints += item.points || 0;
@@ -1984,31 +1819,26 @@
                 }
             });
             
-            // 월 통계 업데이트
             document.getElementById('monthItemCount').textContent = monthItemCount;
             document.getElementById('monthPoints').textContent = monthPoints;
             
-            // 캘린더 그리기
             calendar.innerHTML = '';
             
-            // 요일 헤더
             const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
             dayNames.forEach((day, index) => {
                 const dayHeader = document.createElement('div');
-                dayHeader.style.cssText = 'text-align: center; font-weight: 600; padding: 10px; color: #666; font-size: 14px;';
-                if (index === 0) dayHeader.style.color = '#ff4444'; // 일요일 빨강
-                if (index === 6) dayHeader.style.color = '#4444ff'; // 토요일 파랑
+                dayHeader.style.cssText = 'text-align: center; font-weight: 600; padding: 4px 2px; color: #666; font-size: 10px;';
+                if (index === 0) dayHeader.style.color = '#ff4444';
+                if (index === 6) dayHeader.style.color = '#4444ff';
                 dayHeader.textContent = day;
                 calendar.appendChild(dayHeader);
             });
             
-            // 빈 칸 (월 시작 전)
             for (let i = 0; i < startDayOfWeek; i++) {
                 const emptyDay = document.createElement('div');
                 calendar.appendChild(emptyDay);
             }
             
-            // 날짜
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateKey = `${currentCalendarYear}-${currentCalendarMonth}-${day}`;
                 const hasItem = userItemDates[dateKey];
@@ -2023,17 +1853,18 @@
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                    border-radius: 12px;
+                    border-radius: 6px;
                     position: relative;
                     cursor: pointer;
                     transition: all 0.3s;
                     ${hasItem ? 'background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);' : 'background: #f0f0f0;'}
-                    ${isToday ? 'border: 3px solid #667eea;' : ''}
+                    ${isToday ? 'border: 2px solid #667eea;' : ''}
+                    font-size: 10px;
                 `;
                 
                 const dayNumber = document.createElement('div');
                 dayNumber.style.cssText = `
-                    font-size: 16px;
+                    font-size: 11px;
                     font-weight: 600;
                     ${hasItem ? 'color: white;' : 'color: #999;'}
                 `;
@@ -2041,25 +1872,20 @@
                 
                 if (hasItem) {
                     const flame = document.createElement('div');
-                    flame.style.cssText = 'font-size: 24px; margin-top: 4px;';
+                    flame.style.cssText = 'font-size: 14px; margin-top: 1px; line-height: 1;';
                     flame.textContent = '🔥';
                     dayCell.appendChild(dayNumber);
                     dayCell.appendChild(flame);
                     
-                    const count = document.createElement('div');
-                    count.style.cssText = 'font-size: 11px; color: white; font-weight: 600;';
-                    count.textContent = `${hasItem.count}개`;
-                    dayCell.appendChild(count);
+                    if (hasItem.count > 1) {
+                        const count = document.createElement('div');
+                        count.style.cssText = 'font-size: 8px; color: white; font-weight: 600; line-height: 1;';
+                        count.textContent = `${hasItem.count}`;
+                        dayCell.appendChild(count);
+                    }
                 } else {
                     dayCell.appendChild(dayNumber);
                 }
-                
-                dayCell.addEventListener('mouseenter', () => {
-                    dayCell.style.transform = 'scale(1.05)';
-                });
-                dayCell.addEventListener('mouseleave', () => {
-                    dayCell.style.transform = 'scale(1)';
-                });
                 
                 calendar.appendChild(dayCell);
             }
@@ -2077,16 +1903,13 @@
             renderCalendar();
         };
 
-        // 스토리 템플릿 생성
         window.generateStoryTemplate = async function(template) {
             const canvas = document.getElementById('storyCanvas');
             const ctx = canvas.getContext('2d');
             
-            // 인스타 스토리 사이즈 (1080 x 1920)
             canvas.width = 1080;
             canvas.height = 1920;
             
-            // 사용자 데이터 가져오기
             const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
             const userSnapshot = await getDocs(userQuery);
             const userData = userSnapshot.empty ? {} : userSnapshot.docs[0].data();
@@ -2111,49 +1934,41 @@
         };
 
         function drawMinimalTemplate(ctx, userData, items) {
-            // 그라디언트 배경
             const gradient = ctx.createLinearGradient(0, 0, 0, 1920);
             gradient.addColorStop(0, '#667eea');
             gradient.addColorStop(1, '#764ba2');
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 1080, 1920);
             
-            // 제목
             ctx.fillStyle = 'white';
             ctx.font = 'bold 80px sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText('🎯 비우기 챌린지', 540, 300);
             
-            // 점수
             ctx.font = 'bold 180px sans-serif';
             ctx.fillText(userData.score || 0, 540, 800);
             
             ctx.font = '60px sans-serif';
             ctx.fillText('POINTS', 540, 900);
             
-            // 통계
             ctx.font = 'bold 50px sans-serif';
             ctx.fillText(`${items.length}개 비움`, 540, 1100);
             
             ctx.font = '50px sans-serif';
             ctx.fillText(`🔥 ${userData.streak || 0}일 연속`, 540, 1200);
             
-            // 사용자 이름
             ctx.font = 'bold 55px sans-serif';
             ctx.fillText(`- ${userName} -`, 540, 1500);
             
-            // 하단 텍스트
             ctx.font = '40px sans-serif';
             ctx.fillStyle = 'rgba(255,255,255,0.8)';
             ctx.fillText('미니멀라이프 실천 중', 540, 1700);
         }
 
         function drawStatsTemplate(ctx, userData, items) {
-            // 배경
             ctx.fillStyle = '#f8f9ff';
             ctx.fillRect(0, 0, 1080, 1920);
             
-            // 헤더
             const headerGradient = ctx.createLinearGradient(0, 0, 0, 400);
             headerGradient.addColorStop(0, '#667eea');
             headerGradient.addColorStop(1, '#764ba2');
@@ -2165,7 +1980,6 @@
             ctx.textAlign = 'center';
             ctx.fillText('📊 나의 비우기 통계', 540, 250);
             
-            // 카테고리별 통계
             const categoryCount = {};
             items.forEach(item => {
                 categoryCount[item.category] = (categoryCount[item.category] || 0) + 1;
@@ -2177,6 +1991,8 @@
                 { key: 'books', name: '책/잡지', emoji: '📚' },
                 { key: 'clothes', name: '의류', emoji: '👕' },
                 { key: 'kitchen', name: '주방용품', emoji: '🍳' },
+                { key: 'shoes', name: '신발', emoji: '👟' },
+                { key: 'food', name: '음식', emoji: '🍔' },
                 { key: 'etc', name: '기타', emoji: '📦' }
             ];
             
@@ -2185,14 +2001,12 @@
             categories.forEach(cat => {
                 const count = categoryCount[cat.key] || 0;
                 
-                // 배경 박스
                 ctx.fillStyle = 'white';
                 ctx.shadowColor = 'rgba(0,0,0,0.1)';
                 ctx.shadowBlur = 20;
                 ctx.fillRect(80, y - 80, 920, 120);
                 ctx.shadowBlur = 0;
                 
-                // 아이콘과 텍스트
                 ctx.font = '60px sans-serif';
                 ctx.fillText(cat.emoji, 120, y);
                 
@@ -2209,7 +2023,6 @@
                 y += 180;
             });
             
-            // 하단
             ctx.fillStyle = '#667eea';
             ctx.font = 'bold 55px sans-serif';
             ctx.textAlign = 'center';
@@ -2217,19 +2030,16 @@
         }
 
         function drawStreakTemplate(ctx, userData) {
-            // 그라디언트 배경
             const gradient = ctx.createLinearGradient(0, 0, 0, 1920);
             gradient.addColorStop(0, '#f093fb');
             gradient.addColorStop(1, '#f5576c');
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 1080, 1920);
             
-            // 불 이모지
             ctx.font = '300px sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText('🔥', 540, 650);
             
-            // 연속 일수
             ctx.fillStyle = 'white';
             ctx.font = 'bold 200px sans-serif';
             ctx.fillText(userData.streak || 0, 540, 1000);
@@ -2237,7 +2047,6 @@
             ctx.font = 'bold 80px sans-serif';
             ctx.fillText('일 연속', 540, 1120);
             
-            // 메시지
             ctx.font = '50px sans-serif';
             const streak = userData.streak || 0;
             let message = '매일 조금씩 실천 중!';
@@ -2247,17 +2056,14 @@
             
             ctx.fillText(message, 540, 1400);
             
-            // 이름
             ctx.font = 'bold 55px sans-serif';
             ctx.fillText(`- ${userName} -`, 540, 1650);
         }
 
         async function drawGridTemplate(ctx, userData, items) {
-            // 배경
             ctx.fillStyle = 'white';
             ctx.fillRect(0, 0, 1080, 1920);
             
-            // 헤더
             const headerGradient = ctx.createLinearGradient(0, 0, 0, 350);
             headerGradient.addColorStop(0, '#43e97b');
             headerGradient.addColorStop(1, '#38f9d7');
@@ -2269,7 +2075,6 @@
             ctx.textAlign = 'center';
             ctx.fillText(`📸 ${items.length}개 비웠어요!`, 540, 220);
             
-            // 최근 6개 사진 그리드
             const recentItems = items.slice(0, 6);
             const gridSize = 320;
             const gap = 30;
@@ -2299,14 +2104,12 @@
                             img.onerror = resolve;
                         });
                     } catch (e) {
-                        // 이미지 로드 실패시 회색 박스
                         ctx.fillStyle = '#e0e0e0';
                         ctx.beginPath();
                         ctx.roundRect(x, y, gridSize, gridSize, 20);
                         ctx.fill();
                     }
                 } else {
-                    // 빈 슬롯
                     ctx.fillStyle = '#f0f0f0';
                     ctx.beginPath();
                     ctx.roundRect(x, y, gridSize, gridSize, 20);
@@ -2314,7 +2117,6 @@
                 }
             }
             
-            // 하단 통계
             ctx.fillStyle = '#333';
             ctx.font = 'bold 50px sans-serif';
             ctx.textAlign = 'center';
@@ -2333,7 +2135,6 @@
             link.click();
         };
 
-        // 앱 초기화 (로그인 후 호출)
         async function initApp() {
             if (!currentUserId) return;
             document.getElementById('usernameInput').value = userName;
@@ -2341,7 +2142,6 @@
             await updateUserProfile();
             await loadMyItems();
 
-            // 사용자 데이터 로드
             const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
             const userSnapshot = await getDocs(userQuery);
             if (!userSnapshot.empty) {
@@ -2353,19 +2153,16 @@
             }
         }
 
-        // 페이지 로드 시 로그인 상태 확인
         (function checkAuthState() {
             const savedUserId = localStorage.getItem('userId');
             const savedProvider = localStorage.getItem('authProvider');
 
             if (savedUserId && savedProvider) {
-                // 이전 로그인 세션 복원
                 currentUserId = savedUserId;
                 userName = localStorage.getItem('userName') || '';
                 hideLoginScreen();
                 initApp();
             } else {
-                // 로그인 필요
                 showLoginScreen();
             }
         })();
