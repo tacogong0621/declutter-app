@@ -410,11 +410,11 @@
                     <img id="previewImage" class="preview-image" alt="미리보기">
                     <div id="uploadPrompt">
                         <div class="upload-icon">📸</div>
-                        <div style="color: #667eea; font-weight: 600;">사진 찍기 / 업로드</div>
+                        <div style="color: #667eea; font-weight: 600;">사진 찍기 / 사진첩에서 선택</div>
                         <div style="color: #999; font-size: 14px; margin-top: 5px;">비운 물건을 인증하세요</div>
                     </div>
                 </div>
-                <input type="file" id="fileInput" accept="image/*" capture="environment">
+                <input type="file" id="fileInput" accept="image/*">
 
                 <input type="text" id="itemName" placeholder="물건 이름 (예: 오래된 옷)">
                 
@@ -432,7 +432,7 @@
                     예상 획득 포인트: <span id="expectedPoints">0</span>점
                 </div>
 
-                <textarea id="itemNote" placeholder="메모 (선택사항)"></textarea>
+                <textarea id="itemNote" placeholder="느낀점 (선택사항)"></textarea>
 
                 <button class="btn" id="submitBtn" onclick="addItem()">✅ 비우기 완료!</button>
             </div>
@@ -440,7 +440,7 @@
 
         <div id="historyTab" class="tab-content">
             <div class="card">
-                <h2 style="margin-bottom: 20px; color: #333;">나의 비우기 기록</h2>
+                <h2 style="margin-bottom: 20px; color: #333;">모두의 비우기 기록</h2>
                 <div class="item-list" id="itemList">
                     <div class="loading">
                         <div class="loading-spinner"></div>
@@ -462,7 +462,7 @@
             </div>
         </div>
 
-        <div class="version">v1.0 - 업데이트 준비 완료 ✨</div>
+        <div class="version">v1.2 - 효과음 추가 🔊</div>
     </div>
 
     <!-- Firebase SDK -->
@@ -470,15 +470,14 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getFirestore, collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-        // ⚠️ 여기에 Firebase 설정 정보를 입력하세요!
+        // Firebase 설정 (기존 설정 유지)
         const firebaseConfig = {
             apiKey: "AIzaSyCgRc0r845aR7tTS7GNUmm8TMdLtSzeljY",
-  authDomain: "declutter-challenge-94366.firebaseapp.com",
-  projectId: "declutter-challenge-94366",
-  storageBucket: "declutter-challenge-94366.firebasestorage.app",
-  messagingSenderId: "781105372309",
-  appId: "1:781105372309:web:4ce495d1dc8eac2b0d8f9c"
-
+            authDomain: "declutter-challenge-94366.firebaseapp.com",
+            projectId: "declutter-challenge-94366",
+            storageBucket: "declutter-challenge-94366.firebasestorage.app",
+            messagingSenderId: "781105372309",
+            appId: "1:781105372309:web:4ce495d1dc8eac2b0d8f9c"
         };
 
         // Firebase 초기화
@@ -538,6 +537,65 @@
             } catch (error) {
                 console.error('프로필 업데이트 실패:', error);
             }
+        }
+
+        // 성공 효과음 재생 함수
+        function playSuccessSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // 시원한 "슈웅~" 하고 내려가는 효과음
+            const now = audioContext.currentTime;
+            
+            // 첫 번째 음 (높은음에서 낮은음으로 슬라이드)
+            const oscillator1 = audioContext.createOscillator();
+            const gainNode1 = audioContext.createGain();
+            
+            oscillator1.connect(gainNode1);
+            gainNode1.connect(audioContext.destination);
+            
+            oscillator1.type = 'sine';
+            oscillator1.frequency.setValueAtTime(800, now);
+            oscillator1.frequency.exponentialRampToValueAtTime(200, now + 0.4);
+            
+            gainNode1.gain.setValueAtTime(0.3, now);
+            gainNode1.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+            
+            oscillator1.start(now);
+            oscillator1.stop(now + 0.4);
+            
+            // 두 번째 음 (살짝 뒤따라오는 에코 효과)
+            const oscillator2 = audioContext.createOscillator();
+            const gainNode2 = audioContext.createGain();
+            
+            oscillator2.connect(gainNode2);
+            gainNode2.connect(audioContext.destination);
+            
+            oscillator2.type = 'sine';
+            oscillator2.frequency.setValueAtTime(600, now + 0.05);
+            oscillator2.frequency.exponentialRampToValueAtTime(150, now + 0.45);
+            
+            gainNode2.gain.setValueAtTime(0.2, now + 0.05);
+            gainNode2.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+            
+            oscillator2.start(now + 0.05);
+            oscillator2.stop(now + 0.45);
+            
+            // 세 번째 음 ("딩!" 하는 완료 사운드)
+            const oscillator3 = audioContext.createOscillator();
+            const gainNode3 = audioContext.createGain();
+            
+            oscillator3.connect(gainNode3);
+            gainNode3.connect(audioContext.destination);
+            
+            oscillator3.type = 'sine';
+            oscillator3.frequency.setValueAtTime(1200, now + 0.3);
+            
+            gainNode3.gain.setValueAtTime(0, now + 0.3);
+            gainNode3.gain.linearRampToValueAtTime(0.25, now + 0.32);
+            gainNode3.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+            
+            oscillator3.start(now + 0.3);
+            oscillator3.stop(now + 0.5);
         }
 
         // 이미지 압축 함수
@@ -654,6 +712,9 @@
                 totalScore += points;
                 await updateUserScore();
 
+                // 성공 효과음 재생
+                playSuccessSound();
+
                 document.getElementById('itemName').value = '';
                 document.getElementById('itemCategory').value = '';
                 document.getElementById('itemNote').value = '';
@@ -706,19 +767,20 @@
             }
         }
 
-        // 내 아이템 목록 로드
+        // 모든 사용자의 아이템 목록 로드 (업데이트된 부분!)
         async function loadMyItems() {
             const listElement = document.getElementById('itemList');
             
             try {
+                // 모든 아이템 가져오기 (userId 필터 제거)
                 const itemsQuery = query(
                     collection(db, 'items'),
-                    where('userId', '==', currentUserId)
+                    limit(50)  // 최대 50개만 표시
                 );
 
                 onSnapshot(itemsQuery, (snapshot) => {
                     const items = [];
-                    let score = 0;
+                    let myScore = 0;
                     
                     snapshot.forEach((doc) => {
                         const item = doc.data();
@@ -726,16 +788,20 @@
                             ...item,
                             id: doc.id
                         });
-                        score += item.points || 0;
+                        // 내 점수만 계산
+                        if (item.userId === currentUserId) {
+                            myScore += item.points || 0;
+                        }
                     });
 
+                    // 최신순으로 정렬
                     items.sort((a, b) => {
                         const dateA = a.createdAt?.toDate() || new Date(0);
                         const dateB = b.createdAt?.toDate() || new Date(0);
                         return dateB - dateA;
                     });
 
-                    totalScore = score;
+                    totalScore = myScore;
                     document.getElementById('totalScore').textContent = totalScore;
 
                     if (items.length === 0) {
@@ -752,13 +818,14 @@
                     listElement.innerHTML = items.map(item => {
                         const date = item.createdAt?.toDate() || new Date();
                         const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+                        const isMyItem = item.userId === currentUserId;
                         
                         return `
-                            <div class="item">
+                            <div class="item" style="${isMyItem ? 'background: #f8f9ff;' : ''}">
                                 <img src="${item.image}" alt="${item.name}" class="item-image">
                                 <div class="item-info">
                                     <div class="item-name">${item.name}</div>
-                                    <div class="item-date">${dateStr}</div>
+                                    <div class="item-date">${item.userName || '익명'} • ${dateStr}</div>
                                 </div>
                                 <div class="item-points">+${item.points}</div>
                             </div>
