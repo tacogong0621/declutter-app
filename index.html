@@ -86,6 +86,17 @@
             font-size: 14px;
         }
 
+        .streak-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
         .username-input {
             background: #f8f9ff;
             border: 2px solid #667eea;
@@ -96,6 +107,31 @@
             text-align: center;
             width: 200px;
             display: inline-block;
+        }
+
+        .badges-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .badge.locked {
+            background: #e0e0e0;
+            color: #999;
         }
 
         .tabs {
@@ -228,19 +264,23 @@
         }
 
         .item-list {
-            max-height: 400px;
+            max-height: 500px;
             overflow-y: auto;
         }
 
         .item {
-            display: flex;
-            align-items: center;
             padding: 15px;
             border-bottom: 1px solid #f0f0f0;
         }
 
         .item:last-child {
             border-bottom: none;
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
         .item-image {
@@ -270,6 +310,125 @@
             font-weight: bold;
             color: #667eea;
             font-size: 18px;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .like-btn {
+            background: none;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .like-btn:hover {
+            border-color: #667eea;
+        }
+
+        .like-btn.liked {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .comment-btn {
+            background: none;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .comment-btn:hover {
+            border-color: #764ba2;
+        }
+
+        .delete-btn {
+            background: none;
+            border: 2px solid #ff4444;
+            border-radius: 20px;
+            padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: #ff4444;
+            transition: all 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #ff4444;
+            color: white;
+        }
+
+        .comments-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+            display: none;
+        }
+
+        .comments-section.show {
+            display: block;
+        }
+
+        .comment {
+            padding: 10px;
+            background: #f8f9ff;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .comment-text {
+            color: #333;
+            font-size: 14px;
+        }
+
+        .comment-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .comment-input input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .comment-input button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
         }
 
         .leaderboard-item {
@@ -381,6 +540,56 @@
             margin-top: 20px;
             opacity: 0.7;
         }
+
+        .badge-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            z-index: 1000;
+            transition: transform 0.3s;
+        }
+
+        .badge-modal.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .badge-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .badge-modal-overlay.show {
+            display: block;
+        }
+
+        .badge-icon {
+            font-size: 64px;
+            margin-bottom: 15px;
+        }
+
+        .badge-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .badge-desc {
+            color: #666;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -393,7 +602,9 @@
             <h1>🎯 물건 비우기 챌린지</h1>
             <div class="score-display" id="totalScore">0</div>
             <div class="score-label">총 획득 포인트</div>
+            <div class="streak-badge" id="streakBadge">🔥 0일 연속</div>
             <input type="text" class="username-input" id="usernameInput" placeholder="닉네임 입력" maxlength="15">
+            <div class="badges-container" id="badgesContainer"></div>
         </div>
 
         <div class="tabs">
@@ -462,15 +673,23 @@
             </div>
         </div>
 
-        <div class="version">v1.2 - 효과음 추가 🔊</div>
+        <div class="version">v2.0 - 배지, 댓글, 좋아요, 스트릭 ✨</div>
+    </div>
+
+    <!-- Badge Modal -->
+    <div class="badge-modal-overlay" id="badgeOverlay" onclick="closeBadgeModal()"></div>
+    <div class="badge-modal" id="badgeModal">
+        <div class="badge-icon" id="badgeModalIcon">🏆</div>
+        <div class="badge-title" id="badgeModalTitle">새 배지 획득!</div>
+        <div class="badge-desc" id="badgeModalDesc">첫 물건 비우기 성공!</div>
+        <button class="btn" onclick="closeBadgeModal()">확인</button>
     </div>
 
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp, arrayUnion, arrayRemove, increment } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-        // Firebase 설정 (기존 설정 유지)
         const firebaseConfig = {
             apiKey: "AIzaSyCgRc0r845aR7tTS7GNUmm8TMdLtSzeljY",
             authDomain: "declutter-challenge-94366.firebaseapp.com",
@@ -480,18 +699,18 @@
             appId: "1:781105372309:web:4ce495d1dc8eac2b0d8f9c"
         };
 
-        // Firebase 초기화
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 전역 변수
         window.db = db;
-        window.firestore = { collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp };
+        window.firestore = { collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp, arrayUnion, arrayRemove, increment };
         
         let currentUserId = localStorage.getItem('userId') || generateUserId();
         let userName = localStorage.getItem('userName') || '익명' + Math.floor(Math.random() * 1000);
         let totalScore = 0;
         let currentImage = null;
+        let userStreak = 0;
+        let userBadges = [];
 
         const categoryPoints = {
             'clothes': 10,
@@ -502,14 +721,23 @@
             'etc': 5
         };
 
-        // 사용자 ID 생성
+        // 배지 정의
+        const badges = {
+            'first_item': { icon: '🎯', name: '첫 걸음', desc: '첫 물건 비우기', condition: (count) => count >= 1 },
+            'five_items': { icon: '⭐', name: '열정', desc: '5개 비우기', condition: (count) => count >= 5 },
+            'ten_items': { icon: '💎', name: '결단력', desc: '10개 비우기', condition: (count) => count >= 10 },
+            'twenty_items': { icon: '👑', name: '비우기왕', desc: '20개 비우기', condition: (count) => count >= 20 },
+            'streak_3': { icon: '🔥', name: '꾸준함', desc: '3일 연속', condition: (streak) => streak >= 3, isStreak: true },
+            'streak_7': { icon: '💪', name: '습관', desc: '7일 연속', condition: (streak) => streak >= 7, isStreak: true },
+            'streak_30': { icon: '🏅', name: '달인', desc: '30일 연속', condition: (streak) => streak >= 30, isStreak: true }
+        };
+
         function generateUserId() {
             const id = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             localStorage.setItem('userId', id);
             return id;
         }
 
-        // 사용자 이름 설정
         document.getElementById('usernameInput').value = userName;
         document.getElementById('usernameInput').addEventListener('change', function(e) {
             userName = e.target.value.trim() || '익명' + Math.floor(Math.random() * 1000);
@@ -517,88 +745,211 @@
             updateUserProfile();
         });
 
-        // 사용자 프로필 업데이트
         async function updateUserProfile() {
             try {
-                const userRef = doc(db, 'users', currentUserId);
-                await updateDoc(userRef, {
-                    name: userName,
-                    lastActive: serverTimestamp()
-                }).catch(async () => {
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                
+                if (!userSnapshot.empty) {
+                    const userDoc = userSnapshot.docs[0];
+                    await updateDoc(doc(db, 'users', userDoc.id), {
+                        name: userName,
+                        lastActive: serverTimestamp()
+                    });
+                } else {
                     await addDoc(collection(db, 'users'), {
                         userId: currentUserId,
                         name: userName,
-                        score: totalScore,
+                        score: 0,
                         itemCount: 0,
+                        streak: 0,
+                        lastDeclutterDate: null,
+                        badges: [],
                         createdAt: serverTimestamp(),
                         lastActive: serverTimestamp()
                     });
-                });
+                }
             } catch (error) {
                 console.error('프로필 업데이트 실패:', error);
             }
         }
 
-        // 성공 효과음 재생 함수
-        function playSuccessSound() {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            
-            // 시원한 "슈웅~" 하고 내려가는 효과음
-            const now = audioContext.currentTime;
-            
-            // 첫 번째 음 (높은음에서 낮은음으로 슬라이드)
-            const oscillator1 = audioContext.createOscillator();
-            const gainNode1 = audioContext.createGain();
-            
-            oscillator1.connect(gainNode1);
-            gainNode1.connect(audioContext.destination);
-            
-            oscillator1.type = 'sine';
-            oscillator1.frequency.setValueAtTime(800, now);
-            oscillator1.frequency.exponentialRampToValueAtTime(200, now + 0.4);
-            
-            gainNode1.gain.setValueAtTime(0.3, now);
-            gainNode1.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
-            
-            oscillator1.start(now);
-            oscillator1.stop(now + 0.4);
-            
-            // 두 번째 음 (살짝 뒤따라오는 에코 효과)
-            const oscillator2 = audioContext.createOscillator();
-            const gainNode2 = audioContext.createGain();
-            
-            oscillator2.connect(gainNode2);
-            gainNode2.connect(audioContext.destination);
-            
-            oscillator2.type = 'sine';
-            oscillator2.frequency.setValueAtTime(600, now + 0.05);
-            oscillator2.frequency.exponentialRampToValueAtTime(150, now + 0.45);
-            
-            gainNode2.gain.setValueAtTime(0.2, now + 0.05);
-            gainNode2.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
-            
-            oscillator2.start(now + 0.05);
-            oscillator2.stop(now + 0.45);
-            
-            // 세 번째 음 ("딩!" 하는 완료 사운드)
-            const oscillator3 = audioContext.createOscillator();
-            const gainNode3 = audioContext.createGain();
-            
-            oscillator3.connect(gainNode3);
-            gainNode3.connect(audioContext.destination);
-            
-            oscillator3.type = 'sine';
-            oscillator3.frequency.setValueAtTime(1200, now + 0.3);
-            
-            gainNode3.gain.setValueAtTime(0, now + 0.3);
-            gainNode3.gain.linearRampToValueAtTime(0.25, now + 0.32);
-            gainNode3.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-            
-            oscillator3.start(now + 0.3);
-            oscillator3.stop(now + 0.5);
+        // 스트릭 계산
+        async function calculateStreak() {
+            try {
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                
+                if (!userSnapshot.empty) {
+                    const userData = userSnapshot.docs[0].data();
+                    const lastDate = userData.lastDeclutterDate?.toDate();
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    if (lastDate) {
+                        const lastDateOnly = new Date(lastDate);
+                        lastDateOnly.setHours(0, 0, 0, 0);
+                        
+                        const diffTime = today - lastDateOnly;
+                        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                        
+                        if (diffDays === 0) {
+                            // 오늘 이미 비움
+                            userStreak = userData.streak || 0;
+                        } else if (diffDays === 1) {
+                            // 어제 비움 - 스트릭 증가
+                            userStreak = (userData.streak || 0) + 1;
+                        } else {
+                            // 스트릭 끊김
+                            userStreak = 1;
+                        }
+                    } else {
+                        userStreak = 1;
+                    }
+                    
+                    // 스트릭 업데이트
+                    await updateDoc(doc(db, 'users', userSnapshot.docs[0].id), {
+                        streak: userStreak,
+                        lastDeclutterDate: serverTimestamp()
+                    });
+                    
+                    document.getElementById('streakBadge').textContent = `🔥 ${userStreak}일 연속`;
+                    
+                    // 스트릭 배지 체크
+                    checkBadges(null, userStreak);
+                }
+            } catch (error) {
+                console.error('스트릭 계산 실패:', error);
+            }
         }
 
-        // 이미지 압축 함수
+        // 배지 체크
+        async function checkBadges(itemCount = null, streak = null) {
+            try {
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                
+                if (!userSnapshot.empty) {
+                    const userDoc = userSnapshot.docs[0];
+                    const userData = userDoc.data();
+                    userBadges = userData.badges || [];
+                    
+                    const currentCount = itemCount !== null ? itemCount : userData.itemCount || 0;
+                    const currentStreak = streak !== null ? streak : userData.streak || 0;
+                    
+                    for (const [key, badge] of Object.entries(badges)) {
+                        if (!userBadges.includes(key)) {
+                            const earned = badge.isStreak 
+                                ? badge.condition(currentStreak)
+                                : badge.condition(currentCount);
+                                
+                            if (earned) {
+                                userBadges.push(key);
+                                await updateDoc(doc(db, 'users', userDoc.id), {
+                                    badges: arrayUnion(key)
+                                });
+                                showBadgeModal(badge);
+                            }
+                        }
+                    }
+                    
+                    renderBadges();
+                }
+            } catch (error) {
+                console.error('배지 체크 실패:', error);
+            }
+        }
+
+        function renderBadges() {
+            const container = document.getElementById('badgesContainer');
+            container.innerHTML = Object.entries(badges).map(([key, badge]) => {
+                const earned = userBadges.includes(key);
+                return `
+                    <div class="badge ${earned ? '' : 'locked'}" title="${badge.desc}">
+                        ${badge.icon} ${badge.name}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function showBadgeModal(badge) {
+            document.getElementById('badgeModalIcon').textContent = badge.icon;
+            document.getElementById('badgeModalTitle').textContent = `${badge.name} 배지 획득!`;
+            document.getElementById('badgeModalDesc').textContent = badge.desc;
+            document.getElementById('badgeModal').classList.add('show');
+            document.getElementById('badgeOverlay').classList.add('show');
+        }
+
+        window.closeBadgeModal = function() {
+            document.getElementById('badgeModal').classList.remove('show');
+            document.getElementById('badgeOverlay').classList.remove('show');
+        };
+
+        function playSuccessSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const now = audioContext.currentTime;
+            
+            // "빠" - 첫 번째 음 (C)
+            const osc1 = audioContext.createOscillator();
+            const gain1 = audioContext.createGain();
+            osc1.connect(gain1);
+            gain1.connect(audioContext.destination);
+            osc1.type = 'square';
+            osc1.frequency.setValueAtTime(523.25, now); // C5
+            gain1.gain.setValueAtTime(0.3, now);
+            gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+            osc1.start(now);
+            osc1.stop(now + 0.15);
+            
+            // "빠" - 두 번째 음 (E)
+            const osc2 = audioContext.createOscillator();
+            const gain2 = audioContext.createGain();
+            osc2.connect(gain2);
+            gain2.connect(audioContext.destination);
+            osc2.type = 'square';
+            osc2.frequency.setValueAtTime(659.25, now + 0.15); // E5
+            gain2.gain.setValueAtTime(0.3, now + 0.15);
+            gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+            osc2.start(now + 0.15);
+            osc2.stop(now + 0.3);
+            
+            // "라" - 세 번째 음 (G)
+            const osc3 = audioContext.createOscillator();
+            const gain3 = audioContext.createGain();
+            osc3.connect(gain3);
+            gain3.connect(audioContext.destination);
+            osc3.type = 'square';
+            osc3.frequency.setValueAtTime(783.99, now + 0.3); // G5
+            gain3.gain.setValueAtTime(0.3, now + 0.3);
+            gain3.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+            osc3.start(now + 0.3);
+            osc3.stop(now + 0.45);
+            
+            // "빰~!" - 마지막 긴 음 (C 옥타브 위)
+            const osc4 = audioContext.createOscillator();
+            const gain4 = audioContext.createGain();
+            osc4.connect(gain4);
+            gain4.connect(audioContext.destination);
+            osc4.type = 'square';
+            osc4.frequency.setValueAtTime(1046.50, now + 0.45); // C6
+            gain4.gain.setValueAtTime(0.35, now + 0.45);
+            gain4.gain.exponentialRampToValueAtTime(0.01, now + 0.9);
+            osc4.start(now + 0.45);
+            osc4.stop(now + 0.9);
+            
+            // 화음 추가 (풍성한 느낌)
+            const osc5 = audioContext.createOscillator();
+            const gain5 = audioContext.createGain();
+            osc5.connect(gain5);
+            gain5.connect(audioContext.destination);
+            osc5.type = 'sine';
+            osc5.frequency.setValueAtTime(1318.51, now + 0.45); // E6
+            gain5.gain.setValueAtTime(0.2, now + 0.45);
+            gain5.gain.exponentialRampToValueAtTime(0.01, now + 0.9);
+            osc5.start(now + 0.45);
+            osc5.stop(now + 0.9);
+        }
+
         function compressImage(file, maxSizeKB = 500) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
@@ -640,7 +991,6 @@
             });
         }
 
-        // 파일 업로드 처리
         document.getElementById('fileInput').addEventListener('change', async function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -657,7 +1007,6 @@
             }
         });
 
-        // 카테고리 선택 시 예상 포인트 표시
         document.getElementById('itemCategory').addEventListener('change', function(e) {
             const pointsInfo = document.getElementById('pointsInfo');
             const expectedPoints = document.getElementById('expectedPoints');
@@ -670,7 +1019,6 @@
             }
         });
 
-        // 아이템 추가
         window.addItem = async function() {
             const name = document.getElementById('itemName').value.trim();
             const category = document.getElementById('itemCategory').value;
@@ -706,13 +1054,16 @@
                     note: note,
                     image: currentImage,
                     points: points,
+                    likes: [],
+                    likeCount: 0,
+                    comments: [],
                     createdAt: serverTimestamp()
                 });
 
                 totalScore += points;
                 await updateUserScore();
+                await calculateStreak();
 
-                // 성공 효과음 재생
                 playSuccessSound();
 
                 document.getElementById('itemName').value = '';
@@ -737,7 +1088,6 @@
             }
         };
 
-        // 사용자 점수 업데이트
         async function updateUserScore() {
             try {
                 const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
@@ -745,20 +1095,30 @@
                 
                 if (!userSnapshot.empty) {
                     const userDoc = userSnapshot.docs[0];
+                    const userData = userDoc.data();
+                    const newItemCount = (userData.itemCount || 0) + 1;
+                    
                     await updateDoc(doc(db, 'users', userDoc.id), {
                         score: totalScore,
+                        itemCount: newItemCount,
                         name: userName,
                         lastActive: serverTimestamp()
                     });
+                    
+                    checkBadges(newItemCount);
                 } else {
                     await addDoc(collection(db, 'users'), {
                         userId: currentUserId,
                         name: userName,
                         score: totalScore,
-                        itemCount: 0,
+                        itemCount: 1,
+                        streak: 0,
+                        badges: [],
                         createdAt: serverTimestamp(),
                         lastActive: serverTimestamp()
                     });
+                    
+                    checkBadges(1);
                 }
                 
                 document.getElementById('totalScore').textContent = totalScore;
@@ -767,15 +1127,115 @@
             }
         }
 
-        // 모든 사용자의 아이템 목록 로드 (업데이트된 부분!)
+        // 좋아요 토글
+        window.toggleLike = async function(itemId, itemDocId) {
+            try {
+                const itemRef = doc(db, 'items', itemDocId);
+                const itemDoc = await getDocs(query(collection(db, 'items'), where('__name__', '==', itemDocId)));
+                
+                if (!itemDoc.empty) {
+                    const itemData = itemDoc.docs[0].data();
+                    const likes = itemData.likes || [];
+                    
+                    if (likes.includes(currentUserId)) {
+                        await updateDoc(itemRef, {
+                            likes: arrayRemove(currentUserId),
+                            likeCount: increment(-1)
+                        });
+                    } else {
+                        await updateDoc(itemRef, {
+                            likes: arrayUnion(currentUserId),
+                            likeCount: increment(1)
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('좋아요 실패:', error);
+            }
+        };
+
+        // 댓글 토글
+        window.toggleComments = function(itemId) {
+            const commentsSection = document.getElementById(`comments-${itemId}`);
+            if (commentsSection) {
+                commentsSection.classList.toggle('show');
+            }
+        };
+
+        // 댓글 추가
+        window.addComment = async function(itemId, itemDocId) {
+            const input = document.getElementById(`comment-input-${itemId}`);
+            const commentText = input.value.trim();
+            
+            if (!commentText) return;
+            
+            try {
+                const itemRef = doc(db, 'items', itemDocId);
+                await updateDoc(itemRef, {
+                    comments: arrayUnion({
+                        userId: currentUserId,
+                        userName: userName,
+                        text: commentText,
+                        createdAt: new Date().toISOString()
+                    })
+                });
+                
+                input.value = '';
+            } catch (error) {
+                console.error('댓글 추가 실패:', error);
+            }
+        };
+
+        // 아이템 삭제
+        window.deleteItem = async function(itemDocId, itemUserId, itemPoints) {
+            // 본인 것만 삭제 가능
+            if (itemUserId !== currentUserId) {
+                alert('본인의 물건만 삭제할 수 있습니다!');
+                return;
+            }
+
+            if (!confirm('정말 삭제하시겠습니까?')) {
+                return;
+            }
+
+            try {
+                // Firestore에서 삭제
+                const { deleteDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                await deleteDoc(doc(db, 'items', itemDocId));
+
+                // 사용자 점수 차감
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                
+                if (!userSnapshot.empty) {
+                    const userDoc = userSnapshot.docs[0];
+                    const userData = userDoc.data();
+                    const newScore = Math.max(0, (userData.score || 0) - itemPoints);
+                    const newItemCount = Math.max(0, (userData.itemCount || 0) - 1);
+                    
+                    await updateDoc(doc(db, 'users', userDoc.id), {
+                        score: newScore,
+                        itemCount: newItemCount
+                    });
+
+                    totalScore = newScore;
+                    document.getElementById('totalScore').textContent = totalScore;
+                }
+
+                alert('삭제되었습니다!');
+            } catch (error) {
+                console.error('삭제 실패:', error);
+                alert('삭제에 실패했습니다. 다시 시도해주세요.');
+            }
+        };
+
         async function loadMyItems() {
             const listElement = document.getElementById('itemList');
             
             try {
-                // 모든 아이템 가져오기 (userId 필터 제거)
                 const itemsQuery = query(
                     collection(db, 'items'),
-                    limit(50)  // 최대 50개만 표시
+                    limit(50)
                 );
 
                 onSnapshot(itemsQuery, (snapshot) => {
@@ -786,15 +1246,14 @@
                         const item = doc.data();
                         items.push({
                             ...item,
-                            id: doc.id
+                            id: doc.id,
+                            docId: doc.id
                         });
-                        // 내 점수만 계산
                         if (item.userId === currentUserId) {
                             myScore += item.points || 0;
                         }
                     });
 
-                    // 최신순으로 정렬
                     items.sort((a, b) => {
                         const dateA = a.createdAt?.toDate() || new Date(0);
                         const dateB = b.createdAt?.toDate() || new Date(0);
@@ -819,15 +1278,41 @@
                         const date = item.createdAt?.toDate() || new Date();
                         const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
                         const isMyItem = item.userId === currentUserId;
+                        const isLiked = (item.likes || []).includes(currentUserId);
+                        const likeCount = item.likeCount || 0;
+                        const comments = item.comments || [];
                         
                         return `
                             <div class="item" style="${isMyItem ? 'background: #f8f9ff;' : ''}">
-                                <img src="${item.image}" alt="${item.name}" class="item-image">
-                                <div class="item-info">
-                                    <div class="item-name">${item.name}</div>
-                                    <div class="item-date">${item.userName || '익명'} • ${dateStr}</div>
+                                <div class="item-header">
+                                    <img src="${item.image}" alt="${item.name}" class="item-image">
+                                    <div class="item-info">
+                                        <div class="item-name">${item.name}</div>
+                                        <div class="item-date">${item.userName || '익명'} • ${dateStr}</div>
+                                    </div>
+                                    <div class="item-points">+${item.points}</div>
                                 </div>
-                                <div class="item-points">+${item.points}</div>
+                                <div class="item-actions">
+                                    <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${item.id}', '${item.docId}')">
+                                        ❤️ ${likeCount}
+                                    </button>
+                                    <button class="comment-btn" onclick="toggleComments('${item.id}')">
+                                        💬 ${comments.length}
+                                    </button>
+                                    ${isMyItem ? `<button class="delete-btn" onclick="deleteItem('${item.docId}', '${item.userId}', ${item.points})">🗑️ 삭제</button>` : ''}
+                                </div>
+                                <div class="comments-section" id="comments-${item.id}">
+                                    ${comments.map(c => `
+                                        <div class="comment">
+                                            <div class="comment-author">${c.userName}</div>
+                                            <div class="comment-text">${c.text}</div>
+                                        </div>
+                                    `).join('')}
+                                    <div class="comment-input">
+                                        <input type="text" id="comment-input-${item.id}" placeholder="댓글 입력...">
+                                        <button onclick="addComment('${item.id}', '${item.docId}')">등록</button>
+                                    </div>
+                                </div>
                             </div>
                         `;
                     }).join('');
@@ -838,13 +1323,11 @@
                     <div class="empty-state">
                         <div class="empty-icon">⚠️</div>
                         <div>데이터 로드 실패</div>
-                        <div style="font-size: 14px; margin-top: 10px;">Firebase 설정을 확인해주세요</div>
                     </div>
                 `;
             }
         }
 
-        // 리더보드 로드
         async function loadLeaderboard() {
             const leaderboardElement = document.getElementById('leaderboardList');
             
@@ -868,7 +1351,6 @@
                             <div class="empty-state">
                                 <div class="empty-icon">🏆</div>
                                 <div>아직 참가자가 없습니다</div>
-                                <div style="font-size: 14px; margin-top: 10px;">첫 번째 참가자가 되어보세요!</div>
                             </div>
                         `;
                         return;
@@ -878,13 +1360,14 @@
                         const isCurrentUser = user.userId === currentUserId;
                         const rank = index + 1;
                         const rankClass = rank <= 3 ? 'top3' : '';
+                        const userStreak = user.streak || 0;
                         
                         return `
                             <div class="leaderboard-item" style="${isCurrentUser ? 'background: #f8f9ff;' : ''}">
                                 <div class="rank ${rankClass}">${rank}</div>
                                 <div class="leaderboard-info">
                                     <div class="leaderboard-name">${user.name || '익명'}${isCurrentUser ? ' 👤' : ''}</div>
-                                    <div class="leaderboard-items">${user.itemCount || 0}개 비움</div>
+                                    <div class="leaderboard-items">${user.itemCount || 0}개 비움 • 🔥 ${userStreak}일</div>
                                 </div>
                                 <div class="leaderboard-score">${user.score || 0}</div>
                             </div>
@@ -893,20 +1376,9 @@
                 });
             } catch (error) {
                 console.error('리더보드 로드 실패:', error);
-                leaderboardElement.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">⚠️</div>
-                        <div>순위 로드 실패</div>
-                        <div style="font-size: 14px; margin-top: 10px;">Firebase 설정을 확인해주세요</div>
-                    </div>
-                `;
             }
         }
 
-        // 초기 로드
-        loadMyItems();
-        updateUserProfile();
-        
         // 탭 전환
         window.switchTab = function(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -925,6 +1397,25 @@
                 loadLeaderboard();
             }
         };
+
+        // 초기 로드
+        async function init() {
+            await updateUserProfile();
+            await loadMyItems();
+            
+            // 사용자 데이터 로드
+            const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+            const userSnapshot = await getDocs(userQuery);
+            if (!userSnapshot.empty) {
+                const userData = userSnapshot.docs[0].data();
+                userStreak = userData.streak || 0;
+                userBadges = userData.badges || [];
+                document.getElementById('streakBadge').textContent = `🔥 ${userStreak}일 연속`;
+                renderBadges();
+            }
+        }
+        
+        init();
     </script>
 </body>
 </html>
