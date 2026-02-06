@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="비우기">
+    <meta name="description" content="물건을 비우고 점수를 모으는 미니멀리즘 챌린지">
+    <title>물건 비우기 챌린지 (온라인)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            padding-top: max(20px, env(safe-area-inset-top));
+            padding-bottom: max(20px, env(safe-area-inset-bottom));
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            position: relative;
+        }
+
+        .online-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #4ade80;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #764ba2;
+            margin: 20px 0;
+        }
+
+        .score-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .username-input {
+            background: #f8f9ff;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-top: 15px;
+            font-size: 14px;
+            text-align: center;
+            width: 200px;
+            display: inline-block;
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 20px;
+            padding: 5px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #666;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: #f8f9ff;
+        }
+
+        .upload-area.has-image {
+            border-style: solid;
+            padding: 0;
+        }
+
+        .preview-image {
+            width: 100%;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .preview-image.show {
+            display: block;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .item-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .item-date {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .item-points {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .rank.top3 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .leaderboard-info {
+            flex: 1;
+        }
+
+        .leaderboard-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .leaderboard-items {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .leaderboard-score {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 20px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+
+        .category-select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-family: inherit;
+            background: white;
+        }
+
+        .points-info {
+            background: #f8f9ff;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        .loading-spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .version {
+            text-align: center;
+            color: white;
+            font-size: 12px;
+            margin-top: 20px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="online-badge">
+                <div class="online-dot"></div>
+                온라인
+            </div>
+            <h1>🎯 물건 비우기 챌린지</h1>
+            <div class="score-display" id="totalScore">0</div>
+            <div class="score-label">총 획득 포인트</div>
+            <input type="text" class="username-input" id="usernameInput" placeholder="닉네임 입력" maxlength="15">
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('add')">➕ 비우기</button>
+            <button class="tab" onclick="switchTab('history')">📋 기록</button>
+            <button class="tab" onclick="switchTab('leaderboard')">🏆 순위</button>
+        </div>
+
+        <div id="addTab" class="tab-content active">
+            <div class="card">
+                <h2 style="margin-bottom: 20px; color: #333;">물건 비우기 인증</h2>
+                
+                <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                    <img id="previewImage" class="preview-image" alt="미리보기">
+                    <div id="uploadPrompt">
+                        <div class="upload-icon">📸</div>
+                        <div style="color: #667eea; font-weight: 600;">사진 찍기 / 업로드</div>
+                        <div style="color: #999; font-size: 14px; margin-top: 5px;">비운 물건을 인증하세요</div>
+                    </div>
+                </div>
+                <input type="file" id="fileInput" accept="image/*" capture="environment">
+
+                <input type="text" id="itemName" placeholder="물건 이름 (예: 오래된 옷)">
+                
+                <select class="category-select" id="itemCategory">
+                    <option value="">카테고리 선택</option>
+                    <option value="clothes">의류 (+10점)</option>
+                    <option value="books">책/잡지 (+15점)</option>
+                    <option value="electronics">전자제품 (+20점)</option>
+                    <option value="furniture">가구 (+30점)</option>
+                    <option value="kitchen">주방용품 (+10점)</option>
+                    <option value="etc">기타 (+5점)</option>
+                </select>
+
+                <div class="points-info" id="pointsInfo" style="display: none;">
+                    예상 획득 포인트: <span id="expectedPoints">0</span>점
+                </div>
+
+                <textarea id="itemNote" placeholder="메모 (선택사항)"></textarea>
+
+                <button class="btn" id="submitBtn" onclick="addItem()">✅ 비우기 완료!</button>
+            </div>
+        </div>
+
+        <div id="historyTab" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 20px; color: #333;">나의 비우기 기록</h2>
+                <div class="item-list" id="itemList">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        로딩 중...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="leaderboardTab" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 20px; color: #333;">전체 순위</h2>
+                <div id="leaderboardList">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        순위 불러오는 중...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="version">v1.0 - 업데이트 준비 완료 ✨</div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // ⚠️ 여기에 Firebase 설정 정보를 입력하세요!
+        const firebaseConfig = {
+            apiKey: "AIzaSyCgRc0r845aR7tTS7GNUmm8TMdLtSzeljY",
+  authDomain: "declutter-challenge-94366.firebaseapp.com",
+  projectId: "declutter-challenge-94366",
+  storageBucket: "declutter-challenge-94366.firebasestorage.app",
+  messagingSenderId: "781105372309",
+  appId: "1:781105372309:web:4ce495d1dc8eac2b0d8f9c"
+
+        };
+
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 전역 변수
+        window.db = db;
+        window.firestore = { collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp };
+        
+        let currentUserId = localStorage.getItem('userId') || generateUserId();
+        let userName = localStorage.getItem('userName') || '익명' + Math.floor(Math.random() * 1000);
+        let totalScore = 0;
+        let currentImage = null;
+
+        const categoryPoints = {
+            'clothes': 10,
+            'books': 15,
+            'electronics': 20,
+            'furniture': 30,
+            'kitchen': 10,
+            'etc': 5
+        };
+
+        // 사용자 ID 생성
+        function generateUserId() {
+            const id = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('userId', id);
+            return id;
+        }
+
+        // 사용자 이름 설정
+        document.getElementById('usernameInput').value = userName;
+        document.getElementById('usernameInput').addEventListener('change', function(e) {
+            userName = e.target.value.trim() || '익명' + Math.floor(Math.random() * 1000);
+            localStorage.setItem('userName', userName);
+            updateUserProfile();
+        });
+
+        // 사용자 프로필 업데이트
+        async function updateUserProfile() {
+            try {
+                const userRef = doc(db, 'users', currentUserId);
+                await updateDoc(userRef, {
+                    name: userName,
+                    lastActive: serverTimestamp()
+                }).catch(async () => {
+                    await addDoc(collection(db, 'users'), {
+                        userId: currentUserId,
+                        name: userName,
+                        score: totalScore,
+                        itemCount: 0,
+                        createdAt: serverTimestamp(),
+                        lastActive: serverTimestamp()
+                    });
+                });
+            } catch (error) {
+                console.error('프로필 업데이트 실패:', error);
+            }
+        }
+
+        // 이미지 압축 함수
+        function compressImage(file, maxSizeKB = 500) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        const maxDimension = 800;
+                        if (width > height && width > maxDimension) {
+                            height = (height * maxDimension) / width;
+                            width = maxDimension;
+                        } else if (height > maxDimension) {
+                            width = (width * maxDimension) / height;
+                            height = maxDimension;
+                        }
+                        
+                        canvas.width = width;
+                        canvas.height = height;
+                        
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        let quality = 0.7;
+                        let compressed = canvas.toDataURL('image/jpeg', quality);
+                        
+                        while (compressed.length > maxSizeKB * 1024 * 1.37 && quality > 0.1) {
+                            quality -= 0.1;
+                            compressed = canvas.toDataURL('image/jpeg', quality);
+                        }
+                        
+                        resolve(compressed);
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // 파일 업로드 처리
+        document.getElementById('fileInput').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                currentImage = await compressImage(file, 500);
+                
+                const preview = document.getElementById('previewImage');
+                const uploadArea = document.getElementById('uploadArea');
+                const uploadPrompt = document.getElementById('uploadPrompt');
+                
+                preview.src = currentImage;
+                preview.classList.add('show');
+                uploadPrompt.style.display = 'none';
+                uploadArea.classList.add('has-image');
+            }
+        });
+
+        // 카테고리 선택 시 예상 포인트 표시
+        document.getElementById('itemCategory').addEventListener('change', function(e) {
+            const pointsInfo = document.getElementById('pointsInfo');
+            const expectedPoints = document.getElementById('expectedPoints');
+            
+            if (e.target.value) {
+                expectedPoints.textContent = categoryPoints[e.target.value];
+                pointsInfo.style.display = 'block';
+            } else {
+                pointsInfo.style.display = 'none';
+            }
+        });
+
+        // 아이템 추가
+        window.addItem = async function() {
+            const name = document.getElementById('itemName').value.trim();
+            const category = document.getElementById('itemCategory').value;
+            const note = document.getElementById('itemNote').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (!name) {
+                alert('물건 이름을 입력해주세요!');
+                return;
+            }
+
+            if (!category) {
+                alert('카테고리를 선택해주세요!');
+                return;
+            }
+
+            if (!currentImage) {
+                alert('사진을 업로드해주세요!');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = '업로드 중...';
+
+            try {
+                const points = categoryPoints[category];
+                
+                await addDoc(collection(db, 'items'), {
+                    userId: currentUserId,
+                    userName: userName,
+                    name: name,
+                    category: category,
+                    note: note,
+                    image: currentImage,
+                    points: points,
+                    createdAt: serverTimestamp()
+                });
+
+                totalScore += points;
+                await updateUserScore();
+
+                document.getElementById('itemName').value = '';
+                document.getElementById('itemCategory').value = '';
+                document.getElementById('itemNote').value = '';
+                document.getElementById('fileInput').value = '';
+                document.getElementById('previewImage').classList.remove('show');
+                document.getElementById('uploadPrompt').style.display = 'block';
+                document.getElementById('uploadArea').classList.remove('has-image');
+                document.getElementById('pointsInfo').style.display = 'none';
+                currentImage = null;
+
+                alert(`🎉 +${points}점 획득!\n총 ${totalScore}점입니다!`);
+                
+                switchTab('history');
+            } catch (error) {
+                console.error('아이템 추가 실패:', error);
+                alert('업로드 실패! 다시 시도해주세요.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '✅ 비우기 완료!';
+            }
+        };
+
+        // 사용자 점수 업데이트
+        async function updateUserScore() {
+            try {
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                
+                if (!userSnapshot.empty) {
+                    const userDoc = userSnapshot.docs[0];
+                    await updateDoc(doc(db, 'users', userDoc.id), {
+                        score: totalScore,
+                        name: userName,
+                        lastActive: serverTimestamp()
+                    });
+                } else {
+                    await addDoc(collection(db, 'users'), {
+                        userId: currentUserId,
+                        name: userName,
+                        score: totalScore,
+                        itemCount: 0,
+                        createdAt: serverTimestamp(),
+                        lastActive: serverTimestamp()
+                    });
+                }
+                
+                document.getElementById('totalScore').textContent = totalScore;
+            } catch (error) {
+                console.error('점수 업데이트 실패:', error);
+            }
+        }
+
+        // 내 아이템 목록 로드
+        async function loadMyItems() {
+            const listElement = document.getElementById('itemList');
+            
+            try {
+                const itemsQuery = query(
+                    collection(db, 'items'),
+                    where('userId', '==', currentUserId)
+                );
+
+                onSnapshot(itemsQuery, (snapshot) => {
+                    const items = [];
+                    let score = 0;
+                    
+                    snapshot.forEach((doc) => {
+                        const item = doc.data();
+                        items.push({
+                            ...item,
+                            id: doc.id
+                        });
+                        score += item.points || 0;
+                    });
+
+                    items.sort((a, b) => {
+                        const dateA = a.createdAt?.toDate() || new Date(0);
+                        const dateB = b.createdAt?.toDate() || new Date(0);
+                        return dateB - dateA;
+                    });
+
+                    totalScore = score;
+                    document.getElementById('totalScore').textContent = totalScore;
+
+                    if (items.length === 0) {
+                        listElement.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-icon">📦</div>
+                                <div>아직 비운 물건이 없습니다</div>
+                                <div style="font-size: 14px; margin-top: 10px;">첫 물건을 비워보세요!</div>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    listElement.innerHTML = items.map(item => {
+                        const date = item.createdAt?.toDate() || new Date();
+                        const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+                        
+                        return `
+                            <div class="item">
+                                <img src="${item.image}" alt="${item.name}" class="item-image">
+                                <div class="item-info">
+                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-date">${dateStr}</div>
+                                </div>
+                                <div class="item-points">+${item.points}</div>
+                            </div>
+                        `;
+                    }).join('');
+                });
+            } catch (error) {
+                console.error('아이템 로드 실패:', error);
+                listElement.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">⚠️</div>
+                        <div>데이터 로드 실패</div>
+                        <div style="font-size: 14px; margin-top: 10px;">Firebase 설정을 확인해주세요</div>
+                    </div>
+                `;
+            }
+        }
+
+        // 리더보드 로드
+        async function loadLeaderboard() {
+            const leaderboardElement = document.getElementById('leaderboardList');
+            
+            try {
+                const usersQuery = query(
+                    collection(db, 'users'),
+                    orderBy('score', 'desc'),
+                    limit(20)
+                );
+
+                onSnapshot(usersQuery, (snapshot) => {
+                    const users = [];
+                    
+                    snapshot.forEach((doc) => {
+                        const user = doc.data();
+                        users.push(user);
+                    });
+
+                    if (users.length === 0) {
+                        leaderboardElement.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-icon">🏆</div>
+                                <div>아직 참가자가 없습니다</div>
+                                <div style="font-size: 14px; margin-top: 10px;">첫 번째 참가자가 되어보세요!</div>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    leaderboardElement.innerHTML = users.map((user, index) => {
+                        const isCurrentUser = user.userId === currentUserId;
+                        const rank = index + 1;
+                        const rankClass = rank <= 3 ? 'top3' : '';
+                        
+                        return `
+                            <div class="leaderboard-item" style="${isCurrentUser ? 'background: #f8f9ff;' : ''}">
+                                <div class="rank ${rankClass}">${rank}</div>
+                                <div class="leaderboard-info">
+                                    <div class="leaderboard-name">${user.name || '익명'}${isCurrentUser ? ' 👤' : ''}</div>
+                                    <div class="leaderboard-items">${user.itemCount || 0}개 비움</div>
+                                </div>
+                                <div class="leaderboard-score">${user.score || 0}</div>
+                            </div>
+                        `;
+                    }).join('');
+                });
+            } catch (error) {
+                console.error('리더보드 로드 실패:', error);
+                leaderboardElement.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">⚠️</div>
+                        <div>순위 로드 실패</div>
+                        <div style="font-size: 14px; margin-top: 10px;">Firebase 설정을 확인해주세요</div>
+                    </div>
+                `;
+            }
+        }
+
+        // 초기 로드
+        loadMyItems();
+        updateUserProfile();
+        
+        // 탭 전환
+        window.switchTab = function(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            if (tab === 'add') {
+                document.querySelector('.tab:nth-child(1)').classList.add('active');
+                document.getElementById('addTab').classList.add('active');
+            } else if (tab === 'history') {
+                document.querySelector('.tab:nth-child(2)').classList.add('active');
+                document.getElementById('historyTab').classList.add('active');
+                loadMyItems();
+            } else if (tab === 'leaderboard') {
+                document.querySelector('.tab:nth-child(3)').classList.add('active');
+                document.getElementById('leaderboardTab').classList.add('active');
+                loadLeaderboard();
+            }
+        };
+    </script>
+</body>
+</html>
