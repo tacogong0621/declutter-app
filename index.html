@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-title" content="비우기">
     <meta name="description" content="물건을 비우고 점수를 모으는 미니멀리즘 챌린지">
     <title>물건 비우기 챌린지 (온라인)</title>
-    <style>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -18,7 +18,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
             min-height: 100vh;
             padding: 20px;
             padding-top: max(20px, env(safe-area-inset-top));
@@ -36,7 +36,7 @@
             padding: 30px;
             padding-top: 50px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             text-align: center;
             position: relative;
         }
@@ -45,7 +45,7 @@
             position: absolute;
             top: 15px;
             right: 15px;
-            background: #4ade80;
+            background: #48bb78;
             color: white;
             padding: 5px 12px;
             border-radius: 20px;
@@ -70,7 +70,7 @@
         }
 
         .header h1 {
-            color: #667eea;
+            color: #2d3748;
             font-size: 28px;
             margin-bottom: 10px;
             margin-top: 25px;
@@ -79,18 +79,18 @@
         .score-display {
             font-size: 48px;
             font-weight: bold;
-            color: #764ba2;
+            color: #4a5568;
             margin: 20px 0;
         }
 
         .score-label {
-            color: #666;
+            color: #718096;
             font-size: 14px;
         }
 
         .streak-badge {
             display: inline-block;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
             color: white;
             padding: 8px 16px;
             border-radius: 20px;
@@ -100,8 +100,8 @@
         }
 
         .username-input {
-            background: #f8f9ff;
-            border: 2px solid #667eea;
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
             border-radius: 10px;
             padding: 10px 15px;
             margin-top: 0;
@@ -109,6 +109,11 @@
             text-align: center;
             width: 200px;
             display: inline-block;
+        }
+
+        .username-input:focus {
+            outline: none;
+            border-color: #4a5568;
         }
 
         .badges-container {
@@ -120,7 +125,7 @@
         }
 
         .badge {
-            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
             color: white;
             padding: 6px 12px;
             border-radius: 15px;
@@ -129,12 +134,11 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         .badge.locked {
-            background: #e0e0e0;
-            color: #999;
+            background: #e2e8f0;
+            color: #a0aec0;
         }
 
         .tabs {
@@ -143,7 +147,7 @@
             border-radius: 20px;
             padding: 5px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             overflow-x: auto;
         }
 
@@ -157,13 +161,13 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            color: #666;
+            color: #718096;
             white-space: nowrap;
             min-width: 60px;
         }
 
         .tab.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
             color: white;
         }
 
@@ -180,11 +184,11 @@
             border-radius: 20px;
             padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
 
         .upload-area {
-            border: 3px dashed #667eea;
+            border: 3px dashed #cbd5e0;
             border-radius: 15px;
             padding: 40px;
             text-align: center;
@@ -194,12 +198,13 @@
         }
 
         .upload-area:hover {
-            border-color: #764ba2;
-            background: #f8f9ff;
+            border-color: #4a5568;
+            background: #f7fafc;
         }
 
         .upload-area.has-image {
             border-style: solid;
+            border-color: #4a5568;
             padding: 0;
         }
 
@@ -225,7 +230,7 @@
         input[type="text"], textarea {
             width: 100%;
             padding: 15px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #e2e8f0;
             border-radius: 10px;
             font-size: 16px;
             margin-bottom: 15px;
@@ -234,7 +239,7 @@
 
         input[type="text"]:focus, textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #4a5568;
         }
 
         textarea {
@@ -245,18 +250,19 @@
         .btn {
             width: 100%;
             padding: 18px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
             color: white;
             border: none;
             border-radius: 12px;
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(45, 55, 72, 0.3);
         }
 
         .btn:active {
@@ -303,29 +309,29 @@
 
         .item-name {
             font-weight: 600;
-            color: #333;
+            color: #2d3748;
             margin-bottom: 5px;
         }
 
         .item-date {
             font-size: 12px;
-            color: #999;
+            color: #a0aec0;
         }
 
         .item-note {
             font-size: 13px;
-            color: #667eea;
+            color: #4a5568;
             font-style: italic;
             margin-top: 8px;
             padding: 8px 12px;
-            background: rgba(102, 126, 234, 0.1);
+            background: #f7fafc;
             border-radius: 8px;
-            border-left: 3px solid #667eea;
+            border-left: 3px solid #48bb78;
         }
 
         .item-points {
             font-weight: bold;
-            color: #667eea;
+            color: #48bb78;
             font-size: 18px;
         }
 
@@ -338,7 +344,7 @@
 
         .like-btn {
             background: none;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #e2e8f0;
             border-radius: 20px;
             padding: 8px 16px;
             cursor: pointer;
@@ -347,21 +353,22 @@
             gap: 5px;
             font-size: 14px;
             transition: all 0.3s;
+            color: #718096;
         }
 
         .like-btn:hover {
-            border-color: #667eea;
+            border-color: #4a5568;
         }
 
         .like-btn.liked {
-            background: #667eea;
+            background: #4a5568;
             color: white;
-            border-color: #667eea;
+            border-color: #4a5568;
         }
 
         .comment-btn {
             background: none;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #e2e8f0;
             border-radius: 20px;
             padding: 8px 16px;
             cursor: pointer;
@@ -370,15 +377,16 @@
             gap: 5px;
             font-size: 14px;
             transition: all 0.3s;
+            color: #718096;
         }
 
         .comment-btn:hover {
-            border-color: #764ba2;
+            border-color: #48bb78;
         }
 
         .delete-btn {
             background: none;
-            border: 2px solid #ff4444;
+            border: 2px solid #fc8181;
             border-radius: 20px;
             padding: 8px 16px;
             cursor: pointer;
@@ -386,12 +394,12 @@
             align-items: center;
             gap: 5px;
             font-size: 14px;
-            color: #ff4444;
+            color: #fc8181;
             transition: all 0.3s;
         }
 
         .delete-btn:hover {
-            background: #ff4444;
+            background: #fc8181;
             color: white;
         }
 
@@ -408,20 +416,20 @@
 
         .comment {
             padding: 10px;
-            background: #f8f9ff;
+            background: #f7fafc;
             border-radius: 10px;
             margin-bottom: 10px;
         }
 
         .comment-author {
             font-weight: 600;
-            color: #667eea;
+            color: #4a5568;
             font-size: 13px;
             margin-bottom: 5px;
         }
 
         .comment-text {
-            color: #333;
+            color: #2d3748;
             font-size: 14px;
         }
 
@@ -434,14 +442,14 @@
         .comment-input input {
             flex: 1;
             padding: 10px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #e2e8f0;
             border-radius: 10px;
             font-size: 14px;
         }
 
         .comment-input button {
             padding: 10px 20px;
-            background: #667eea;
+            background: #4a5568;
             color: white;
             border: none;
             border-radius: 10px;
@@ -464,7 +472,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
             color: white;
             display: flex;
             align-items: center;
@@ -474,7 +482,7 @@
         }
 
         .rank.top3 {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
         }
 
         .leaderboard-info {
@@ -483,24 +491,24 @@
 
         .leaderboard-name {
             font-weight: 600;
-            color: #333;
+            color: #2d3748;
         }
 
         .leaderboard-items {
             font-size: 12px;
-            color: #999;
+            color: #a0aec0;
         }
 
         .leaderboard-score {
             font-weight: bold;
-            color: #667eea;
+            color: #4a5568;
             font-size: 20px;
         }
 
         .empty-state {
             text-align: center;
             padding: 40px;
-            color: #999;
+            color: #a0aec0;
         }
 
         .empty-icon {
@@ -512,7 +520,7 @@
         .category-select {
             width: 100%;
             padding: 15px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #e2e8f0;
             border-radius: 10px;
             font-size: 16px;
             margin-bottom: 15px;
@@ -520,25 +528,30 @@
             background: white;
         }
 
+        .category-select:focus {
+            outline: none;
+            border-color: #4a5568;
+        }
+
         .points-info {
-            background: #f8f9ff;
+            background: #f7fafc;
             padding: 12px;
             border-radius: 10px;
             margin-bottom: 15px;
             text-align: center;
-            color: #667eea;
+            color: #48bb78;
             font-weight: 600;
         }
 
         .loading {
             text-align: center;
             padding: 20px;
-            color: #667eea;
+            color: #4a5568;
         }
 
         .loading-spinner {
             border: 3px solid #f3f4f6;
-            border-top: 3px solid #667eea;
+            border-top: 3px solid #4a5568;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -600,12 +613,12 @@
         .badge-title {
             font-size: 24px;
             font-weight: bold;
-            color: #667eea;
+            color: #2d3748;
             margin-bottom: 10px;
         }
 
         .badge-desc {
-            color: #666;
+            color: #718096;
             margin-bottom: 20px;
         }
 
@@ -615,7 +628,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -644,13 +657,13 @@
         .login-title {
             font-size: 24px;
             font-weight: bold;
-            color: #333;
+            color: #2d3748;
             margin-bottom: 8px;
         }
 
         .login-subtitle {
             font-size: 14px;
-            color: #999;
+            color: #718096;
             margin-bottom: 30px;
         }
 
@@ -681,8 +694,8 @@
 
         .social-btn-google {
             background: white;
-            color: #333;
-            border: 2px solid #e0e0e0;
+            color: #2d3748;
+            border: 2px solid #e2e8f0;
         }
 
         .social-btn-google svg {
@@ -694,13 +707,13 @@
             position: absolute;
             top: 15px;
             left: 15px;
-            background: #f0f0f0;
+            background: #f7fafc;
             border: none;
             border-radius: 20px;
             padding: 6px 14px;
             font-size: 12px;
             font-weight: 600;
-            color: #666;
+            color: #718096;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
@@ -709,8 +722,8 @@
         }
 
         .logout-btn:hover {
-            background: #e0e0e0;
-            color: #333;
+            background: #e2e8f0;
+            color: #4a5568;
         }
 
         .user-profile {
@@ -727,14 +740,14 @@
             height: 36px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #667eea;
+            border: 2px solid #4a5568;
         }
 
         .user-avatar-placeholder {
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
             color: white;
             display: flex;
             align-items: center;
@@ -751,7 +764,26 @@
             background: #4285F4;
             color: white;
         }
+
+        .lang-switch {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .lang-switch a {
+            color: white;
+            opacity: 0.7;
+            font-size: 12px;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .lang-switch a:hover {
+            opacity: 1;
+        }
     </style>
+```
+
 </head>
 <body>
     <!-- 로그인 화면 -->
