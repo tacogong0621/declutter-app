@@ -1242,7 +1242,7 @@
 
         <div id="addTab" class="tab-content active">
             <div class="card">
-                <h2 style="margin-bottom: 20px; color: #333;">Declutter Verification</h2>
+                <h2 style="margin-bottom: 20px; color: #333;">What are you letting go?</h2>
                 
                 <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
                     <img id="previewImage" class="preview-image" alt="Preview">
@@ -1254,10 +1254,10 @@
                 </div>
                 <input type="file" id="fileInput" accept="image/*">
 
-                <input type="text" id="itemName" placeholder="Item name (e.g., Old clothes)">
+                <input type="text" id="itemName" placeholder="Item (e.g., Old clothes)">
                 
                 <select class="category-select" id="itemCategory">
-                    <option value="">Select Category</option>
+                    <option value="">Category</option>
                     <option value="clothes">Clothing (+10 pts)</option>
                     <option value="books">Books/Magazines (+15 pts)</option>
                     <option value="electronics">Electronics (+20 pts)</option>
@@ -1272,7 +1272,7 @@
                 </select>
 
                 <select class="category-select" id="itemSpace">
-                    <option value="">Select Space (Required)</option>
+                    <option value="">Space (Required)</option>
                     <option value="kitchen_space">🍳 Kitchen</option>
                     <option value="bathroom">🚿 Bathroom</option>
                     <option value="bedroom">🛏️ Bedroom</option>
@@ -1289,7 +1289,7 @@
                     Expected Points: <span id="expectedPoints">0</span> pts
                 </div>
 
-                <textarea id="itemNote" placeholder="Your thoughts (optional)"></textarea>
+                <textarea id="itemNote" placeholder="memo"></textarea>
 
                 <button class="btn" id="submitBtn" onclick="addItem()">✅ Complete!</button>
             </div>
@@ -3074,3 +3074,4 @@ Don't copy examples - be creative.`
 </body>
 
 </html>
+
