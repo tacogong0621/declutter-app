@@ -852,6 +852,9 @@
                     <option value="kitchen">주방용품 (+10점)</option>
                     <option value="shoes">신발 (+10점)</option>
                     <option value="food">음식 (+5점)</option>
+                    <option value="toys">장난감 (+5점)</option>
+                    <option value="sports">운동용품 (+15점)</option>
+                    <option value="digital">디지털 사진/문서 (+5점)</option>
                     <option value="etc">기타 (+5점)</option>
                 </select>
 
@@ -1020,6 +1023,9 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             'kitchen': 10,
             'shoes': 10,
             'food': 5,
+            'toys': 5,
+            'sports': 15,
+            'digital': 5,
             'etc': 5
         };
 
@@ -1201,6 +1207,9 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                 'kitchen': '주방용품',
                 'shoes': '신발',
                 'food': '음식',
+                'toys': '장난감',
+                'sports': '운동용품',
+                'digital': '디지털 사진/문서',
                 'etc': '기타'
             };
             return names[category] || category;
@@ -1993,6 +2002,9 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                 { key: 'kitchen', name: '주방용품', emoji: '🍳' },
                 { key: 'shoes', name: '신발', emoji: '👟' },
                 { key: 'food', name: '음식', emoji: '🍔' },
+                { key: 'toys', name: '장난감', emoji: '🧸' },
+                { key: 'sports', name: '운동용품', emoji: '🏋️' },
+                { key: 'digital', name: '디지털 사진/문서', emoji: '📄' },
                 { key: 'etc', name: '기타', emoji: '📦' }
             ];
             
