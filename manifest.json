@@ -4,8 +4,8 @@
   "description": "Build your minimalist habit one item at a time",
   "start_url": "/declutter-app/",
   "display": "standalone",
-  "background_color": "#2d3748",
-  "theme_color": "#2d3748",
+  "background_color": "#FAFAFA",
+  "theme_color": "#FAFAFA",
   "orientation": "portrait",
   "icons": [
     {
