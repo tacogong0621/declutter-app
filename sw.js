@@ -1,4 +1,4 @@
-const CACHE_NAME = 'declutter-v1.1';
+const CACHE_NAME = 'declutter-v1.2';
 const urlsToCache = [
   '/declutter-app/',
   '/declutter-app/index.html',

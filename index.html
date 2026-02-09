@@ -1290,19 +1290,16 @@
 
                 <input type="text" id="itemName" placeholder="Item (e.g., Old clothes)">
                 
-                <select class="category-select" id="itemCategory">
-                    <option value="">Category</option>
-                    <option value="clothes">Clothing (+10 pts)</option>
-                    <option value="books">Books/Magazines (+15 pts)</option>
-                    <option value="electronics">Electronics (+20 pts)</option>
-                    <option value="furniture">Furniture (+30 pts)</option>
-                    <option value="kitchen">Kitchenware (+10 pts)</option>
-                    <option value="shoes">Shoes (+10 pts)</option>
-                    <option value="food">Food (+5 pts)</option>
-                    <option value="toys">Toys (+5 pts)</option>
-                    <option value="sports">Sports Equipment (+15 pts)</option>
-                    <option value="digital">Digital Photos/Docs (+5 pts)</option>
-                    <option value="etc">Other (+5 pts)</option>
+                <select class="category-select" id="itemCategory" required>
+                    <option value="">Select Category</option>
+                    <option value="clothing">👕 Clothing (10)</option>
+                    <option value="books">📖 Books (15)</option>
+                    <option value="electronics">📱 Electronics (20)</option>
+                    <option value="furniture">🪑 Furniture (30)</option>
+                    <option value="kitchenware">🍽️ Kitchenware (10)</option>
+                    <option value="shoes">👟 Shoes (10)</option>
+                    <option value="food">🥫 Food (5)</option>
+                    <option value="other">📦 Other (5)</option>
                 </select>
 
                 <select class="category-select" id="itemSpace">
@@ -2022,20 +2019,17 @@ Don't copy examples - be creative.`
         }
 
         function getCategoryName(category) {
-            const names = {
-                'clothes': 'Clothing',
-                'books': 'Books/Magazines',
-                'electronics': 'Electronics',
-                'furniture': 'Furniture',
-                'kitchen': 'Kitchenware',
-                'shoes': 'Shoes',
-                'food': 'Food',
-                'toys': 'Toys',
-                'sports': 'Sports Equipment',
-                'digital': 'Digital Photos/Docs',
-                'etc': 'Other'
+            const categories = {
+                clothing: '👕 Clothing',
+                books: '📖 Books',
+                electronics: '📱 Electronics',
+                furniture: '🪑 Furniture',
+                kitchenware: '🍽️ Kitchenware',
+                shoes: '👟 Shoes',
+                food: '🥫 Food',
+                other: '📦 Other'
             };
-            return names[category] || category;
+            return categories[category] || '📦 Other';
         }
 
         async function calculateStreak() {
