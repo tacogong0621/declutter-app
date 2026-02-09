@@ -781,6 +781,230 @@
         .lang-switch a:hover {
             opacity: 1;
         }
+
+        /* Space Bingo Styles */
+        .bingo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .bingo-cell {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 8px;
+            position: relative;
+        }
+
+        .bingo-cell.completed {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            border-color: #38a169;
+            color: white;
+        }
+
+        .bingo-cell .cell-emoji {
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+
+        .bingo-cell .cell-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: #4a5568;
+            text-align: center;
+        }
+
+        .bingo-cell.completed .cell-name {
+            color: white;
+        }
+
+        .bingo-cell .cell-count {
+            font-size: 10px;
+            color: #718096;
+            margin-top: 2px;
+        }
+
+        .bingo-cell.completed .cell-count {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .bingo-cell .cell-progress {
+            width: 80%;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+
+        .bingo-cell.completed .cell-progress {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .bingo-cell .cell-progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .bingo-cell.completed .cell-progress-bar {
+            background: white;
+        }
+
+        .bingo-lines-info {
+            background: #f7fafc;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .bingo-lines-info .line-count {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .bingo-lines-info .line-label {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 4px;
+        }
+
+        .bingo-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .bingo-stat {
+            background: #f7fafc;
+            padding: 12px 8px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .bingo-stat .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .bingo-stat .stat-label {
+            font-size: 11px;
+            color: #718096;
+            margin-top: 4px;
+        }
+
+        .bingo-reset-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: none;
+        }
+
+        .space-hint {
+            font-size: 13px;
+            color: #48bb78;
+            font-weight: 600;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            padding: 8px 12px;
+            background: #f0fff4;
+            border-radius: 8px;
+            display: none;
+        }
+
+        /* Achievement Animation */
+        .achievement-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .achievement-overlay.show {
+            display: flex;
+        }
+
+        .achievement-badge {
+            font-size: 120px;
+            animation: spinBadge 2s ease-in-out infinite;
+        }
+
+        @keyframes spinBadge {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .achievement-title {
+            color: #ffd700;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .achievement-subtitle {
+            color: white;
+            font-size: 18px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .achievement-points {
+            color: #48bb78;
+            font-size: 36px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .achievement-dismiss {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            margin-top: 30px;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            z-index: 3001;
+            pointer-events: none;
+            animation: confettiFall 3s ease-in-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
     </style>
 ```
 
@@ -821,6 +1045,7 @@
 
         <div class="tabs">
             <button class="tab active" id="addTabBtn">➕ 비우기</button>
+            <button class="tab" id="bingoTabBtn">🎲 빙고</button>
             <button class="tab" id="historyTabBtn">📋 기록</button>
             <button class="tab" id="calendarTabBtn">📅 캘린더</button>
             <button class="tab" id="leaderboardTabBtn">🏆 순위</button>
@@ -858,6 +1083,20 @@
                     <option value="etc">기타 (+5점)</option>
                 </select>
 
+                <select class="category-select" id="itemSpace">
+                    <option value="">공간 선택 (필수)</option>
+                    <option value="kitchen_space">🍳 주방</option>
+                    <option value="bathroom">🚿 욕실</option>
+                    <option value="bedroom">🛏️ 침실</option>
+                    <option value="living">🛋️ 거실</option>
+                    <option value="kids_room">🧒 아이방</option>
+                    <option value="closet">👔 옷장</option>
+                    <option value="office">💻 서재</option>
+                    <option value="garage">🔧 창고</option>
+                    <option value="pantry">🥫 팬트리</option>
+                </select>
+                <div class="space-hint" id="spaceHint"></div>
+
                 <div class="points-info" id="pointsInfo" style="display: none;">
                     예상 획득 포인트: <span id="expectedPoints">0</span>점
                 </div>
@@ -865,6 +1104,37 @@
                 <textarea id="itemNote" placeholder="느낀점 (선택)"></textarea>
 
                 <button class="btn" id="submitBtn">✅ 비우기 완료!</button>
+            </div>
+        </div>
+
+        <div id="bingoTab" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 20px; color: #333;">🎲 공간 빙고</h2>
+                <p style="color: #666; margin-bottom: 15px; text-align: center; font-size: 14px;">각 공간에서 10개를 비우면 빙고! 줄을 완성하세요!</p>
+
+                <div class="bingo-stats">
+                    <div class="bingo-stat">
+                        <div class="stat-value" id="bingoCompleted">0</div>
+                        <div class="stat-label">완료 공간</div>
+                    </div>
+                    <div class="bingo-stat">
+                        <div class="stat-value" id="bingoLines">0</div>
+                        <div class="stat-label">빙고 줄</div>
+                    </div>
+                    <div class="bingo-stat">
+                        <div class="stat-value" id="bingoPoints">0</div>
+                        <div class="stat-label">빙고 점수</div>
+                    </div>
+                </div>
+
+                <div class="bingo-grid" id="bingoGrid"></div>
+
+                <div class="bingo-lines-info" id="bingoLinesInfo">
+                    <div class="line-count" id="bingoLineCount">0 / 8 줄</div>
+                    <div class="line-label">가로 3줄 + 세로 3줄 + 대각선 2줄</div>
+                </div>
+
+                <button class="bingo-reset-btn" id="bingoResetBtn">🔄 빙고 리셋하기</button>
             </div>
         </div>
 
@@ -945,7 +1215,7 @@
             </div>
         </div>
 
-        <div class="version">v2.3 - 명언 팝업 추가</div>
+        <div class="version">v2.4 - 공간 빙고 추가</div>
     </div>
 
     <!-- Badge Modal -->
@@ -955,6 +1225,15 @@
         <div class="badge-title" id="badgeModalTitle">새 배지 획득!</div>
         <div class="badge-desc" id="badgeModalDesc">첫 물건 비우기 성공!</div>
         <button class="btn" id="closeModalBtn">확인</button>
+    </div>
+
+    <!-- Achievement Overlay -->
+    <div class="achievement-overlay" id="achievementOverlay">
+        <div class="achievement-badge" id="achievementBadge">🏆</div>
+        <div class="achievement-title" id="achievementTitle">공간 완료!</div>
+        <div class="achievement-subtitle" id="achievementSubtitle">주방 10개 비우기 달성!</div>
+        <div class="achievement-points" id="achievementPoints">+100점</div>
+        <div class="achievement-dismiss">탭하여 닫기</div>
     </div>
 
     <!-- Firebase SDK -->
@@ -983,6 +1262,266 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         let currentImage = null;
         let userStreak = 0;
         let userBadges = [];
+        let bingoProgress = {};
+
+        const bingoSpaces = [
+            { key: 'kitchen_space', name: '주방', emoji: '🍳' },
+            { key: 'bathroom', name: '욕실', emoji: '🚿' },
+            { key: 'bedroom', name: '침실', emoji: '🛏️' },
+            { key: 'living', name: '거실', emoji: '🛋️' },
+            { key: 'kids_room', name: '아이방', emoji: '🧒' },
+            { key: 'closet', name: '옷장', emoji: '👔' },
+            { key: 'office', name: '서재', emoji: '💻' },
+            { key: 'garage', name: '창고', emoji: '🔧' },
+            { key: 'pantry', name: '팬트리', emoji: '🥫' }
+        ];
+
+        const bingoLines = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ];
+
+        function getSpaceName(spaceKey) {
+            const space = bingoSpaces.find(s => s.key === spaceKey);
+            return space ? space.name : spaceKey;
+        }
+
+        function countBingoLines() {
+            let count = 0;
+            for (const line of bingoLines) {
+                const allComplete = line.every(i => (bingoProgress[bingoSpaces[i].key] || 0) >= 10);
+                if (allComplete) count++;
+            }
+            return count;
+        }
+
+        function countCompletedSpaces() {
+            return bingoSpaces.filter(s => (bingoProgress[s.key] || 0) >= 10).length;
+        }
+
+        function renderBingoGrid() {
+            const grid = document.getElementById('bingoGrid');
+            if (!grid) return;
+
+            const completedCount = countCompletedSpaces();
+            const lineCount = countBingoLines();
+            const bingoPointsEarned = completedCount * 100 + lineCount * 500 + (completedCount === 9 ? 3000 : 0);
+
+            document.getElementById('bingoCompleted').textContent = completedCount;
+            document.getElementById('bingoLines').textContent = lineCount;
+            document.getElementById('bingoPoints').textContent = bingoPointsEarned;
+            document.getElementById('bingoLineCount').textContent = `${lineCount} / 8 줄`;
+
+            const resetBtn = document.getElementById('bingoResetBtn');
+            resetBtn.style.display = completedCount === 9 ? 'block' : 'none';
+
+            grid.innerHTML = bingoSpaces.map(space => {
+                const count = bingoProgress[space.key] || 0;
+                const isComplete = count >= 10;
+                const percent = Math.min(100, (count / 10) * 100);
+
+                return `
+                    <div class="bingo-cell ${isComplete ? 'completed' : ''}">
+                        <div class="cell-emoji">${space.emoji}</div>
+                        <div class="cell-name">${space.name}</div>
+                        <div class="cell-count">${count} / 10</div>
+                        <div class="cell-progress">
+                            <div class="cell-progress-bar" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateSpaceHint() {
+            const spaceSelect = document.getElementById('itemSpace');
+            const hint = document.getElementById('spaceHint');
+            const spaceKey = spaceSelect.value;
+
+            if (spaceKey) {
+                const count = bingoProgress[spaceKey] || 0;
+                const space = bingoSpaces.find(s => s.key === spaceKey);
+                if (count >= 10) {
+                    hint.textContent = `${space.name}: ✅ 완료! 빙고 달성!`;
+                } else {
+                    const remaining = 10 - count;
+                    hint.textContent = `${space.name}: ${count}/10 - ${remaining}개 더! 🎯`;
+                }
+                hint.style.display = 'block';
+            } else {
+                hint.style.display = 'none';
+            }
+        }
+
+        function showAchievement(title, subtitle, points) {
+            document.getElementById('achievementTitle').textContent = title;
+            document.getElementById('achievementSubtitle').textContent = subtitle;
+            document.getElementById('achievementPoints').textContent = `+${points}점`;
+            document.getElementById('achievementOverlay').classList.add('show');
+
+            playVictorySound();
+            spawnConfetti();
+        }
+
+        function hideAchievement() {
+            document.getElementById('achievementOverlay').classList.remove('show');
+        }
+
+        function playVictorySound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioContext.state === 'suspended') audioContext.resume();
+                const now = audioContext.currentTime;
+
+                const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1046.50];
+                notes.forEach((freq, i) => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + i * 0.12);
+                    gain.gain.setValueAtTime(0.3, now + i * 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.12 + 0.2);
+                    osc.start(now + i * 0.12);
+                    osc.stop(now + i * 0.12 + 0.2);
+                });
+            } catch (error) {
+                console.error('효과음 재생 실패:', error);
+            }
+        }
+
+        function spawnConfetti() {
+            const colors = ['#ffd700', '#ff6b6b', '#48bb78', '#4299e1', '#ed64a6', '#ecc94b', '#9f7aea', '#fc8181', '#68d391', '#63b3ed'];
+            for (let i = 0; i < 20; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = (Math.random() * 8 + 6) + 'px';
+                confetti.style.height = (Math.random() * 8 + 6) + 'px';
+                confetti.style.animationDelay = Math.random() * 1 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 4000);
+            }
+        }
+
+        async function loadBingoProgress() {
+            try {
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+
+                if (!userSnapshot.empty) {
+                    const userData = userSnapshot.docs[0].data();
+                    bingoProgress = userData.bingoProgress || {};
+                } else {
+                    bingoProgress = {};
+                }
+                renderBingoGrid();
+                updateSpaceHint();
+            } catch (error) {
+                console.error('빙고 진행 로드 실패:', error);
+            }
+        }
+
+        async function updateBingoProgress(spaceKey) {
+            const oldCount = bingoProgress[spaceKey] || 0;
+            const oldLines = countBingoLines();
+            const oldCompleted = countCompletedSpaces();
+
+            bingoProgress[spaceKey] = oldCount + 1;
+            const newCount = bingoProgress[spaceKey];
+
+            try {
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+
+                if (!userSnapshot.empty) {
+                    const userDoc = userSnapshot.docs[0];
+                    await updateDoc(doc(db, 'users', userDoc.id), {
+                        bingoProgress: bingoProgress
+                    });
+                }
+            } catch (error) {
+                console.error('빙고 진행 업데이트 실패:', error);
+            }
+
+            if (newCount === 10) {
+                const spaceName = getSpaceName(spaceKey);
+                let bonusPoints = 100;
+                totalScore += bonusPoints;
+
+                await saveBonusPoints(bonusPoints);
+
+                const newLines = countBingoLines();
+                const linesEarned = newLines - oldLines;
+                if (linesEarned > 0) {
+                    const lineBonus = linesEarned * 500;
+                    totalScore += lineBonus;
+                    bonusPoints += lineBonus;
+                    await saveBonusPoints(lineBonus);
+                }
+
+                const newCompleted = countCompletedSpaces();
+                if (newCompleted === 9 && oldCompleted < 9) {
+                    const allBonus = 3000;
+                    totalScore += allBonus;
+                    bonusPoints += allBonus;
+                    await saveBonusPoints(allBonus);
+                }
+
+                document.getElementById('totalScore').textContent = totalScore;
+
+                setTimeout(() => {
+                    if (newCompleted === 9 && oldCompleted < 9) {
+                        showAchievement('🎉 빙고 올클리어!', '모든 9개 공간 완료!', bonusPoints);
+                    } else if (linesEarned > 0) {
+                        showAchievement('🎲 빙고!', `${spaceName} 완료 + ${linesEarned}줄 빙고!`, bonusPoints);
+                    } else {
+                        showAchievement('✨ 공간 완료!', `${spaceName} 10개 비우기 달성!`, bonusPoints);
+                    }
+                }, 500);
+            }
+
+            renderBingoGrid();
+            updateSpaceHint();
+        }
+
+        async function saveBonusPoints(points) {
+            try {
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                if (!userSnapshot.empty) {
+                    const userDoc = userSnapshot.docs[0];
+                    await updateDoc(doc(db, 'users', userDoc.id), {
+                        score: totalScore
+                    });
+                }
+            } catch (error) {
+                console.error('보너스 점수 저장 실패:', error);
+            }
+        }
+
+        async function resetBingo() {
+            if (!confirm('빙고를 리셋하시겠습니까? 진행 상황이 초기화됩니다.')) return;
+
+            bingoProgress = {};
+            try {
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                if (!userSnapshot.empty) {
+                    const userDoc = userSnapshot.docs[0];
+                    await updateDoc(doc(db, 'users', userDoc.id), {
+                        bingoProgress: {}
+                    });
+                }
+            } catch (error) {
+                console.error('빙고 리셋 실패:', error);
+            }
+            renderBingoGrid();
+        }
 
         // 명언 배열
         const declutterQuotes = [
@@ -1137,6 +1676,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                         streak: 0,
                         lastDeclutterDate: null,
                         badges: [],
+                        bingoProgress: {},
                         createdAt: serverTimestamp(),
                         lastActive: serverTimestamp()
                     });
@@ -1417,6 +1957,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         async function addItem() {
             const name = document.getElementById('itemName').value.trim();
             const category = document.getElementById('itemCategory').value;
+            const space = document.getElementById('itemSpace').value;
             const note = document.getElementById('itemNote').value.trim();
             const submitBtn = document.getElementById('submitBtn');
 
@@ -1430,6 +1971,11 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                 return;
             }
 
+            if (!space) {
+                alert('공간을 선택해주세요!');
+                return;
+            }
+
             if (!currentImage) {
                 alert('사진을 업로드해주세요!');
                 return;
@@ -1440,12 +1986,13 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
 
             try {
                 const points = categoryPoints[category];
-                
+
                 await addDoc(collection(db, 'items'), {
                     userId: currentUserId,
                     userName: userName,
                     name: name,
                     category: category,
+                    space: space,
                     note: note,
                     image: currentImage,
                     points: points,
@@ -1458,6 +2005,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                 totalScore += points;
                 await updateUserScore();
                 await calculateStreak();
+                await updateBingoProgress(space);
 
                 playSuccessSound();
 
@@ -1465,17 +2013,19 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
 
                 document.getElementById('itemName').value = '';
                 document.getElementById('itemCategory').value = '';
+                document.getElementById('itemSpace').value = '';
                 document.getElementById('itemNote').value = '';
                 document.getElementById('fileInput').value = '';
                 document.getElementById('previewImage').classList.remove('show');
                 document.getElementById('uploadPrompt').style.display = 'block';
                 document.getElementById('uploadArea').classList.remove('has-image');
                 document.getElementById('pointsInfo').style.display = 'none';
+                document.getElementById('spaceHint').style.display = 'none';
                 currentImage = null;
 
                 const quote = getRandomQuote();
                 showQuoteModal(quote, points, aiMessage, totalScore);
-                
+
                 switchTab('history');
             } catch (error) {
                 console.error('아이템 추가 실패:', error);
@@ -1765,6 +2315,11 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             if (tab === 'add') {
                 document.getElementById('addTabBtn').classList.add('active');
                 document.getElementById('addTab').classList.add('active');
+                updateSpaceHint();
+            } else if (tab === 'bingo') {
+                document.getElementById('bingoTabBtn').classList.add('active');
+                document.getElementById('bingoTab').classList.add('active');
+                loadBingoProgress();
             } else if (tab === 'history') {
                 document.getElementById('historyTabBtn').classList.add('active');
                 document.getElementById('historyTab').classList.add('active');
@@ -2160,8 +2715,10 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                 const userData = userSnapshot.docs[0].data();
                 userStreak = userData.streak || 0;
                 userBadges = userData.badges || [];
+                bingoProgress = userData.bingoProgress || {};
                 document.getElementById('streakBadge').textContent = `🔥 ${userStreak}일 연속`;
                 renderBadges();
+                renderBingoGrid();
             }
         }
 
@@ -2213,10 +2770,15 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         });
 
         document.getElementById('addTabBtn').addEventListener('click', () => switchTab('add'));
+        document.getElementById('bingoTabBtn').addEventListener('click', () => switchTab('bingo'));
         document.getElementById('historyTabBtn').addEventListener('click', () => switchTab('history'));
         document.getElementById('calendarTabBtn').addEventListener('click', () => switchTab('calendar'));
         document.getElementById('leaderboardTabBtn').addEventListener('click', () => switchTab('leaderboard'));
         document.getElementById('shareTabBtn').addEventListener('click', () => switchTab('share'));
+
+        document.getElementById('itemSpace').addEventListener('change', updateSpaceHint);
+        document.getElementById('achievementOverlay').addEventListener('click', hideAchievement);
+        document.getElementById('bingoResetBtn').addEventListener('click', resetBingo);
 
         document.getElementById('prevMonthBtn').addEventListener('click', () => changeMonth(-1));
         document.getElementById('nextMonthBtn').addEventListener('click', () => changeMonth(1));
