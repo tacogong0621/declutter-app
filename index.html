@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#FAFAFA">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Declutter Daily">
@@ -18,12 +18,14 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+            background: #FAFAFA;
             min-height: 100vh;
             padding: 20px;
             padding-top: max(20px, env(safe-area-inset-top));
             padding-bottom: max(20px, env(safe-area-inset-bottom));
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
@@ -32,11 +34,12 @@
         }
 
         .header {
-            background: white;
-            border-radius: 20px;
+            background: #FFFFFF;
+            border-radius: 16px;
             padding: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid #E5E5E5;
+            box-shadow: none;
             text-align: center;
             position: relative;
         }
@@ -45,8 +48,8 @@
             position: absolute;
             top: 15px;
             right: 15px;
-            background: #4ade80;
-            color: white;
+            background: #1C1C1E;
+            color: #FFFFFF;
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 12px;
@@ -70,27 +73,28 @@
         }
 
         .header h1 {
-            color: #667eea;
+            color: #1C1C1E;
             font-size: 28px;
+            font-weight: 600;
             margin-bottom: 10px;
         }
 
         .score-display {
             font-size: 48px;
-            font-weight: bold;
-            color: #764ba2;
+            font-weight: 700;
+            color: #1C1C1E;
             margin: 20px 0;
         }
 
         .score-label {
-            color: #666;
+            color: #B0B0B0;
             font-size: 14px;
         }
 
         .streak-badge {
             display: inline-block;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
+            background: #1C1C1E;
+            color: #FFFFFF;
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 14px;
@@ -99,8 +103,8 @@
         }
 
         .username-input {
-            background: #f8f9ff;
-            border: 2px solid #667eea;
+            background: #FFFFFF;
+            border: 1px solid #E5E5E5;
             border-radius: 10px;
             padding: 10px 15px;
             margin-top: 15px;
@@ -108,24 +112,25 @@
             text-align: center;
             width: 200px;
             display: inline-block;
+            color: #1C1C1E;
         }
 
         .badges-summary {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #f7fafc;
+            background: #FAFAFA;
             padding: 8px 16px;
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.2s;
             margin-top: 10px;
-            border: 2px solid #e2e8f0;
+            border: 1px solid #E5E5E5;
         }
 
         .badges-summary:hover {
-            background: #e2e8f0;
-            border-color: #cbd5e0;
+            background: #EAEAEA;
+            border-color: #1C1C1E;
         }
 
         .badges-summary:active {
@@ -135,7 +140,7 @@
         .badge-count {
             font-size: 14px;
             font-weight: 600;
-            color: #2d3748;
+            color: #1C1C1E;
         }
 
         .info-icon {
@@ -145,32 +150,34 @@
 
         .tabs {
             display: flex;
-            background: white;
-            border-radius: 20px;
+            background: #FFFFFF;
+            border-radius: 16px;
             padding: 5px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid #E5E5E5;
+            box-shadow: none;
             overflow-x: auto;
         }
 
         .tab {
             flex: 1;
             padding: 10px 4px;
-            background: none;
+            background: #EAEAEA;
             border: none;
-            border-radius: 15px;
+            border-radius: 12px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            color: #666;
+            transition: all 0.2s;
+            color: #1C1C1E;
             white-space: nowrap;
             min-width: 60px;
+            margin: 2px;
         }
 
         .tab.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #1C1C1E;
+            color: #FFFFFF;
         }
 
         .tab-content {
@@ -182,26 +189,28 @@
         }
 
         .card {
-            background: white;
-            border-radius: 20px;
+            background: #FFFFFF;
+            border-radius: 16px;
             padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid #E5E5E5;
+            box-shadow: none;
         }
 
         .upload-area {
-            border: 3px dashed #667eea;
-            border-radius: 15px;
+            border: 1px solid #E5E5E5;
+            border-radius: 12px;
             padding: 40px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             margin-bottom: 20px;
+            background: #FAFAFA;
         }
 
         .upload-area:hover {
-            border-color: #764ba2;
-            background: #f8f9ff;
+            border-color: #1C1C1E;
+            background: #FFFFFF;
         }
 
         .upload-area.has-image {
@@ -231,16 +240,22 @@
         input[type="text"], textarea {
             width: 100%;
             padding: 15px;
-            border: 2px solid #e0e0e0;
+            border: 1px solid #E5E5E5;
             border-radius: 10px;
             font-size: 16px;
             margin-bottom: 15px;
             font-family: inherit;
+            background: #FFFFFF;
+            color: #1C1C1E;
         }
 
         input[type="text"]:focus, textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #1C1C1E;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #B0B0B0;
         }
 
         textarea {
@@ -251,28 +266,27 @@
         .btn {
             width: 100%;
             padding: 18px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #1C1C1E;
+            color: #FFFFFF;
             border: none;
             border-radius: 12px;
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: opacity 0.2s;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
+            opacity: 0.85;
         }
 
         .btn:active {
-            transform: translateY(0);
+            opacity: 0.75;
         }
 
         .btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-            transform: none;
         }
 
         .item-list {
@@ -309,29 +323,29 @@
 
         .item-name {
             font-weight: 600;
-            color: #333;
+            color: #1C1C1E;
             margin-bottom: 5px;
         }
 
         .item-date {
             font-size: 12px;
-            color: #999;
+            color: #6B6B6B;
         }
 
         .item-note {
             font-size: 13px;
-            color: #667eea;
+            color: #6B6B6B;
             font-style: italic;
             margin-top: 8px;
             padding: 8px 12px;
-            background: rgba(102, 126, 234, 0.1);
+            background: #FAFAFA;
             border-radius: 8px;
-            border-left: 3px solid #667eea;
+            border-left: 2px solid #1C1C1E;
         }
 
         .item-points {
-            font-weight: bold;
-            color: #667eea;
+            font-weight: 700;
+            color: #1C1C1E;
             font-size: 18px;
         }
 
@@ -343,8 +357,8 @@
         }
 
         .like-btn {
-            background: none;
-            border: 2px solid #e0e0e0;
+            background: #EAEAEA;
+            border: none;
             border-radius: 20px;
             padding: 8px 16px;
             cursor: pointer;
@@ -352,22 +366,23 @@
             align-items: center;
             gap: 5px;
             font-size: 14px;
-            transition: all 0.3s;
+            color: #1C1C1E;
+            transition: all 0.2s;
         }
 
         .like-btn:hover {
-            border-color: #667eea;
+            background: #1C1C1E;
+            color: #FFFFFF;
         }
 
         .like-btn.liked {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
+            background: #1C1C1E;
+            color: #FFFFFF;
         }
 
         .comment-btn {
-            background: none;
-            border: 2px solid #e0e0e0;
+            background: #EAEAEA;
+            border: none;
             border-radius: 20px;
             padding: 8px 16px;
             cursor: pointer;
@@ -375,16 +390,18 @@
             align-items: center;
             gap: 5px;
             font-size: 14px;
-            transition: all 0.3s;
+            color: #1C1C1E;
+            transition: all 0.2s;
         }
 
         .comment-btn:hover {
-            border-color: #764ba2;
+            background: #1C1C1E;
+            color: #FFFFFF;
         }
 
         .delete-btn {
-            background: none;
-            border: 2px solid #ff4444;
+            background: transparent;
+            border: 1px solid #E5E5E5;
             border-radius: 20px;
             padding: 8px 16px;
             cursor: pointer;
@@ -392,13 +409,14 @@
             align-items: center;
             gap: 5px;
             font-size: 14px;
-            color: #ff4444;
-            transition: all 0.3s;
+            color: #6B6B6B;
+            transition: all 0.2s;
         }
 
         .delete-btn:hover {
-            background: #ff4444;
-            color: white;
+            background: #FAFAFA;
+            border-color: #DC3545;
+            color: #DC3545;
         }
 
         .comments-section {
@@ -414,20 +432,20 @@
 
         .comment {
             padding: 10px;
-            background: #f8f9ff;
+            background: #FAFAFA;
             border-radius: 10px;
             margin-bottom: 10px;
         }
 
         .comment-author {
             font-weight: 600;
-            color: #667eea;
+            color: #1C1C1E;
             font-size: 13px;
             margin-bottom: 5px;
         }
 
         .comment-text {
-            color: #333;
+            color: #6B6B6B;
             font-size: 14px;
         }
 
@@ -440,15 +458,16 @@
         .comment-input input {
             flex: 1;
             padding: 10px;
-            border: 2px solid #e0e0e0;
+            border: 1px solid #E5E5E5;
             border-radius: 10px;
             font-size: 14px;
+            color: #1C1C1E;
         }
 
         .comment-input button {
             padding: 10px 20px;
-            background: #667eea;
-            color: white;
+            background: #1C1C1E;
+            color: #FFFFFF;
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -470,17 +489,17 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #1C1C1E;
+            color: #FFFFFF;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: 600;
             margin-right: 15px;
         }
 
         .rank.top3 {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: #1C1C1E;
         }
 
         .leaderboard-info {
@@ -489,24 +508,24 @@
 
         .leaderboard-name {
             font-weight: 600;
-            color: #333;
+            color: #1C1C1E;
         }
 
         .leaderboard-items {
             font-size: 12px;
-            color: #999;
+            color: #6B6B6B;
         }
 
         .leaderboard-score {
-            font-weight: bold;
-            color: #667eea;
+            font-weight: 700;
+            color: #1C1C1E;
             font-size: 20px;
         }
 
         .empty-state {
             text-align: center;
             padding: 40px;
-            color: #999;
+            color: #6B6B6B;
         }
 
         .empty-icon {
@@ -518,33 +537,35 @@
         .category-select {
             width: 100%;
             padding: 15px;
-            border: 2px solid #e0e0e0;
+            border: 1px solid #E5E5E5;
             border-radius: 10px;
             font-size: 16px;
             margin-bottom: 15px;
             font-family: inherit;
-            background: white;
+            background: #FFFFFF;
+            color: #1C1C1E;
         }
 
         .points-info {
-            background: #f8f9ff;
+            background: #FAFAFA;
             padding: 12px;
             border-radius: 10px;
             margin-bottom: 15px;
             text-align: center;
-            color: #667eea;
+            color: #1C1C1E;
             font-weight: 600;
+            border: 1px solid #E5E5E5;
         }
 
         .loading {
             text-align: center;
             padding: 20px;
-            color: #667eea;
+            color: #6B6B6B;
         }
 
         .loading-spinner {
-            border: 3px solid #f3f4f6;
-            border-top: 3px solid #667eea;
+            border: 3px solid #E5E5E5;
+            border-top: 3px solid #1C1C1E;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -559,10 +580,9 @@
 
         .version {
             text-align: center;
-            color: white;
+            color: #B0B0B0;
             font-size: 12px;
             margin-top: 20px;
-            opacity: 0.7;
         }
 
         .badge-modal {
@@ -570,10 +590,11 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            background: white;
+            background: #FFFFFF;
             padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid #E5E5E5;
             text-align: center;
             z-index: 1000;
             transition: transform 0.3s;
@@ -605,13 +626,13 @@
 
         .badge-title {
             font-size: 24px;
-            font-weight: bold;
-            color: #667eea;
+            font-weight: 600;
+            color: #1C1C1E;
             margin-bottom: 10px;
         }
 
         .badge-desc {
-            color: #666;
+            color: #6B6B6B;
             margin-bottom: 20px;
         }
 
@@ -635,8 +656,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            background: white;
-            border-radius: 20px;
+            background: #FFFFFF;
+            border-radius: 16px;
             padding: 25px;
             width: 90%;
             max-width: 400px;
@@ -644,6 +665,8 @@
             overflow-y: auto;
             z-index: 3000;
             transition: transform 0.3s;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid #E5E5E5;
         }
 
         .badges-modal.show {
@@ -656,18 +679,19 @@
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #e2e8f0;
+            border-bottom: 1px solid #E5E5E5;
         }
 
         .badges-modal-header h3 {
             font-size: 22px;
-            color: #2d3748;
+            color: #1C1C1E;
+            font-weight: 600;
             margin: 0;
         }
 
         .badges-modal-header span {
             font-size: 14px;
-            color: #718096;
+            color: #6B6B6B;
             font-weight: 600;
         }
 
@@ -683,18 +707,19 @@
             align-items: center;
             gap: 15px;
             padding: 15px;
-            background: #f7fafc;
+            background: #F5F5F5;
             border-radius: 12px;
-            border: 2px solid #e2e8f0;
+            border: 1px solid #E5E5E5;
         }
 
         .badge-item.earned {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            border-color: #48bb78;
+            background: #1C1C1E;
+            border-color: #1C1C1E;
         }
 
         .badge-item.locked {
             opacity: 0.5;
+            background: #F5F5F5;
         }
 
         .badge-item-icon {
@@ -709,21 +734,21 @@
         .badge-item-name {
             font-size: 16px;
             font-weight: 600;
-            color: #2d3748;
+            color: #1C1C1E;
             margin-bottom: 3px;
         }
 
         .badge-item.earned .badge-item-name {
-            color: white;
+            color: #FFFFFF;
         }
 
         .badge-item-desc {
             font-size: 13px;
-            color: #718096;
+            color: #6B6B6B;
         }
 
         .badge-item.earned .badge-item-desc {
-            color: rgba(255,255,255,0.9);
+            color: rgba(255,255,255,0.8);
         }
 
         .badge-item-status {
@@ -736,7 +761,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #FAFAFA;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -748,12 +773,13 @@
         }
 
         .login-card {
-            background: white;
-            border-radius: 24px;
+            background: #FFFFFF;
+            border-radius: 16px;
             padding: 40px 30px;
             width: 90%;
             max-width: 400px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border: 1px solid #E5E5E5;
+            box-shadow: none;
             text-align: center;
         }
 
@@ -764,14 +790,14 @@
 
         .login-title {
             font-size: 24px;
-            font-weight: bold;
-            color: #333;
+            font-weight: 600;
+            color: #1C1C1E;
             margin-bottom: 8px;
         }
 
         .login-subtitle {
             font-size: 14px;
-            color: #999;
+            color: #6B6B6B;
             margin-bottom: 30px;
         }
 
@@ -792,18 +818,17 @@
         }
 
         .social-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            opacity: 0.85;
         }
 
         .social-btn:active {
-            transform: translateY(0);
+            opacity: 0.75;
         }
 
         .social-btn-google {
-            background: white;
-            color: #333;
-            border: 2px solid #e0e0e0;
+            background: #1C1C1E;
+            color: #FFFFFF;
+            border: none;
         }
 
         .social-btn-google svg {
@@ -815,23 +840,23 @@
             position: absolute;
             top: 15px;
             left: 15px;
-            background: #f0f0f0;
+            background: #EAEAEA;
             border: none;
             border-radius: 20px;
             padding: 6px 14px;
             font-size: 12px;
             font-weight: 600;
-            color: #666;
+            color: #6B6B6B;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             gap: 5px;
         }
 
         .logout-btn:hover {
-            background: #e0e0e0;
-            color: #333;
+            background: #1C1C1E;
+            color: #FFFFFF;
         }
 
         .user-profile {
@@ -847,20 +872,20 @@
             height: 36px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #667eea;
+            border: 1px solid #E5E5E5;
         }
 
         .user-avatar-placeholder {
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #1C1C1E;
+            color: #FFFFFF;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         .user-provider-badge {
@@ -868,8 +893,8 @@
             padding: 3px 8px;
             border-radius: 10px;
             font-weight: 600;
-            background: #4285F4;
-            color: white;
+            background: #1C1C1E;
+            color: #FFFFFF;
         }
 
 
@@ -888,18 +913,18 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: #f7fafc;
-            border: 2px solid #e2e8f0;
+            background: #F5F5F5;
+            border: 1px solid #E5E5E5;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             padding: 8px;
             position: relative;
         }
 
         .bingo-cell.completed {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            border-color: #38a169;
-            color: white;
+            background: #1C1C1E;
+            border-color: #1C1C1E;
+            color: #FFFFFF;
         }
 
         .bingo-cell .cell-emoji {
@@ -910,28 +935,28 @@
         .bingo-cell .cell-name {
             font-size: 11px;
             font-weight: 600;
-            color: #4a5568;
+            color: #6B6B6B;
             text-align: center;
         }
 
         .bingo-cell.completed .cell-name {
-            color: white;
+            color: #FFFFFF;
         }
 
         .bingo-cell .cell-count {
             font-size: 10px;
-            color: #718096;
+            color: #B0B0B0;
             margin-top: 2px;
         }
 
         .bingo-cell.completed .cell-count {
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .bingo-cell .cell-progress {
             width: 80%;
             height: 4px;
-            background: #e2e8f0;
+            background: #E5E5E5;
             border-radius: 2px;
             margin-top: 4px;
             overflow: hidden;
@@ -943,32 +968,33 @@
 
         .bingo-cell .cell-progress-bar {
             height: 100%;
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            background: #1C1C1E;
             border-radius: 2px;
             transition: width 0.3s;
         }
 
         .bingo-cell.completed .cell-progress-bar {
-            background: white;
+            background: #FFFFFF;
         }
 
         .bingo-lines-info {
-            background: #f7fafc;
+            background: #FAFAFA;
             padding: 12px;
             border-radius: 10px;
             margin-bottom: 15px;
             text-align: center;
+            border: 1px solid #E5E5E5;
         }
 
         .bingo-lines-info .line-count {
             font-size: 24px;
-            font-weight: bold;
-            color: #2d3748;
+            font-weight: 700;
+            color: #1C1C1E;
         }
 
         .bingo-lines-info .line-label {
             font-size: 13px;
-            color: #718096;
+            color: #B0B0B0;
             margin-top: 4px;
         }
 
@@ -980,7 +1006,7 @@
         }
 
         .bingo-stat {
-            background: #f7fafc;
+            background: #1C1C1E;
             padding: 12px 8px;
             border-radius: 10px;
             text-align: center;
@@ -988,38 +1014,44 @@
 
         .bingo-stat .stat-value {
             font-size: 20px;
-            font-weight: bold;
-            color: #2d3748;
+            font-weight: 700;
+            color: #FFFFFF;
         }
 
         .bingo-stat .stat-label {
             font-size: 11px;
-            color: #718096;
+            color: rgba(255, 255, 255, 0.7);
             margin-top: 4px;
         }
 
         .bingo-reset-btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
-            color: white;
+            background: #1C1C1E;
+            color: #FFFFFF;
             border: none;
             border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             display: none;
+            transition: opacity 0.2s;
+        }
+
+        .bingo-reset-btn:hover {
+            opacity: 0.85;
         }
 
         .space-hint {
             font-size: 13px;
-            color: #48bb78;
+            color: #1C1C1E;
             font-weight: 600;
             margin-top: -10px;
             margin-bottom: 15px;
             padding: 8px 12px;
-            background: #f0fff4;
+            background: #FAFAFA;
             border-radius: 8px;
+            border: 1px solid #E5E5E5;
             display: none;
         }
 
@@ -1055,24 +1087,24 @@
         }
 
         .achievement-title {
-            color: #ffd700;
+            color: #FFFFFF;
             font-size: 28px;
-            font-weight: bold;
+            font-weight: 600;
             margin-top: 20px;
             text-align: center;
         }
 
         .achievement-subtitle {
-            color: white;
+            color: rgba(255, 255, 255, 0.8);
             font-size: 18px;
             margin-top: 10px;
             text-align: center;
         }
 
         .achievement-points {
-            color: #48bb78;
+            color: #FFFFFF;
             font-size: 36px;
-            font-weight: bold;
+            font-weight: 700;
             margin-top: 15px;
         }
 
@@ -1115,8 +1147,8 @@
         }
 
         .nickname-card {
-            background: white;
-            border-radius: 24px;
+            background: #FFFFFF;
+            border-radius: 16px;
             padding: 40px 30px;
             width: 90%;
             max-width: 400px;
@@ -1125,12 +1157,13 @@
 
         .nickname-card h2 {
             font-size: 28px;
-            color: #2d3748;
+            color: #1C1C1E;
+            font-weight: 600;
             margin-bottom: 10px;
         }
 
         .nickname-card p {
-            color: #718096;
+            color: #6B6B6B;
             margin-bottom: 20px;
             font-size: 14px;
         }
@@ -1138,39 +1171,40 @@
         .nickname-card input {
             width: 100%;
             padding: 15px;
-            border: 2px solid #e2e8f0;
+            border: 1px solid #E5E5E5;
             border-radius: 12px;
             font-size: 16px;
             margin-bottom: 15px;
             text-align: center;
             box-sizing: border-box;
+            color: #1C1C1E;
         }
 
         .nickname-card input:focus {
             outline: none;
-            border-color: #4a5568;
+            border-color: #1C1C1E;
         }
 
         .nickname-btn {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-            color: white;
+            background: #1C1C1E;
+            color: #FFFFFF;
             border: none;
             border-radius: 12px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: opacity 0.2s;
         }
 
         .nickname-btn:active {
-            transform: scale(0.95);
+            opacity: 0.75;
         }
 
         .privacy-note {
             font-size: 12px;
-            color: #48bb78 !important;
+            color: #6B6B6B !important;
             margin-top: 15px;
             margin-bottom: 0 !important;
         }
@@ -1182,7 +1216,7 @@
         <div class="login-card">
             <div class="login-logo">📅</div>
             <div class="login-title">Declutter Daily</div>
-            <div class="login-subtitle">One item at a time ✨</div>
+            <div class="login-subtitle">One item at a time</div>
 
             <button class="social-btn social-btn-google" id="googleLoginBtn" onclick="handleGoogleLogin()">
                 <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
@@ -1194,7 +1228,7 @@
     <!-- Nickname Setup Modal -->
     <div class="nickname-modal" id="nicknameModal">
         <div class="nickname-card">
-            <h2>Welcome! 👋</h2>
+            <h2>Welcome</h2>
             <p>Choose your display name</p>
             <input type="text"
                    id="nicknameSetup"
@@ -1204,7 +1238,7 @@
                 Start Decluttering!
             </button>
             <p class="privacy-note">
-                🔒 Your real name stays private
+                Your real name stays private
             </p>
         </div>
     </div>
@@ -1216,40 +1250,40 @@
                 <div class="online-dot"></div>
                 Online
             </div>
-            <h1>📅 Declutter Daily</h1>
+            <h1>Declutter Daily</h1>
             <div class="score-display" id="totalScore">0</div>
             <div class="score-label">Total Points</div>
-            <div class="streak-badge" id="streakBadge">🔥 0 Day Streak</div>
+            <div class="streak-badge" id="streakBadge">0 Day Streak</div>
             <div class="user-profile" id="userProfile">
                 <div class="user-avatar-placeholder" id="userAvatar">?</div>
                 <input type="text" class="username-input" id="usernameInput" placeholder="Enter nickname" maxlength="15">
                 <span class="user-provider-badge" id="providerBadge"></span>
             </div>
             <div class="badges-summary" id="badgesSummary" onclick="showBadgesModal()">
-                <span class="badge-count">🏆 <span id="badgeCount">0</span> Badges</span>
-                <span class="info-icon">ℹ️</span>
+                <span class="badge-count"><span id="badgeCount">0</span> Badges</span>
+                <span class="info-icon" style="font-size: 14px; color: #B0B0B0;">i</span>
             </div>
         </div>
 
         <div class="tabs">
-            <button class="tab active" id="addTabBtn">➕ Add</button>
-            <button class="tab" id="bingoTabBtn">🎲 Bingo</button>
-            <button class="tab" id="historyTabBtn">📋 Feed</button>
-            <button class="tab" id="calendarTabBtn">📅 Calendar</button>
-            <button class="tab" id="leaderboardTabBtn">🏆 Ranks</button>
-            <button class="tab" id="shareTabBtn">📤 Share</button>
+            <button class="tab active" id="addTabBtn">Add</button>
+            <button class="tab" id="bingoTabBtn">Bingo</button>
+            <button class="tab" id="historyTabBtn">Feed</button>
+            <button class="tab" id="calendarTabBtn">Calendar</button>
+            <button class="tab" id="leaderboardTabBtn">Ranks</button>
+            <button class="tab" id="shareTabBtn">Share</button>
         </div>
 
         <div id="addTab" class="tab-content active">
             <div class="card">
-                <h2 style="margin-bottom: 20px; color: #333;">What are you letting go?</h2>
+                <h2 style="margin-bottom: 20px; color: #1C1C1E; font-weight: 600;">What are you letting go?</h2>
                 
                 <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
                     <img id="previewImage" class="preview-image" alt="Preview">
                     <div id="uploadPrompt">
                         <div class="upload-icon">📸</div>
-                        <div style="color: #667eea; font-weight: 600;">Photo</div>
-                        <div style="color: #999; font-size: 14px; margin-top: 5px;"></div>
+                        <div style="color: #6B6B6B; font-weight: 600;">Photo</div>
+                        <div style="color: #B0B0B0; font-size: 14px; margin-top: 5px;"></div>
                     </div>
                 </div>
                 <input type="file" id="fileInput" accept="image/*">
@@ -1291,14 +1325,14 @@
 
                 <textarea id="itemNote" placeholder="memo"></textarea>
 
-                <button class="btn" id="submitBtn" onclick="addItem()">✅ Complete!</button>
+                <button class="btn" id="submitBtn" onclick="addItem()">Submit</button>
             </div>
         </div>
 
         <div id="bingoTab" class="tab-content">
             <div class="card">
-                <h2 style="margin-bottom: 20px; color: #333;">🎲 Space Bingo</h2>
-                <p style="color: #666; margin-bottom: 15px; text-align: center; font-size: 14px;">Declutter 10 items per space for bingo! Complete lines for bonus!</p>
+                <h2 style="margin-bottom: 20px; color: #1C1C1E; font-weight: 600;">Space Bingo</h2>
+                <p style="color: #6B6B6B; margin-bottom: 15px; text-align: center; font-size: 14px;">Declutter 10 items per space for bingo! Complete lines for bonus!</p>
 
                 <div class="bingo-stats">
                     <div class="bingo-stat">
@@ -1322,13 +1356,13 @@
                     <div class="line-label">3 Horizontal + 3 Vertical + 2 Diagonal</div>
                 </div>
 
-                <button class="bingo-reset-btn" id="bingoResetBtn">🔄 Reset Bingo</button>
+                <button class="bingo-reset-btn" id="bingoResetBtn">New Round</button>
             </div>
         </div>
 
         <div id="historyTab" class="tab-content">
             <div class="card">
-                <h2 style="margin-bottom: 20px; color: #333;">Community Feed</h2>
+                <h2 style="margin-bottom: 20px; color: #1C1C1E; font-weight: 600;">Community Feed</h2>
                 <div class="item-list" id="itemList">
                     <div class="loading">
                         <div class="loading-spinner"></div>
@@ -1341,28 +1375,28 @@
         <div id="calendarTab" class="tab-content">
             <div class="card" style="padding: 15px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                    <button onclick="changeMonth(-1)" style="background: none; border: 2px solid #667eea; color: #667eea; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px;">←</button>
-                    <h2 id="calendarTitle" style="color: #333; margin: 0; font-size: 16px;">February 2026</h2>
-                    <button onclick="changeMonth(1)" style="background: none; border: 2px solid #667eea; color: #667eea; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px;">→</button>
+                    <button onclick="changeMonth(-1)" style="background: none; border: 1px solid #E5E5E5; color: #1C1C1E; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px;">←</button>
+                    <h2 id="calendarTitle" style="color: #1C1C1E; margin: 0; font-size: 16px; font-weight: 600;">February 2026</h2>
+                    <button onclick="changeMonth(1)" style="background: none; border: 1px solid #E5E5E5; color: #1C1C1E; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px;">→</button>
                 </div>
                 <div id="calendar" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px;"></div>
-                <div style="margin-top: 12px; padding: 10px; background: #f8f9ff; border-radius: 8px;">
-                    <div style="display: flex; gap: 10px; justify-content: center; font-size: 11px;">
-                        <span>🔥 Decluttered</span>
-                        <span style="color: #999;">⚪ Not yet</span>
+                <div style="margin-top: 12px; padding: 10px; background: #FAFAFA; border-radius: 8px; border: 1px solid #E5E5E5;">
+                    <div style="display: flex; gap: 10px; justify-content: center; font-size: 11px; color: #6B6B6B;">
+                        <span>● Decluttered</span>
+                        <span style="color: #B0B0B0;">○ Not yet</span>
                     </div>
                 </div>
-                <div id="monthStats" style="margin-top: 12px; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white; text-align: center;">
-                    <div style="font-size: 11px; opacity: 0.9;">This Month's Stats</div>
-                    <div style="font-size: 24px; font-weight: bold; margin: 6px 0;" id="monthItemCount">0</div>
-                    <div style="font-size: 11px; opacity: 0.9;">items • <span id="monthPoints">0</span> pts earned</div>
+                <div id="monthStats" style="margin-top: 12px; padding: 12px; background: #1C1C1E; border-radius: 10px; color: #FFFFFF; text-align: center;">
+                    <div style="font-size: 11px; opacity: 0.8;">This Month's Stats</div>
+                    <div style="font-size: 24px; font-weight: 700; margin: 6px 0;" id="monthItemCount">0</div>
+                    <div style="font-size: 11px; opacity: 0.8;">items • <span id="monthPoints">0</span> pts earned</div>
                 </div>
             </div>
         </div>
 
         <div id="leaderboardTab" class="tab-content">
             <div class="card">
-                <h2 style="margin-bottom: 20px; color: #333;">Global Rankings</h2>
+                <h2 style="margin-bottom: 20px; color: #1C1C1E; font-weight: 600;">Global Rankings</h2>
                 <div id="leaderboardList">
                     <div class="loading">
                         <div class="loading-spinner"></div>
@@ -1374,31 +1408,31 @@
 
         <div id="shareTab" class="tab-content">
             <div class="card">
-                <h2 style="margin-bottom: 20px; color: #333;">📤 Share Story</h2>
-                <p style="color: #666; margin-bottom: 20px; text-align: center;">Select a template and download to share on Instagram Stories!</p>
-                
+                <h2 style="margin-bottom: 20px; color: #1C1C1E; font-weight: 600;">Share Story</h2>
+                <p style="color: #6B6B6B; margin-bottom: 20px; text-align: center;">Select a template and download to share on Instagram Stories!</p>
+
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-                    <button onclick="generateStoryTemplate('minimal')" style="padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
-                        ✨ Minimal
+                    <button onclick="generateStoryTemplate('minimal')" style="padding: 15px; background: #1C1C1E; color: #FFFFFF; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
+                        Minimal
                     </button>
-                    <button onclick="generateStoryTemplate('stats')" style="padding: 15px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
-                        📊 Stats
+                    <button onclick="generateStoryTemplate('stats')" style="padding: 15px; background: #EAEAEA; color: #1C1C1E; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
+                        Stats
                     </button>
-                    <button onclick="generateStoryTemplate('streak')" style="padding: 15px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
-                        🔥 Streak
+                    <button onclick="generateStoryTemplate('streak')" style="padding: 15px; background: #EAEAEA; color: #1C1C1E; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
+                        Streak
                     </button>
-                    <button onclick="generateStoryTemplate('grid')" style="padding: 15px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
-                        📸 Photo Grid
+                    <button onclick="generateStoryTemplate('grid')" style="padding: 15px; background: #EAEAEA; color: #1C1C1E; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
+                        Photo Grid
                     </button>
                 </div>
 
-                <canvas id="storyCanvas" style="width: 100%; max-width: 400px; margin: 0 auto; display: none; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);"></canvas>
-                
+                <canvas id="storyCanvas" style="width: 100%; max-width: 400px; margin: 0 auto; display: none; border-radius: 15px; border: 1px solid #E5E5E5;"></canvas>
+
                 <div id="downloadSection" style="display: none; text-align: center; margin-top: 20px;">
-                    <button onclick="downloadStoryImage()" style="width: 100%; padding: 18px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: 600; cursor: pointer;">
-                        📥 Download Image
+                    <button onclick="downloadStoryImage()" style="width: 100%; padding: 18px; background: #1C1C1E; color: #FFFFFF; border: none; border-radius: 12px; font-size: 18px; font-weight: 600; cursor: pointer;">
+                        Download Image
                     </button>
-                    <p style="color: #999; font-size: 13px; margin-top: 10px;">Download and upload to Instagram Stories!</p>
+                    <p style="color: #B0B0B0; font-size: 13px; margin-top: 10px;">Download and upload to Instagram Stories!</p>
                 </div>
             </div>
         </div>
@@ -1419,7 +1453,7 @@
     <div class="badges-modal-overlay" id="badgesOverlay" onclick="hideBadgesModal()"></div>
     <div class="badges-modal" id="badgesModal">
         <div class="badges-modal-header">
-            <h3>🏆 Your Badges</h3>
+            <h3>Your Badges</h3>
             <span id="badgesProgress">0/7</span>
         </div>
         <div class="badges-list" id="badgesList">
@@ -1547,10 +1581,10 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                 const count = bingoProgress[spaceKey] || 0;
                 const space = bingoSpaces.find(s => s.key === spaceKey);
                 if (count >= 10) {
-                    hint.textContent = `${space.name}: ✅ Complete! Bingo achieved!`;
+                    hint.textContent = `${space.name}: Complete! Bingo achieved!`;
                 } else {
                     const remaining = 10 - count;
-                    hint.textContent = `${space.name}: ${count}/10 - ${remaining} more! 🎯`;
+                    hint.textContent = `${space.name}: ${count}/10 - ${remaining} more`;
                 }
                 hint.style.display = 'block';
             } else {
@@ -1597,7 +1631,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         }
 
         function spawnConfetti() {
-            const colors = ['#ffd700', '#ff6b6b', '#48bb78', '#4299e1', '#ed64a6', '#ecc94b', '#9f7aea', '#fc8181', '#68d391', '#63b3ed'];
+            const colors = ['#1C1C1E', '#6B6B6B', '#1C1C1E', '#6B6B6B', '#1C1C1E', '#6B6B6B', '#1C1C1E', '#6B6B6B', '#1C1C1E', '#6B6B6B'];
             for (let i = 0; i < 20; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
@@ -1680,11 +1714,11 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
 
                 setTimeout(() => {
                     if (newCompleted === 9 && oldCompleted < 9) {
-                        showAchievement('🎉 Bingo All Clear!', 'All 9 spaces completed!', bonusPoints);
+                        showAchievement('Bingo All Clear!', 'All 9 spaces completed!', bonusPoints);
                     } else if (linesEarned > 0) {
-                        showAchievement('🎲 Bingo!', `${spaceName} done + ${linesEarned} line bingo!`, bonusPoints);
+                        showAchievement('Bingo!', `${spaceName} done + ${linesEarned} line bingo!`, bonusPoints);
                     } else {
-                        showAchievement('✨ Space Complete!', `${spaceName} 10 items decluttered!`, bonusPoints);
+                        showAchievement('Space Complete!', `${spaceName} 10 items decluttered!`, bonusPoints);
                     }
                 }, 500);
             }
@@ -2038,7 +2072,7 @@ Don't copy examples - be creative.`
                         lastDeclutterDate: serverTimestamp()
                     });
                     
-                    document.getElementById('streakBadge').textContent = `🔥 ${userStreak} Day Streak`;
+                    document.getElementById('streakBadge').textContent = `${userStreak} Day Streak`;
                     checkBadges(null, userStreak);
                 }
             } catch (error) {
@@ -2103,7 +2137,7 @@ Don't copy examples - be creative.`
                             <div class="badge-item-name">${badge.name}</div>
                             <div class="badge-item-desc">${badge.desc}</div>
                         </div>
-                        <div class="badge-item-status">${earned ? '✅' : '🔒'}</div>
+                        <div class="badge-item-status" style="color: ${earned ? '#FFFFFF' : '#B0B0B0'}">${earned ? '●' : '○'}</div>
                     </div>
                 `;
             }).join('');
@@ -2336,7 +2370,7 @@ Don't copy examples - be creative.`
                 document.getElementById('spaceHint').style.display = 'none';
                 currentImage = null;
 
-                alert(`🎉 +${points} pts earned!\n\n${aiMessage}\n\nTotal: ${totalScore} pts!`);
+                alert(`+${points} pts earned!\n\n${aiMessage}\n\nTotal: ${totalScore} pts`);
 
                 switchTab('history');
             } catch (error) {
@@ -2344,7 +2378,7 @@ Don't copy examples - be creative.`
                 alert('Upload failed! Please try again.');
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = '✅ Complete!';
+                submitBtn.textContent = 'Submit';
             }
         };
 
@@ -2534,13 +2568,13 @@ Don't copy examples - be creative.`
                         const hasNote = item.note && item.note.trim();
                         
                         return `
-                            <div class="item" style="${isMyItem ? 'background: #f8f9ff;' : ''}">
+                            <div class="item" style="${isMyItem ? 'background: #FAFAFA;' : ''}">
                                 <div class="item-header">
                                     <img src="${item.image}" alt="${item.name}" class="item-image">
                                     <div class="item-info">
                                         <div class="item-name">${item.name}</div>
                                         <div class="item-date">${item.userName || 'Anonymous'} • ${dateStr}</div>
-                                        ${hasNote ? `<div class="item-note">💭 "${item.note}"</div>` : ''}
+                                        ${hasNote ? `<div class="item-note">"${item.note}"</div>` : ''}
                                     </div>
                                     <div class="item-points">+${item.points}</div>
                                 </div>
@@ -2611,11 +2645,11 @@ Don't copy examples - be creative.`
                         const userStreak = user.streak || 0;
                         
                         return `
-                            <div class="leaderboard-item" style="${isCurrentUser ? 'background: #f8f9ff;' : ''}">
+                            <div class="leaderboard-item" style="${isCurrentUser ? 'background: #FAFAFA;' : ''}">
                                 <div class="rank ${rankClass}">${rank}</div>
                                 <div class="leaderboard-info">
                                     <div class="leaderboard-name">${user.name || 'Anonymous'}${isCurrentUser ? ' 👤' : ''}</div>
-                                    <div class="leaderboard-items">${user.itemCount || 0} items • 🔥 ${userStreak} days</div>
+                                    <div class="leaderboard-items">${user.itemCount || 0} items • ${userStreak} day streak</div>
                                 </div>
                                 <div class="leaderboard-score">${user.score || 0}</div>
                             </div>
@@ -2721,9 +2755,9 @@ Don't copy examples - be creative.`
             const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             dayNames.forEach((day, index) => {
                 const dayHeader = document.createElement('div');
-                dayHeader.style.cssText = 'text-align: center; font-weight: 600; padding: 4px 2px; color: #666; font-size: 10px;';
-                if (index === 0) dayHeader.style.color = '#ff4444';
-                if (index === 6) dayHeader.style.color = '#4444ff';
+                dayHeader.style.cssText = 'text-align: center; font-weight: 600; padding: 4px 2px; color: #6B6B6B; font-size: 10px;';
+                if (index === 0) dayHeader.style.color = '#1C1C1E';
+                if (index === 6) dayHeader.style.color = '#1C1C1E';
                 dayHeader.textContent = day;
                 calendar.appendChild(dayHeader);
             });
@@ -2751,8 +2785,8 @@ Don't copy examples - be creative.`
                     position: relative;
                     cursor: pointer;
                     transition: all 0.3s;
-                    ${hasItem ? 'background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);' : 'background: #f0f0f0;'}
-                    ${isToday ? 'border: 2px solid #667eea;' : ''}
+                    ${hasItem ? 'background: #1C1C1E;' : 'background: #F5F5F5;'}
+                    ${isToday ? 'border: 2px solid #1C1C1E;' : ''}
                     font-size: 10px;
                 `;
                 
@@ -2760,20 +2794,20 @@ Don't copy examples - be creative.`
                 dayNumber.style.cssText = `
                     font-size: 11px;
                     font-weight: 600;
-                    ${hasItem ? 'color: white;' : 'color: #999;'}
+                    ${hasItem ? 'color: #FFFFFF;' : 'color: #B0B0B0;'}
                 `;
                 dayNumber.textContent = day;
                 
                 if (hasItem) {
                     const flame = document.createElement('div');
-                    flame.style.cssText = 'font-size: 14px; margin-top: 1px; line-height: 1;';
-                    flame.textContent = '🔥';
+                    flame.style.cssText = 'font-size: 10px; margin-top: 1px; line-height: 1; color: #FFFFFF;';
+                    flame.textContent = '●';
                     dayCell.appendChild(dayNumber);
                     dayCell.appendChild(flame);
                     
                     if (hasItem.count > 1) {
                         const count = document.createElement('div');
-                        count.style.cssText = 'font-size: 8px; color: white; font-weight: 600; line-height: 1;';
+                        count.style.cssText = 'font-size: 8px; color: #FFFFFF; font-weight: 600; line-height: 1;';
                         count.textContent = `${hasItem.count}`;
                         dayCell.appendChild(count);
                     }
@@ -2828,51 +2862,45 @@ Don't copy examples - be creative.`
         };
 
         function drawMinimalTemplate(ctx, userData, items) {
-            const gradient = ctx.createLinearGradient(0, 0, 0, 1920);
-            gradient.addColorStop(0, '#667eea');
-            gradient.addColorStop(1, '#764ba2');
-            ctx.fillStyle = gradient;
+            ctx.fillStyle = '#1C1C1E';
             ctx.fillRect(0, 0, 1080, 1920);
-            
-            ctx.fillStyle = 'white';
+
+            ctx.fillStyle = '#FFFFFF';
             ctx.font = 'bold 80px sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('📅 Declutter Daily', 540, 300);
-            
+            ctx.fillText('Declutter Daily', 540, 300);
+
             ctx.font = 'bold 180px sans-serif';
             ctx.fillText(userData.score || 0, 540, 800);
-            
+
             ctx.font = '60px sans-serif';
             ctx.fillText('POINTS', 540, 900);
-            
+
             ctx.font = 'bold 50px sans-serif';
             ctx.fillText(`${items.length} items decluttered`, 540, 1100);
-            
+
             ctx.font = '50px sans-serif';
-            ctx.fillText(`🔥 ${userData.streak || 0} day streak`, 540, 1200);
-            
+            ctx.fillText(`${userData.streak || 0} day streak`, 540, 1200);
+
             ctx.font = 'bold 55px sans-serif';
             ctx.fillText(`- ${userName} -`, 540, 1500);
-            
+
             ctx.font = '40px sans-serif';
-            ctx.fillStyle = 'rgba(255,255,255,0.8)';
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
             ctx.fillText('Practicing Minimal Life', 540, 1700);
         }
 
         function drawStatsTemplate(ctx, userData, items) {
-            ctx.fillStyle = '#f8f9ff';
+            ctx.fillStyle = '#FAFAFA';
             ctx.fillRect(0, 0, 1080, 1920);
-            
-            const headerGradient = ctx.createLinearGradient(0, 0, 0, 400);
-            headerGradient.addColorStop(0, '#667eea');
-            headerGradient.addColorStop(1, '#764ba2');
-            ctx.fillStyle = headerGradient;
+
+            ctx.fillStyle = '#1C1C1E';
             ctx.fillRect(0, 0, 1080, 400);
-            
-            ctx.fillStyle = 'white';
+
+            ctx.fillStyle = '#FFFFFF';
             ctx.font = 'bold 70px sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('📊 My Declutter Stats', 540, 250);
+            ctx.fillText('My Declutter Stats', 540, 250);
             
             const categoryCount = {};
             items.forEach(item => {
@@ -2898,20 +2926,20 @@ Don't copy examples - be creative.`
             categories.forEach(cat => {
                 const count = categoryCount[cat.key] || 0;
                 
-                ctx.fillStyle = 'white';
-                ctx.shadowColor = 'rgba(0,0,0,0.1)';
-                ctx.shadowBlur = 20;
+                ctx.fillStyle = '#FFFFFF';
+                ctx.shadowColor = 'rgba(0,0,0,0.05)';
+                ctx.shadowBlur = 10;
                 ctx.fillRect(80, y - 80, 920, 120);
                 ctx.shadowBlur = 0;
-                
+
                 ctx.font = '60px sans-serif';
                 ctx.fillText(cat.emoji, 120, y);
-                
-                ctx.fillStyle = '#333';
+
+                ctx.fillStyle = '#1C1C1E';
                 ctx.font = 'bold 50px sans-serif';
                 ctx.fillText(cat.name, 220, y);
-                
-                ctx.fillStyle = '#667eea';
+
+                ctx.fillStyle = '#1C1C1E';
                 ctx.font = 'bold 60px sans-serif';
                 ctx.textAlign = 'right';
                 ctx.fillText(`${count}`, 950, y);
@@ -2920,57 +2948,50 @@ Don't copy examples - be creative.`
                 y += 180;
             });
             
-            ctx.fillStyle = '#667eea';
+            ctx.fillStyle = '#1C1C1E';
             ctx.font = 'bold 55px sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText(`Total ${items.length} items • ${userData.score || 0} pts`, 540, 1750);
         }
 
         function drawStreakTemplate(ctx, userData) {
-            const gradient = ctx.createLinearGradient(0, 0, 0, 1920);
-            gradient.addColorStop(0, '#f093fb');
-            gradient.addColorStop(1, '#f5576c');
-            ctx.fillStyle = gradient;
+            ctx.fillStyle = '#1C1C1E';
             ctx.fillRect(0, 0, 1080, 1920);
-            
-            ctx.font = '300px sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('🔥', 540, 650);
-            
-            ctx.fillStyle = 'white';
+
+            ctx.fillStyle = '#FFFFFF';
             ctx.font = 'bold 200px sans-serif';
-            ctx.fillText(userData.streak || 0, 540, 1000);
-            
+            ctx.textAlign = 'center';
+            ctx.fillText(userData.streak || 0, 540, 800);
+
             ctx.font = 'bold 80px sans-serif';
-            ctx.fillText('Day Streak', 540, 1120);
-            
+            ctx.fillText('Day Streak', 540, 940);
+
             ctx.font = '50px sans-serif';
             const streak = userData.streak || 0;
             let message = 'Practicing daily!';
             if (streak >= 30) message = 'One month achieved!';
             else if (streak >= 7) message = 'One week achieved!';
             else if (streak >= 3) message = 'Building good habits!';
-            
-            ctx.fillText(message, 540, 1400);
-            
+
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.fillText(message, 540, 1200);
+
+            ctx.fillStyle = '#FFFFFF';
             ctx.font = 'bold 55px sans-serif';
-            ctx.fillText(`- ${userName} -`, 540, 1650);
+            ctx.fillText(`- ${userName} -`, 540, 1500);
         }
 
         async function drawGridTemplate(ctx, userData, items) {
-            ctx.fillStyle = 'white';
+            ctx.fillStyle = '#FFFFFF';
             ctx.fillRect(0, 0, 1080, 1920);
-            
-            const headerGradient = ctx.createLinearGradient(0, 0, 0, 350);
-            headerGradient.addColorStop(0, '#43e97b');
-            headerGradient.addColorStop(1, '#38f9d7');
-            ctx.fillStyle = headerGradient;
+
+            ctx.fillStyle = '#1C1C1E';
             ctx.fillRect(0, 0, 1080, 350);
-            
-            ctx.fillStyle = 'white';
+
+            ctx.fillStyle = '#FFFFFF';
             ctx.font = 'bold 70px sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText(`📸 ${items.length} items decluttered!`, 540, 220);
+            ctx.fillText(`${items.length} items decluttered!`, 540, 220);
             
             const recentItems = items.slice(0, 6);
             const gridSize = 320;
@@ -3001,25 +3022,25 @@ Don't copy examples - be creative.`
                             img.onerror = resolve;
                         });
                     } catch (e) {
-                        ctx.fillStyle = '#e0e0e0';
+                        ctx.fillStyle = '#E5E5E5';
                         ctx.beginPath();
                         ctx.roundRect(x, y, gridSize, gridSize, 20);
                         ctx.fill();
                     }
                 } else {
-                    ctx.fillStyle = '#f0f0f0';
+                    ctx.fillStyle = '#F5F5F5';
                     ctx.beginPath();
                     ctx.roundRect(x, y, gridSize, gridSize, 20);
                     ctx.fill();
                 }
             }
             
-            ctx.fillStyle = '#333';
+            ctx.fillStyle = '#1C1C1E';
             ctx.font = 'bold 50px sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText(`🏆 ${userData.score || 0} pts`, 270, 1650);
-            ctx.fillText(`🔥 ${userData.streak || 0} days`, 810, 1650);
-            
+            ctx.fillText(`${userData.score || 0} pts`, 270, 1650);
+            ctx.fillText(`${userData.streak || 0} days`, 810, 1650);
+
             ctx.font = 'bold 55px sans-serif';
             ctx.fillText(`- ${userName} -`, 540, 1800);
         }
@@ -3046,7 +3067,7 @@ Don't copy examples - be creative.`
                 userStreak = userData.streak || 0;
                 userBadges = userData.badges || [];
                 bingoProgress = userData.bingoProgress || {};
-                document.getElementById('streakBadge').textContent = `🔥 ${userStreak} Day Streak`;
+                document.getElementById('streakBadge').textContent = `${userStreak} Day Streak`;
                 renderBadges();
                 renderBingoGrid();
             }
