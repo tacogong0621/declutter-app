@@ -833,6 +833,9 @@
                     <option value="kitchen">Kitchenware (+10 pts)</option>
                     <option value="shoes">Shoes (+10 pts)</option>
                     <option value="food">Food (+5 pts)</option>
+                    <option value="toys">Toys (+5 pts)</option>
+                    <option value="sports">Sports Equipment (+15 pts)</option>
+                    <option value="digital">Digital Photos/Docs (+5 pts)</option>
                     <option value="etc">Other (+5 pts)</option>
                 </select>
 
@@ -1054,6 +1057,9 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             'kitchen': 10,
             'shoes': 10,
             'food': 5,
+            'toys': 5,
+            'sports': 15,
+            'digital': 5,
             'etc': 5
         };
 
@@ -1170,6 +1176,9 @@ Don't copy examples - be creative.`
                 'kitchen': 'Kitchenware',
                 'shoes': 'Shoes',
                 'food': 'Food',
+                'toys': 'Toys',
+                'sports': 'Sports Equipment',
+                'digital': 'Digital Photos/Docs',
                 'etc': 'Other'
             };
             return names[category] || category;
@@ -2013,6 +2022,9 @@ Don't copy examples - be creative.`
                 { key: 'kitchen', name: 'Kitchenware', emoji: '🍳' },
                 { key: 'shoes', name: 'Shoes', emoji: '👟' },
                 { key: 'food', name: 'Food', emoji: '🍔' },
+                { key: 'toys', name: 'Toys', emoji: '🧸' },
+                { key: 'sports', name: 'Sports Equipment', emoji: '🏋️' },
+                { key: 'digital', name: 'Digital Photos/Docs', emoji: '📄' },
                 { key: 'etc', name: 'Other', emoji: '📦' }
             ];
             
