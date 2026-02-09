@@ -109,29 +109,37 @@
             display: inline-block;
         }
 
-        .badges-container {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 15px;
-        }
-
-        .badge {
-            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
+        .badges-summary {
+            display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            background: #f7fafc;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+            border: 2px solid #e2e8f0;
         }
 
-        .badge.locked {
-            background: #e0e0e0;
-            color: #999;
+        .badges-summary:hover {
+            background: #e2e8f0;
+            border-color: #cbd5e0;
+        }
+
+        .badges-summary:active {
+            transform: scale(0.95);
+        }
+
+        .badge-count {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .info-icon {
+            font-size: 16px;
+            opacity: 0.6;
         }
 
         .tabs {
@@ -604,6 +612,121 @@
         .badge-desc {
             color: #666;
             margin-bottom: 20px;
+        }
+
+        .badges-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            z-index: 2999;
+        }
+
+        .badges-modal-overlay.show {
+            display: block;
+        }
+
+        .badges-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 3000;
+            transition: transform 0.3s;
+        }
+
+        .badges-modal.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .badges-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .badges-modal-header h3 {
+            font-size: 22px;
+            color: #2d3748;
+            margin: 0;
+        }
+
+        .badges-modal-header span {
+            font-size: 14px;
+            color: #718096;
+            font-weight: 600;
+        }
+
+        .badges-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .badge-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .badge-item.earned {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            border-color: #48bb78;
+        }
+
+        .badge-item.locked {
+            opacity: 0.5;
+        }
+
+        .badge-item-icon {
+            font-size: 32px;
+            line-height: 1;
+        }
+
+        .badge-item-info {
+            flex: 1;
+        }
+
+        .badge-item-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 3px;
+        }
+
+        .badge-item.earned .badge-item-name {
+            color: white;
+        }
+
+        .badge-item-desc {
+            font-size: 13px;
+            color: #718096;
+        }
+
+        .badge-item.earned .badge-item-desc {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .badge-item-status {
+            font-size: 20px;
         }
 
         .login-screen {
@@ -1101,7 +1224,10 @@
                 <input type="text" class="username-input" id="usernameInput" placeholder="Enter nickname" maxlength="15">
                 <span class="user-provider-badge" id="providerBadge"></span>
             </div>
-            <div class="badges-container" id="badgesContainer"></div>
+            <div class="badges-summary" id="badgesSummary" onclick="showBadgesModal()">
+                <span class="badge-count">🏆 <span id="badgeCount">0</span> Badges</span>
+                <span class="info-icon">ℹ️</span>
+            </div>
         </div>
 
         <div class="tabs">
@@ -1286,6 +1412,19 @@
         <div class="badge-title" id="badgeModalTitle">New Badge Earned!</div>
         <div class="badge-desc" id="badgeModalDesc">First item decluttered!</div>
         <button class="btn" onclick="closeBadgeModal()">OK</button>
+    </div>
+
+    <!-- Badges Detail Modal -->
+    <div class="badges-modal-overlay" id="badgesOverlay" onclick="hideBadgesModal()"></div>
+    <div class="badges-modal" id="badgesModal">
+        <div class="badges-modal-header">
+            <h3>🏆 Your Badges</h3>
+            <span id="badgesProgress">0/7</span>
+        </div>
+        <div class="badges-list" id="badgesList">
+            <!-- Dynamically filled -->
+        </div>
+        <button class="btn" onclick="hideBadgesModal()">Close</button>
     </div>
 
     <!-- Achievement Overlay -->
@@ -1943,15 +2082,40 @@ Don't copy examples - be creative.`
         }
 
         function renderBadges() {
-            const container = document.getElementById('badgesContainer');
-            container.innerHTML = Object.entries(badges).map(([key, badge]) => {
+            const earnedCount = userBadges.length;
+            const totalCount = Object.keys(badges).length;
+
+            // Update summary
+            document.getElementById('badgeCount').textContent = earnedCount;
+
+            // Update modal
+            document.getElementById('badgesProgress').textContent = `${earnedCount}/${totalCount}`;
+
+            // Render badge list
+            const badgesList = document.getElementById('badgesList');
+            badgesList.innerHTML = Object.entries(badges).map(([key, badge]) => {
                 const earned = userBadges.includes(key);
                 return `
-                    <div class="badge ${earned ? '' : 'locked'}" title="${badge.desc}">
-                        ${badge.icon} ${badge.name}
+                    <div class="badge-item ${earned ? 'earned' : 'locked'}">
+                        <div class="badge-item-icon">${badge.icon}</div>
+                        <div class="badge-item-info">
+                            <div class="badge-item-name">${badge.name}</div>
+                            <div class="badge-item-desc">${badge.desc}</div>
+                        </div>
+                        <div class="badge-item-status">${earned ? '✅' : '🔒'}</div>
                     </div>
                 `;
             }).join('');
+        }
+
+        function showBadgesModal() {
+            document.getElementById('badgesModal').classList.add('show');
+            document.getElementById('badgesOverlay').classList.add('show');
+        }
+
+        function hideBadgesModal() {
+            document.getElementById('badgesModal').classList.remove('show');
+            document.getElementById('badgesOverlay').classList.remove('show');
         }
 
         function showBadgeModal(badge) {
