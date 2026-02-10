@@ -272,9 +272,19 @@
             display: block;
         }
 
-        .upload-icon {
-            font-size: 40px;
-            margin-bottom: 8px;
+        .upload-icon-svg {
+            display: inline-block;
+            margin-bottom: 12px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .upload-area:hover .upload-icon-svg {
+            opacity: 1;
+        }
+
+        .upload-icon-svg svg {
+            display: block;
         }
 
         .upload-text {
@@ -1683,9 +1693,19 @@
 
                     <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
                         <img id="previewImage" class="preview-image" alt="Preview">
-                        <div id="uploadPrompt">
-                            <div class="upload-icon">📸</div>
-                            <div class="upload-text">Add photo</div>
+                        <div id="uploadPlaceholder">
+                            <div class="upload-icon-svg">
+                                <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
+                                    <circle cx="25" cy="25" r="23"
+                                            stroke="#6B6B6B"
+                                            stroke-width="2.5"/>
+                                    <line x1="12" y1="25" x2="38" y2="25"
+                                          stroke="#6B6B6B"
+                                          stroke-width="3"
+                                          stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <div class="upload-text">Photo</div>
                         </div>
                     </div>
                     <input type="file" id="fileInput" accept="image/*">
@@ -2921,9 +2941,9 @@ Don't copy examples - be creative.`
 
             const preview = document.getElementById('previewImage');
             const uploadArea = document.getElementById('uploadArea');
-            const uploadPrompt = document.getElementById('uploadPrompt');
+            const uploadPrompt = document.getElementById('uploadPlaceholder');
 
-            uploadPrompt.innerHTML = '<div class="upload-icon">⏳</div><div class="upload-text">Uploading...</div>';
+            uploadPrompt.innerHTML = '<div class="upload-icon-svg"><svg width="50" height="50" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="25" r="23" stroke="#6B6B6B" stroke-width="2.5"/><line x1="12" y1="25" x2="38" y2="25" stroke="#6B6B6B" stroke-width="3" stroke-linecap="round"/></svg></div><div class="upload-text">Uploading...</div>';
 
             try {
                 let fileToUpload = file;
@@ -2952,7 +2972,7 @@ Don't copy examples - be creative.`
             } catch (error) {
                 console.error('Upload failed:', error);
 
-                uploadPrompt.innerHTML = '<div class="upload-icon">📸</div><div class="upload-text">Add photo</div>';
+                uploadPrompt.innerHTML = '<div class="upload-icon-svg"><svg width="50" height="50" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="25" r="23" stroke="#6B6B6B" stroke-width="2.5"/><line x1="12" y1="25" x2="38" y2="25" stroke="#6B6B6B" stroke-width="3" stroke-linecap="round"/></svg></div><div class="upload-text">Photo</div>';
                 uploadPrompt.style.display = '';
 
                 let errorMsg = 'Upload failed! ';
@@ -3047,8 +3067,8 @@ Don't copy examples - be creative.`
                 document.getElementById('itemNote').value = '';
                 document.getElementById('fileInput').value = '';
                 document.getElementById('previewImage').classList.remove('show');
-                const uploadPrompt = document.getElementById('uploadPrompt');
-                uploadPrompt.innerHTML = '<div class="upload-icon">📸</div><div class="upload-text">Add photo</div>';
+                const uploadPrompt = document.getElementById('uploadPlaceholder');
+                uploadPrompt.innerHTML = '<div class="upload-icon-svg"><svg width="50" height="50" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="25" r="23" stroke="#6B6B6B" stroke-width="2.5"/><line x1="12" y1="25" x2="38" y2="25" stroke="#6B6B6B" stroke-width="3" stroke-linecap="round"/></svg></div><div class="upload-text">Photo</div>';
                 uploadPrompt.style.display = 'block';
                 document.getElementById('uploadArea').classList.remove('has-image');
                 document.getElementById('pointsInfo').style.display = 'none';
