@@ -151,44 +151,54 @@
             margin-top: 2px;
         }
 
+        /* Badge Display - FORCE small size */
         .badges-display {
-            display: flex;
-            gap: 6px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-            align-items: center;
+            display: flex !important;
+            gap: 6px !important;
+            margin-top: 10px !important;
+            flex-wrap: wrap !important;
+            align-items: center !important;
         }
 
-        .header-badge-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: #1C1C1E;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 600;
-            white-space: nowrap;
+        .badges-display .badge-item {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+            background: #1C1C1E !important;
+            color: white !important;
+            padding: 4px 10px !important;
+            border-radius: 12px !important;
+            font-size: 10px !important;
+            font-weight: 600 !important;
+            white-space: nowrap !important;
+            width: auto !important;
+            max-width: none !important;
+            height: auto !important;
+            min-height: 0 !important;
+            flex-direction: row !important;
         }
 
-        .badge-icon {
-            font-size: 12px;
-            line-height: 1;
+        .badges-display .badge-icon {
+            font-size: 12px !important;
+            line-height: 1 !important;
+            width: auto !important;
+            height: auto !important;
         }
 
-        .view-all-badges {
-            display: inline-flex;
-            align-items: center;
-            background: #F0F0F0;
-            color: #6B6B6B;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
+        .badges-display .view-all-badges {
+            display: inline-flex !important;
+            align-items: center !important;
+            background: #F0F0F0 !important;
+            color: #6B6B6B !important;
+            border: none !important;
+            padding: 4px 10px !important;
+            border-radius: 12px !important;
+            font-size: 10px !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            white-space: nowrap !important;
+            width: auto !important;
+            height: auto !important;
         }
 
         /* Main Content - Scrollable */
@@ -898,59 +908,6 @@
             cursor: pointer;
         }
 
-        /* Legacy badge-item kept for badge modal compatibility */
-        .badge-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            background: #F5F5F5;
-            border-radius: 12px;
-            border: 1px solid #E5E5E5;
-        }
-
-        .badge-item.earned {
-            background: #1C1C1E;
-            border-color: #1C1C1E;
-        }
-
-        .badge-item.locked {
-            opacity: 0.5;
-            background: #F5F5F5;
-        }
-
-        .badge-item-icon {
-            font-size: 32px;
-            line-height: 1;
-        }
-
-        .badge-item-info {
-            flex: 1;
-        }
-
-        .badge-item-name {
-            font-size: 16px;
-            font-weight: 600;
-            color: #1C1C1E;
-            margin-bottom: 3px;
-        }
-
-        .badge-item.earned .badge-item-name {
-            color: #FFFFFF;
-        }
-
-        .badge-item-desc {
-            font-size: 13px;
-            color: #6B6B6B;
-        }
-
-        .badge-item.earned .badge-item-desc {
-            color: rgba(255,255,255,0.8);
-        }
-
-        .badge-item-status {
-            font-size: 20px;
-        }
 
         .login-screen {
             position: fixed;
@@ -2645,13 +2602,23 @@ Don't copy examples - be creative.`
         function renderHeaderBadges() {
             const badgesDisplay = document.getElementById('badgesDisplay');
             if (!badgesDisplay) return;
+
             const earnedBadges = userBadges.slice(0, 3);
 
-            badgesDisplay.innerHTML = earnedBadges.map(badgeKey => {
+            let html = '';
+
+            earnedBadges.forEach(badgeKey => {
                 const badge = badges[badgeKey];
-                if (!badge) return '';
-                return `<div class="header-badge-item"><span class="badge-icon">${badge.icon}</span><span>${badge.name}</span></div>`;
-            }).join('') + `<button class="view-all-badges" onclick="showBadgesModal()">View All →</button>`;
+                if (badge) {
+                    html += `<div class="badge-item"><span class="badge-icon">${badge.icon}</span><span>${badge.name}</span></div>`;
+                }
+            });
+
+            html += `<button class="view-all-badges" onclick="showBadgesModal()">View All →</button>`;
+
+            badgesDisplay.innerHTML = html;
+
+            console.log('Badges rendered:', earnedBadges.length);
         }
 
         function renderBadgesModal() {
