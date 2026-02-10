@@ -153,32 +153,42 @@
 
         .badges-display {
             display: flex;
-            gap: 8px;
-            margin-top: 12px;
+            gap: 6px;
+            margin-top: 10px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .header-badge-item {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: linear-gradient(135deg, #1C1C1E 0%, #3A3A3A 100%);
+            gap: 4px;
+            background: #1C1C1E;
             color: white;
-            padding: 6px 12px;
-            border-radius: 16px;
-            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
             font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge-icon {
+            font-size: 12px;
+            line-height: 1;
         }
 
         .view-all-badges {
-            background: #FAFAFA;
+            display: inline-flex;
+            align-items: center;
+            background: #F0F0F0;
             color: #6B6B6B;
-            border: 1px solid #E5E5E5;
-            padding: 6px 12px;
-            border-radius: 16px;
-            font-size: 11px;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
             font-weight: 600;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         /* Main Content - Scrollable */
@@ -2640,15 +2650,8 @@ Don't copy examples - be creative.`
             badgesDisplay.innerHTML = earnedBadges.map(badgeKey => {
                 const badge = badges[badgeKey];
                 if (!badge) return '';
-                return `
-                    <div class="header-badge-item">
-                        <span class="badge-icon">${badge.icon}</span>
-                        <span>${badge.name}</span>
-                    </div>
-                `;
-            }).join('') + `
-                <button class="view-all-badges" onclick="showBadgesModal()">View All →</button>
-            `;
+                return `<div class="header-badge-item"><span class="badge-icon">${badge.icon}</span><span>${badge.name}</span></div>`;
+            }).join('') + `<button class="view-all-badges" onclick="showBadgesModal()">View All →</button>`;
         }
 
         function renderBadgesModal() {
