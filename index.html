@@ -1946,6 +1946,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getFirestore, collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp, arrayUnion, arrayRemove, increment } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyCgRc0r845aR7tTS7GNUmm8TMdLtSzeljY",
@@ -1959,6 +1960,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
+        const storage = getStorage(app);
         const googleProvider = new GoogleAuthProvider();
 
         window.db = db;
@@ -1967,7 +1969,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         let currentUserId = localStorage.getItem('userId') || null;
         let userName = localStorage.getItem('userName') || '';
         let totalScore = 0;
-        let currentImage = null;
+        let currentPhotoURL = '';
         let userStreak = 0;
         let userBadges = [];
         let bingoProgress = {};
@@ -2841,60 +2843,134 @@ Don't copy examples - be creative.`
             }
         }
 
-        function compressImage(file, maxSizeKB = 500) {
-            return new Promise((resolve) => {
+        function compressImage(file) {
+            return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+
+                reader.onerror = () => reject(new Error('Failed to read file'));
+
+                reader.onload = (e) => {
                     const img = new Image();
-                    img.onload = function() {
+
+                    img.onerror = () => reject(new Error('Failed to load image'));
+
+                    img.onload = () => {
                         const canvas = document.createElement('canvas');
                         let width = img.width;
                         let height = img.height;
-                        
-                        const maxDimension = 800;
-                        if (width > height && width > maxDimension) {
-                            height = (height * maxDimension) / width;
-                            width = maxDimension;
-                        } else if (height > maxDimension) {
-                            width = (width * maxDimension) / height;
-                            height = maxDimension;
+
+                        const maxDimension = 1600;
+                        if (width > maxDimension || height > maxDimension) {
+                            if (width > height) {
+                                height = Math.round((height / width) * maxDimension);
+                                width = maxDimension;
+                            } else {
+                                width = Math.round((width / height) * maxDimension);
+                                height = maxDimension;
+                            }
                         }
-                        
+
                         canvas.width = width;
                         canvas.height = height;
-                        
+
                         const ctx = canvas.getContext('2d');
+                        ctx.fillStyle = 'white';
+                        ctx.fillRect(0, 0, width, height);
                         ctx.drawImage(img, 0, 0, width, height);
-                        
-                        let quality = 0.7;
-                        let compressed = canvas.toDataURL('image/jpeg', quality);
-                        
-                        while (compressed.length > maxSizeKB * 1024 * 1.37 && quality > 0.1) {
-                            quality -= 0.1;
-                            compressed = canvas.toDataURL('image/jpeg', quality);
-                        }
-                        
-                        resolve(compressed);
+
+                        canvas.toBlob(
+                            (blob) => {
+                                if (blob) {
+                                    resolve(new File([blob], file.name, {
+                                        type: 'image/jpeg',
+                                        lastModified: Date.now()
+                                    }));
+                                } else {
+                                    reject(new Error('Failed to compress image'));
+                                }
+                            },
+                            'image/jpeg',
+                            0.85
+                        );
                     };
+
                     img.src = e.target.result;
                 };
+
                 reader.readAsDataURL(file);
             });
         }
 
         document.getElementById('fileInput').addEventListener('change', async function(e) {
             const file = e.target.files[0];
-            if (file) {
-                currentImage = await compressImage(file, 500);
-                
-                const preview = document.getElementById('previewImage');
-                const uploadArea = document.getElementById('uploadArea');
-                const uploadPrompt = document.getElementById('uploadPrompt');
-                
-                preview.src = currentImage;
+            if (!file) return;
+
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                alert('Please select a valid image file (JPG, PNG, GIF, or WebP)');
+                return;
+            }
+
+            const maxSize = 10 * 1024 * 1024;
+            if (file.size > maxSize) {
+                alert('Image is too large! Please choose an image smaller than 10MB.');
+                return;
+            }
+
+            if (!currentUserId) {
+                alert('You must be logged in to upload photos!');
+                return;
+            }
+
+            const preview = document.getElementById('previewImage');
+            const uploadArea = document.getElementById('uploadArea');
+            const uploadPrompt = document.getElementById('uploadPrompt');
+
+            uploadPrompt.innerHTML = '<div class="upload-icon">⏳</div><div class="upload-text">Uploading...</div>';
+
+            try {
+                let fileToUpload = file;
+                if (file.size > 1024 * 1024) {
+                    fileToUpload = await compressImage(file);
+                }
+
+                const timestamp = Date.now();
+                const randomId = Math.random().toString(36).substring(2, 9);
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                const fileName = `${timestamp}_${randomId}.${fileExtension}`;
+
+                const storagePath = `items/${currentUserId}/${fileName}`;
+                const storageRef = ref(storage, storagePath);
+
+                const snapshot = await uploadBytes(storageRef, fileToUpload);
+                const downloadURL = await getDownloadURL(snapshot.ref);
+
+                currentPhotoURL = downloadURL;
+
+                preview.src = downloadURL;
                 preview.classList.add('show');
                 uploadPrompt.style.display = 'none';
                 uploadArea.classList.add('has-image');
+
+            } catch (error) {
+                console.error('Upload failed:', error);
+
+                uploadPrompt.innerHTML = '<div class="upload-icon">📸</div><div class="upload-text">Add photo</div>';
+                uploadPrompt.style.display = '';
+
+                let errorMsg = 'Upload failed! ';
+                if (error.code === 'storage/unauthorized') {
+                    errorMsg += 'Permission denied. Storage rules need to be updated in Firebase Console.';
+                } else if (error.code === 'storage/canceled') {
+                    errorMsg += 'Upload was canceled.';
+                } else if (error.code === 'storage/unknown') {
+                    errorMsg += 'Network error. Please check your internet connection.';
+                } else if (error.code === 'storage/retry-limit-exceeded') {
+                    errorMsg += 'Upload timeout. Please try again.';
+                } else {
+                    errorMsg += 'Please try again. Error: ' + error.message;
+                }
+                alert(errorMsg);
             }
         });
 
@@ -2932,7 +3008,7 @@ Don't copy examples - be creative.`
                 return;
             }
 
-            if (!currentImage) {
+            if (!currentPhotoURL) {
                 alert('Please upload a photo!');
                 return;
             }
@@ -2950,7 +3026,7 @@ Don't copy examples - be creative.`
                     category: category,
                     space: space,
                     note: note,
-                    image: currentImage,
+                    image: currentPhotoURL,
                     points: points,
                     likes: [],
                     likeCount: 0,
@@ -2974,11 +3050,13 @@ Don't copy examples - be creative.`
                 document.getElementById('itemNote').value = '';
                 document.getElementById('fileInput').value = '';
                 document.getElementById('previewImage').classList.remove('show');
-                document.getElementById('uploadPrompt').style.display = 'block';
+                const uploadPrompt = document.getElementById('uploadPrompt');
+                uploadPrompt.innerHTML = '<div class="upload-icon">📸</div><div class="upload-text">Add photo</div>';
+                uploadPrompt.style.display = 'block';
                 document.getElementById('uploadArea').classList.remove('has-image');
                 document.getElementById('pointsInfo').style.display = 'none';
                 document.getElementById('spaceHint').style.display = 'none';
-                currentImage = null;
+                currentPhotoURL = '';
 
                 alert(`+${points} pts earned!\n\n${aiMessage}\n\nTotal: ${totalScore} pts`);
 
