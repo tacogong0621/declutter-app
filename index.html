@@ -2365,17 +2365,14 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         };
 
         const categoryPoints = {
-            'clothes': 10,
+            'clothing': 10,
             'books': 15,
             'electronics': 20,
             'furniture': 30,
-            'kitchen': 10,
+            'kitchenware': 10,
             'shoes': 10,
             'food': 5,
-            'toys': 5,
-            'sports': 15,
-            'digital': 5,
-            'etc': 5
+            'other': 5
         };
 
         const badges = {
@@ -3017,7 +3014,7 @@ Don't copy examples - be creative.`
             submitBtn.textContent = 'Uploading...';
 
             try {
-                const points = categoryPoints[category];
+                const points = categoryPoints[category] || 5;
 
                 await addDoc(collection(db, 'items'), {
                     userId: currentUserId,
