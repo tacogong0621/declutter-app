@@ -1209,6 +1209,237 @@
             margin-top: 15px;
             margin-bottom: 0 !important;
         }
+
+        /* Calendar Container */
+        .calendar-container {
+            padding: 0;
+        }
+
+        /* Calendar Header */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 0 5px;
+        }
+
+        .calendar-month {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1C1C1E;
+            margin: 0;
+        }
+
+        .share-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: 1px solid #E5E5E5;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1C1C1E;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .share-btn:hover {
+            background: #FAFAFA;
+            border-color: #1C1C1E;
+        }
+
+        .share-btn:active {
+            transform: scale(0.95);
+        }
+
+        .share-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Calendar Stats */
+        .calendar-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-item {
+            background: #FAFAFA;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6B6B6B;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1C1C1E;
+        }
+
+        /* Day Labels */
+        .calendar-days-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
+            padding: 0 5px;
+        }
+
+        .day-label {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6B6B6B;
+            padding: 8px 0;
+        }
+
+        /* Calendar Grid */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-bottom: 25px;
+        }
+
+        /* Calendar Day Cell */
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: #FFFFFF;
+            border: 1px solid #F0F0F0;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calendar-day:hover {
+            border-color: #E5E5E5;
+            background: #FAFAFA;
+        }
+
+        /* Day Number */
+        .day-number {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1C1C1E;
+            margin-bottom: 2px;
+        }
+
+        /* Day Icon */
+        .day-icon {
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        /* Day States */
+        .calendar-day.other-month {
+            opacity: 0.3;
+        }
+
+        .calendar-day.other-month:hover {
+            background: #FFFFFF;
+            border-color: #F0F0F0;
+        }
+
+        .calendar-day.today {
+            border: 2px solid #1C1C1E;
+            background: #FAFAFA;
+        }
+
+        .calendar-day.active {
+            background: #1C1C1E;
+            border-color: #1C1C1E;
+        }
+
+        .calendar-day.active .day-number {
+            color: #FFFFFF;
+        }
+
+        .calendar-day.active .day-icon {
+            filter: brightness(0) invert(1);
+        }
+
+        .calendar-day.empty {
+            background: transparent;
+            border: none;
+            pointer-events: none;
+        }
+
+        /* Month Summary */
+        .month-summary {
+            background: #FAFAFA;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+        .summary-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1C1C1E;
+            margin-bottom: 15px;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .summary-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .summary-number {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1C1C1E;
+            margin-bottom: 2px;
+        }
+
+        .summary-label {
+            font-size: 11px;
+            color: #6B6B6B;
+        }
+
+        /* Responsive */
+        @media (max-width: 380px) {
+            .calendar-month {
+                font-size: 20px;
+            }
+
+            .stat-value {
+                font-size: 18px;
+            }
+
+            .day-number {
+                font-size: 13px;
+            }
+
+            .day-icon {
+                font-size: 14px;
+            }
+
+            .summary-number {
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1370,24 +1601,66 @@
             </div>
         </div>
 
-        <div id="calendarTab" class="tab-content">
-            <div class="card" style="padding: 15px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                    <button onclick="changeMonth(-1)" style="background: none; border: 1px solid #E5E5E5; color: #1C1C1E; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px;">←</button>
-                    <h2 id="calendarTitle" style="color: #1C1C1E; margin: 0; font-size: 16px; font-weight: 600;">February 2026</h2>
-                    <button onclick="changeMonth(1)" style="background: none; border: 1px solid #E5E5E5; color: #1C1C1E; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px;">→</button>
+        <div class="tab-content" id="calendarTab">
+            <div class="calendar-container">
+                <!-- Header with Month/Year and Share -->
+                <div class="calendar-header">
+                    <h2 class="calendar-month" id="calendarMonth">February 2026</h2>
+                    <button class="share-btn" onclick="shareProgress()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/>
+                            <polyline points="16 6 12 2 8 6"/>
+                            <line x1="12" y1="2" x2="12" y2="15"/>
+                        </svg>
+                        Share
+                    </button>
                 </div>
-                <div id="calendar" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px;"></div>
-                <div style="margin-top: 12px; padding: 10px; background: #FAFAFA; border-radius: 8px; border: 1px solid #E5E5E5;">
-                    <div style="display: flex; gap: 10px; justify-content: center; font-size: 11px; color: #6B6B6B;">
-                        <span>● Decluttered</span>
-                        <span style="color: #B0B0B0;">○ Not yet</span>
+
+                <!-- Streak Stats -->
+                <div class="calendar-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">Your Streak</div>
+                        <div class="stat-value" id="calendarStreakValue">0 Days</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">This Month</div>
+                        <div class="stat-value" id="calendarMonthCount">0 Items</div>
                     </div>
                 </div>
-                <div id="monthStats" style="margin-top: 12px; padding: 12px; background: #1C1C1E; border-radius: 10px; color: #FFFFFF; text-align: center;">
-                    <div style="font-size: 11px; opacity: 0.8;">This Month's Stats</div>
-                    <div style="font-size: 24px; font-weight: 700; margin: 6px 0;" id="monthItemCount">0</div>
-                    <div style="font-size: 11px; opacity: 0.8;">items • <span id="monthPoints">0</span> pts earned</div>
+
+                <!-- Day Labels -->
+                <div class="calendar-days-header">
+                    <div class="day-label">M</div>
+                    <div class="day-label">T</div>
+                    <div class="day-label">W</div>
+                    <div class="day-label">T</div>
+                    <div class="day-label">F</div>
+                    <div class="day-label">S</div>
+                    <div class="day-label">S</div>
+                </div>
+
+                <!-- Calendar Grid -->
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Days will be dynamically generated -->
+                </div>
+
+                <!-- Month Summary -->
+                <div class="month-summary">
+                    <div class="summary-title">Monthly Summary</div>
+                    <div class="summary-stats">
+                        <div class="summary-item">
+                            <span class="summary-number" id="monthItems">0</span>
+                            <span class="summary-label">items</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-number" id="monthPoints">0</span>
+                            <span class="summary-label">points</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-number" id="monthDays">0</span>
+                            <span class="summary-label">active days</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2808,30 +3081,38 @@ Don't copy examples - be creative.`
         let userItemDates = {};
 
         async function renderCalendar() {
-            const calendar = document.getElementById('calendar');
-            const title = document.getElementById('calendarTitle');
-            
-            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            title.textContent = `${monthNames[currentCalendarMonth]} ${currentCalendarYear}`;
-            
-            const firstDay = new Date(currentCalendarYear, currentCalendarMonth, 1);
-            const lastDay = new Date(currentCalendarYear, currentCalendarMonth + 1, 0);
+            const grid = document.getElementById('calendarGrid');
+            const monthEl = document.getElementById('calendarMonth');
+
+            const year = currentCalendarYear;
+            const month = currentCalendarMonth;
+
+            // Set month/year display
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                               'July', 'August', 'September', 'October', 'November', 'December'];
+            monthEl.textContent = `${monthNames[month]} ${year}`;
+
+            // Get first day of month and total days
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
             const daysInMonth = lastDay.getDate();
-            const startDayOfWeek = firstDay.getDay();
-            
+
+            // Get day of week for first day (0 = Sunday, convert to Monday = 0)
+            let startDay = firstDay.getDay() - 1;
+            if (startDay < 0) startDay = 6; // Sunday becomes 6
+
+            // Fetch items from Firebase
             const itemsQuery = query(collection(db, 'items'), where('userId', '==', currentUserId));
             const itemsSnapshot = await getDocs(itemsQuery);
-            
+
             userItemDates = {};
-            let monthItemCount = 0;
-            let monthPoints = 0;
-            
+
             itemsSnapshot.forEach(doc => {
                 const item = doc.data();
                 if (item.createdAt) {
                     const date = item.createdAt.toDate();
                     const dateKey = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-                    
+
                     if (!userItemDates[dateKey]) {
                         userItemDates[dateKey] = {
                             count: 0,
@@ -2840,84 +3121,73 @@ Don't copy examples - be creative.`
                     }
                     userItemDates[dateKey].count += 1;
                     userItemDates[dateKey].points += item.points || 0;
-                    
-                    if (date.getFullYear() === currentCalendarYear && date.getMonth() === currentCalendarMonth) {
-                        monthItemCount += 1;
-                        monthPoints += item.points || 0;
-                    }
                 }
             });
-            
-            document.getElementById('monthItemCount').textContent = monthItemCount;
-            document.getElementById('monthPoints').textContent = monthPoints;
-            
-            calendar.innerHTML = '';
-            
-            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            dayNames.forEach((day, index) => {
-                const dayHeader = document.createElement('div');
-                dayHeader.style.cssText = 'text-align: center; font-weight: 600; padding: 4px 2px; color: #6B6B6B; font-size: 10px;';
-                if (index === 0) dayHeader.style.color = '#1C1C1E';
-                if (index === 6) dayHeader.style.color = '#1C1C1E';
-                dayHeader.textContent = day;
-                calendar.appendChild(dayHeader);
-            });
-            
-            for (let i = 0; i < startDayOfWeek; i++) {
+
+            grid.innerHTML = '';
+
+            // Add empty cells for days before month starts
+            for (let i = 0; i < startDay; i++) {
                 const emptyDay = document.createElement('div');
-                calendar.appendChild(emptyDay);
+                emptyDay.className = 'calendar-day empty';
+                grid.appendChild(emptyDay);
             }
-            
+
+            // Track monthly stats
+            const now = new Date();
+            const today = now.getDate();
+            const isCurrentMonth = now.getMonth() === month && now.getFullYear() === year;
+            let monthItemCount = 0;
+            let monthPointCount = 0;
+            let activeDaysCount = 0;
+
+            // Add days of the month
             for (let day = 1; day <= daysInMonth; day++) {
-                const dateKey = `${currentCalendarYear}-${currentCalendarMonth}-${day}`;
-                const hasItem = userItemDates[dateKey];
-                const isToday = new Date().getDate() === day && 
-                               new Date().getMonth() === currentCalendarMonth && 
-                               new Date().getFullYear() === currentCalendarYear;
-                
                 const dayCell = document.createElement('div');
-                dayCell.style.cssText = `
-                    aspect-ratio: 1;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    border-radius: 6px;
-                    position: relative;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                    ${hasItem ? 'background: #1C1C1E;' : 'background: #F5F5F5;'}
-                    ${isToday ? 'border: 2px solid #1C1C1E;' : ''}
-                    font-size: 10px;
-                `;
-                
-                const dayNumber = document.createElement('div');
-                dayNumber.style.cssText = `
-                    font-size: 11px;
-                    font-weight: 600;
-                    ${hasItem ? 'color: #FFFFFF;' : 'color: #B0B0B0;'}
-                `;
-                dayNumber.textContent = day;
-                
-                if (hasItem) {
-                    const flame = document.createElement('div');
-                    flame.style.cssText = 'font-size: 10px; margin-top: 1px; line-height: 1; color: #FFFFFF;';
-                    flame.textContent = '●';
-                    dayCell.appendChild(dayNumber);
-                    dayCell.appendChild(flame);
-                    
-                    if (hasItem.count > 1) {
-                        const count = document.createElement('div');
-                        count.style.cssText = 'font-size: 8px; color: #FFFFFF; font-weight: 600; line-height: 1;';
-                        count.textContent = `${hasItem.count}`;
-                        dayCell.appendChild(count);
-                    }
-                } else {
-                    dayCell.appendChild(dayNumber);
+                dayCell.className = 'calendar-day';
+
+                // Check if this day has activity
+                const dateKey = `${year}-${month}-${day}`;
+                const dayData = userItemDates[dateKey] || { count: 0, points: 0 };
+
+                if (dayData.count > 0) {
+                    dayCell.classList.add('active');
+                    monthItemCount += dayData.count;
+                    monthPointCount += dayData.points;
+                    activeDaysCount++;
                 }
-                
-                calendar.appendChild(dayCell);
+
+                if (isCurrentMonth && day === today) {
+                    dayCell.classList.add('today');
+                }
+
+                // Day number
+                const dayNumber = document.createElement('div');
+                dayNumber.className = 'day-number';
+                dayNumber.textContent = day;
+                dayCell.appendChild(dayNumber);
+
+                // Icon - trash can for active days
+                if (dayData.count > 0) {
+                    const icon = document.createElement('div');
+                    icon.className = 'day-icon';
+                    icon.textContent = '🗑️';
+                    dayCell.appendChild(icon);
+                }
+
+                grid.appendChild(dayCell);
             }
+
+            // Update stats
+            document.getElementById('calendarStreakValue').textContent =
+                userStreak > 0 ? `${userStreak} Day${userStreak !== 1 ? 's' : ''}` : '0 Days';
+            document.getElementById('calendarMonthCount').textContent =
+                `${monthItemCount} Item${monthItemCount !== 1 ? 's' : ''}`;
+
+            // Update month summary
+            document.getElementById('monthItems').textContent = monthItemCount;
+            document.getElementById('monthPoints').textContent = monthPointCount;
+            document.getElementById('monthDays').textContent = activeDaysCount;
         }
 
         window.changeMonth = function(delta) {
@@ -2930,6 +3200,30 @@ Don't copy examples - be creative.`
                 currentCalendarYear--;
             }
             renderCalendar();
+        };
+
+        window.shareProgress = function() {
+            const monthItemsEl = document.getElementById('monthItems');
+            const monthPointsEl = document.getElementById('monthPoints');
+            const monthItems = monthItemsEl ? monthItemsEl.textContent : '0';
+            const monthPointsVal = monthPointsEl ? monthPointsEl.textContent : '0';
+            const streak = userStreak;
+
+            const text = `This month on Declutter Daily:\n🗑️ ${monthItems} items\n⭐ ${monthPointsVal} points\n🔥 ${streak} day streak`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Declutter Progress',
+                    text: text,
+                    url: window.location.href
+                }).catch(() => {
+                    navigator.clipboard.writeText(text);
+                    alert('Progress copied to clipboard!');
+                });
+            } else {
+                navigator.clipboard.writeText(text);
+                alert('Progress copied to clipboard!');
+            }
         };
 
         window.generateStoryTemplate = async function(template) {
