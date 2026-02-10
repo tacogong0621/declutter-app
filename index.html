@@ -2227,6 +2227,111 @@ Don't copy examples - be creative.`
             }
         }
 
+        // Trash sound effect - Windows recycle bin style (0.7s total)
+        function playTrashSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+                // Resume audio context if suspended (required for mobile)
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+
+                const now = audioContext.currentTime;
+
+                // PHASE 1: WHOOSH - Item falling into trash (0-0.3s)
+                const whoosh = audioContext.createOscillator();
+                const whooshGain = audioContext.createGain();
+
+                whoosh.connect(whooshGain);
+                whooshGain.connect(audioContext.destination);
+
+                // Falling pitch sweep
+                whoosh.frequency.setValueAtTime(1200, now);
+                whoosh.frequency.exponentialRampToValueAtTime(150, now + 0.3);
+                whoosh.type = 'sine';
+
+                // Volume envelope - fade in and out
+                whooshGain.gain.setValueAtTime(0, now);
+                whooshGain.gain.linearRampToValueAtTime(0.35, now + 0.05);
+                whooshGain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+
+                whoosh.start(now);
+                whoosh.stop(now + 0.3);
+
+                // PHASE 2: CRUMPLE - Paper/item crushing (0.25s-0.5s)
+                const noise = audioContext.createBufferSource();
+                const noiseDuration = 0.25;
+                const noiseBuffer = audioContext.createBuffer(1, audioContext.sampleRate * noiseDuration, audioContext.sampleRate);
+                const noiseData = noiseBuffer.getChannelData(0);
+
+                // Generate white noise with slight modulation
+                for (let i = 0; i < noiseBuffer.length; i++) {
+                    noiseData[i] = (Math.random() * 2 - 1) * (1 - i / noiseBuffer.length * 0.5);
+                }
+
+                noise.buffer = noiseBuffer;
+
+                const noiseGain = audioContext.createGain();
+                const noiseFilter = audioContext.createBiquadFilter();
+
+                noise.connect(noiseFilter);
+                noiseFilter.connect(noiseGain);
+                noiseGain.connect(audioContext.destination);
+
+                // Filter sweep - crushing sound
+                noiseFilter.type = 'bandpass';
+                noiseFilter.frequency.setValueAtTime(2000, now + 0.25);
+                noiseFilter.frequency.exponentialRampToValueAtTime(300, now + 0.5);
+                noiseFilter.Q.value = 2;
+
+                // Volume envelope
+                noiseGain.gain.setValueAtTime(0.25, now + 0.25);
+                noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+
+                noise.start(now + 0.25);
+                noise.stop(now + 0.5);
+
+                // PHASE 3: IMPACT - Hitting bottom of bin (0.45s-0.65s)
+                const impact1 = audioContext.createOscillator();
+                const impact1Gain = audioContext.createGain();
+
+                impact1.connect(impact1Gain);
+                impact1Gain.connect(audioContext.destination);
+
+                // Low thud
+                impact1.frequency.setValueAtTime(120, now + 0.45);
+                impact1.frequency.exponentialRampToValueAtTime(60, now + 0.65);
+                impact1.type = 'sine';
+
+                impact1Gain.gain.setValueAtTime(0.5, now + 0.45);
+                impact1Gain.gain.exponentialRampToValueAtTime(0.01, now + 0.65);
+
+                impact1.start(now + 0.45);
+                impact1.stop(now + 0.65);
+
+                // PHASE 4: SECONDARY BOUNCE - Small bounce/settle (0.55s-0.7s)
+                const impact2 = audioContext.createOscillator();
+                const impact2Gain = audioContext.createGain();
+
+                impact2.connect(impact2Gain);
+                impact2Gain.connect(audioContext.destination);
+
+                // Lighter secondary impact
+                impact2.frequency.setValueAtTime(180, now + 0.55);
+                impact2.frequency.exponentialRampToValueAtTime(80, now + 0.7);
+                impact2.type = 'sine';
+
+                impact2Gain.gain.setValueAtTime(0.3, now + 0.55);
+                impact2Gain.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
+
+                impact2.start(now + 0.55);
+                impact2.stop(now + 0.7);
+            } catch (error) {
+                console.error('Trash sound playback failed:', error);
+            }
+        }
+
         function compressImage(file, maxSizeKB = 500) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
@@ -2349,6 +2454,7 @@ Don't copy examples - be creative.`
                 await calculateStreak();
                 await updateBingoProgress(space);
 
+                playTrashSound();
                 playSuccessSound();
 
                 const aiMessage = await generateAIEncouragement(name, category, points, totalScore, userStreak);
