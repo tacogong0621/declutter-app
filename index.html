@@ -2364,19 +2364,19 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             showLoginScreen();
         };
 
-        const categoryPoints = {
-            'clothes': 10,
-            'books': 15,
-            'electronics': 20,
-            'furniture': 30,
-            'kitchen': 10,
-            'shoes': 10,
-            'food': 5,
-            'toys': 5,
-            'sports': 15,
-            'digital': 5,
-            'etc': 5
-        };
+        function getCategoryPoints(category) {
+            const points = {
+                clothing: 10,
+                books: 15,
+                electronics: 20,
+                furniture: 30,
+                kitchenware: 10,
+                shoes: 10,
+                food: 5,
+                other: 5
+            };
+            return points[category] || 5;
+        }
 
         const badges = {
             'first_item': { icon: '🎯', name: 'First Step', desc: 'First item decluttered', condition: (count) => count >= 1 },
@@ -2977,9 +2977,9 @@ Don't copy examples - be creative.`
         document.getElementById('itemCategory').addEventListener('change', function(e) {
             const pointsInfo = document.getElementById('pointsInfo');
             const expectedPoints = document.getElementById('expectedPoints');
-            
+
             if (e.target.value) {
-                expectedPoints.textContent = categoryPoints[e.target.value];
+                expectedPoints.textContent = getCategoryPoints(e.target.value);
                 pointsInfo.style.display = 'block';
             } else {
                 pointsInfo.style.display = 'none';
@@ -3017,7 +3017,9 @@ Don't copy examples - be creative.`
             submitBtn.textContent = 'Uploading...';
 
             try {
-                const points = categoryPoints[category];
+                // Get points - ENSURE IT'S A NUMBER
+                const points = getCategoryPoints(category);
+                console.log('Category points:', points, typeof points);
 
                 await addDoc(collection(db, 'items'), {
                     userId: currentUserId,
@@ -3033,6 +3035,8 @@ Don't copy examples - be creative.`
                     comments: [],
                     createdAt: serverTimestamp()
                 });
+
+                console.log('Item saved successfully!');
 
                 totalScore += points;
                 await updateUserScore();
@@ -3063,6 +3067,8 @@ Don't copy examples - be creative.`
                 switchTab('history');
             } catch (error) {
                 console.error('Item add failed:', error);
+                console.error('Error code:', error.code);
+                console.error('Error message:', error.message);
                 alert('Upload failed! Please try again.');
             } finally {
                 submitBtn.disabled = false;
