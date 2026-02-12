@@ -1798,6 +1798,8 @@
                         <option value="kitchenware">🍽️ Kitchenware (10)</option>
                         <option value="shoes">👟 Shoes (10)</option>
                         <option value="food">🥫 Food (5)</option>
+                        <option value="toys">🧸 Toys (5)</option>
+                        <option value="digital">📄 Digital Docs (5)</option>
                         <option value="other">📦 Other (5)</option>
                     </select>
 
@@ -2546,6 +2548,8 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             'kitchenware': 10,
             'shoes': 10,
             'food': 5,
+            'toys': 5,
+            'digital': 5,
             'other': 5
         };
 
@@ -2657,6 +2661,8 @@ Don't copy examples - be creative.`
                 kitchenware: '🍽️ Kitchenware',
                 shoes: '👟 Shoes',
                 food: '🥫 Food',
+                toys: '🧸 Toys',
+                digital: '📄 Digital Docs',
                 other: '📦 Other'
             };
             return categories[category] || '📦 Other';
