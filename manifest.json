@@ -2,7 +2,7 @@
   "name": "비우기 - Declutter Daily",
   "short_name": "비우기",
   "description": "하루 10분, 공간을 비우는 습관",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#FAFAFA",
   "theme_color": "#a8c4a0",
