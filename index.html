@@ -1275,6 +1275,670 @@
             display: none;
         }
 
+        /* ===== Before & After Feature Styles ===== */
+
+        /* B&A Chip Toggle */
+        .ba-chip-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .ba-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1.5px solid #ddd;
+            background: white;
+            color: #888;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            user-select: none;
+        }
+
+        .ba-chip.active {
+            background: #1a1a1a;
+            border-color: #1a1a1a;
+            color: white;
+        }
+
+        .ba-bonus-hint {
+            font-size: 13px;
+            font-weight: 600;
+            color: #4CAF50;
+            animation: baPulse 3s ease-in-out infinite;
+        }
+
+        .ba-chip.active ~ .ba-bonus-hint {
+            display: none;
+        }
+
+        @keyframes baPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.55; }
+        }
+
+        /* B&A Photo Slots */
+        .ba-photo-area {
+            display: none;
+            gap: 12px;
+            margin-bottom: 15px;
+            animation: baFadeInUp 0.35s ease;
+        }
+
+        .ba-photo-area.show {
+            display: flex;
+        }
+
+        @keyframes baFadeInUp {
+            from { transform: translateY(12px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .ba-photo-slot {
+            flex: 1;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .ba-photo-slot.cluttered {
+            border: 2px dashed #d4c4a8;
+            background: #fdf9f3;
+        }
+
+        .ba-photo-slot.cleared {
+            border: 2px dashed #a8d4ab;
+            background: #f3fdf4;
+        }
+
+        .ba-photo-slot.has-photo {
+            border-style: solid;
+        }
+
+        .ba-photo-slot.cluttered.has-photo {
+            background: linear-gradient(135deg, #f0e6d3, #e8d5b8);
+        }
+
+        .ba-photo-slot.cleared.has-photo {
+            background: linear-gradient(135deg, #d3f0d6, #b8e8bd);
+        }
+
+        .ba-slot-icon {
+            font-size: 28px;
+            color: #bbb;
+            margin-bottom: 6px;
+        }
+
+        .ba-photo-slot.cluttered .ba-slot-label {
+            color: #c4a882;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .ba-photo-slot.cleared .ba-slot-label {
+            color: #7cb87e;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .ba-slot-preview {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .ba-slot-overlay-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 6px;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .ba-photo-slot.cluttered .ba-slot-overlay-label {
+            background: linear-gradient(transparent, rgba(232,213,184,0.85));
+            color: #8b6f47;
+        }
+
+        .ba-photo-slot.cleared .ba-slot-overlay-label {
+            background: linear-gradient(transparent, rgba(184,232,189,0.85));
+            color: #4a7a4d;
+        }
+
+        /* B&A Progress Feedback */
+        .ba-progress-text {
+            text-align: center;
+            font-size: 13px;
+            color: #bbb;
+            margin-bottom: 15px;
+            min-height: 20px;
+        }
+
+        .ba-progress-text.complete {
+            color: #4CAF50;
+            font-weight: 700;
+            animation: baCelebrate 0.4s ease;
+        }
+
+        @keyframes baCelebrate {
+            0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+            70% { transform: scale(1.05) rotate(1deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        /* B&A Bonus Points Display */
+        .ba-bonus-badge {
+            display: inline-block;
+            margin-left: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #bbb;
+            transition: all 0.3s;
+        }
+
+        .ba-bonus-badge.active {
+            color: #4CAF50;
+            animation: baPopIn 0.3s ease;
+        }
+
+        @keyframes baPopIn {
+            0% { transform: scale(0.7); }
+            60% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* ===== Feed Tab B&A Styles ===== */
+
+        /* Feed Filter Tabs */
+        .feed-filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .feed-filter-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f0f0f0;
+            color: #6B6B6B;
+        }
+
+        .feed-filter-tab.active {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .feed-filter-tab.ba-filter.active {
+            background: linear-gradient(135deg, #43A047, #66BB6A);
+            color: white;
+        }
+
+        .feed-filter-count {
+            display: inline-block;
+            background: rgba(255,255,255,0.3);
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-size: 11px;
+            margin-left: 4px;
+        }
+
+        /* Feed Highlight Banner */
+        .feed-ba-banner {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feed-ba-banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+            animation: baShimmer 3s linear infinite;
+        }
+
+        @keyframes baShimmer {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(50%); }
+        }
+
+        .feed-ba-banner-title {
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .feed-ba-banner-sub {
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+        }
+
+        /* B&A Premium Card */
+        .item.ba-card {
+            position: relative;
+            border-top: 3px solid;
+            border-image: linear-gradient(90deg, #e8d5b8, #4CAF50, #81C784) 1;
+        }
+
+        .ba-card-points {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ba-card-bonus {
+            font-size: 12px;
+            font-weight: 700;
+            color: #4CAF50;
+            background: rgba(76,175,80,0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* Interactive Slider */
+        .ba-slider-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 12px 0;
+            cursor: ew-resize;
+            touch-action: none;
+            user-select: none;
+        }
+
+        .ba-slider-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ba-slider-img.cleared-img {
+            clip-path: inset(0 0 0 0);
+        }
+
+        .ba-slider-divider {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: white;
+            z-index: 2;
+            pointer-events: none;
+            box-shadow: 0 0 6px rgba(0,0,0,0.3);
+        }
+
+        .ba-slider-handle {
+            position: absolute;
+            top: 50%;
+            width: 36px;
+            height: 36px;
+            background: white;
+            border-radius: 50%;
+            z-index: 3;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #666;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            pointer-events: none;
+        }
+
+        .ba-slider-label {
+            position: absolute;
+            top: 10px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .ba-slider-label.left {
+            left: 10px;
+            background: rgba(232,213,184,0.85);
+            color: #8b6f47;
+        }
+
+        .ba-slider-label.right {
+            right: 10px;
+            background: rgba(184,232,189,0.85);
+            color: #4a7a4d;
+        }
+
+        .ba-slider-hint {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .ba-slider-hint .hint-emoji {
+            display: inline-block;
+            animation: baSlideHint 1.5s ease-in-out infinite;
+        }
+
+        @keyframes baSlideHint {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-6px); }
+        }
+
+        .ba-slider-celebration {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(76,175,80,0.9);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 700;
+            z-index: 2;
+            pointer-events: none;
+            display: none;
+            white-space: nowrap;
+        }
+
+        /* Normal Post B&A Nudge */
+        .ba-nudge {
+            margin-top: 10px;
+            padding: 10px 14px;
+            border: 1.5px dashed #e0e0e0;
+            border-radius: 10px;
+            background: #fafafa;
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+        }
+
+        .ba-nudge-highlight {
+            color: #4CAF50;
+            font-weight: 700;
+        }
+
+        /* ===== B&A Popup / Bottom Sheet ===== */
+
+        .ba-popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 4000;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        .ba-popup-overlay.show {
+            display: flex;
+        }
+
+        .ba-popup-sheet {
+            width: 100%;
+            max-width: 480px;
+            max-height: 85vh;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 0 20px 24px;
+            overflow-y: auto;
+            animation: baSlideUp 0.4s ease;
+        }
+
+        @keyframes baSlideUp {
+            from { transform: translateY(40px) scale(0.96); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .ba-popup-handle {
+            width: 40px;
+            height: 4px;
+            background: #ddd;
+            border-radius: 2px;
+            margin: 12px auto 16px;
+        }
+
+        .ba-popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .ba-popup-supertitle {
+            font-size: 13px;
+            color: #6B6B6B;
+        }
+
+        .ba-popup-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1C1C1E;
+            margin-top: 2px;
+        }
+
+        .ba-popup-close {
+            background: #f0f0f0;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ba-popup-card {
+            display: none;
+            animation: baCardSwipe 0.35s ease;
+        }
+
+        .ba-popup-card.active {
+            display: block;
+        }
+
+        @keyframes baCardSwipe {
+            from { transform: translateX(30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .ba-popup-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .ba-popup-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e8d5b8, #4CAF50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .ba-popup-username {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1C1C1E;
+        }
+
+        .ba-popup-time {
+            font-size: 12px;
+            color: #6B6B6B;
+        }
+
+        .ba-popup-space-tag {
+            margin-left: auto;
+            font-size: 11px;
+            background: #f0f0f0;
+            padding: 4px 10px;
+            border-radius: 12px;
+            color: #6B6B6B;
+        }
+
+        .ba-popup-reactions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .ba-popup-reaction-btn {
+            padding: 6px 12px;
+            border-radius: 16px;
+            border: 1.5px solid #e0e0e0;
+            background: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .ba-popup-reaction-btn:active {
+            transform: scale(0.92);
+        }
+
+        .ba-popup-like-count {
+            margin-left: auto;
+            font-size: 13px;
+            color: #6B6B6B;
+        }
+
+        .ba-popup-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin: 16px 0;
+        }
+
+        .ba-popup-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            background: #ddd;
+            transition: all 0.3s;
+        }
+
+        .ba-popup-dot.active {
+            width: 20px;
+            background: #1C1C1E;
+        }
+
+        .ba-popup-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .ba-popup-skip {
+            flex: 0 0 auto;
+            padding: 14px 20px;
+            border-radius: 12px;
+            border: 1.5px solid #e0e0e0;
+            background: white;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6B6B6B;
+            cursor: pointer;
+        }
+
+        .ba-popup-next {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 12px;
+            border: none;
+            background: #1a1a1a;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .ba-popup-start {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #43A047, #66BB6A);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ba-popup-start::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            animation: baShimmer 3s linear infinite;
+        }
+
         /* Achievement Animation */
         .achievement-overlay {
             position: fixed;
@@ -1804,6 +2468,30 @@
                         </div>
                     </div>
                     <input type="file" id="fileInput" accept="image/*">
+                    <input type="file" id="baFileInput" accept="image/*" style="display:none;">
+
+                    <!-- Before & After Chip Toggle -->
+                    <div class="ba-chip-row">
+                        <div class="ba-chip" id="baChip" onclick="toggleBeforeAfter()">
+                            <span id="baChipIcon">⊕</span> Before &amp; After
+                        </div>
+                        <span class="ba-bonus-hint" id="baBonusHint">+30 bonus pts ✨</span>
+                    </div>
+
+                    <!-- B&A Photo Slots (hidden by default) -->
+                    <div class="ba-photo-area" id="baPhotoArea">
+                        <div class="ba-photo-slot cluttered" id="baSlotCluttered" onclick="openBAUpload('cluttered')">
+                            <span class="ba-slot-icon">+</span>
+                            <span class="ba-slot-label">CLUTTERED</span>
+                        </div>
+                        <div class="ba-photo-slot cleared" id="baSlotCleared" onclick="openBAUpload('cleared')">
+                            <span class="ba-slot-icon">+</span>
+                            <span class="ba-slot-label">CLEARED</span>
+                        </div>
+                    </div>
+                    <div class="ba-progress-text" id="baProgressText" style="display:none;">
+                        Upload both photos to earn +30 bonus pts
+                    </div>
 
                     <input type="text" id="itemName" placeholder="Item (e.g., Old clothes)">
 
@@ -1836,7 +2524,7 @@
                     <div class="space-hint" id="spaceHint"></div>
 
                     <div class="points-info" id="pointsInfo" style="display: none;">
-                        Expected Points: <span id="expectedPoints">0</span> pts
+                        Expected: <span id="expectedPoints">0</span> pts<span class="ba-bonus-badge" id="baBonusBadge" style="display:none;">+30 bonus</span>
                     </div>
 
                     <textarea id="itemNote" placeholder="Notes (optional)"></textarea>
@@ -1879,6 +2567,19 @@
         <div id="historyTab" class="tab-content">
             <div class="card">
                 <h2 style="margin-bottom: 20px; color: #1C1C1E; font-weight: 600;">Community Feed</h2>
+
+                <!-- Feed Filter Tabs -->
+                <div class="feed-filters">
+                    <button class="feed-filter-tab active" id="feedFilterAll" onclick="setFeedFilter('all')">All</button>
+                    <button class="feed-filter-tab ba-filter" id="feedFilterBA" onclick="setFeedFilter('ba')">✨ Before &amp; After <span class="feed-filter-count" id="baFilterCount">0</span></button>
+                </div>
+
+                <!-- B&A Highlight Banner -->
+                <div class="feed-ba-banner" id="feedBABanner" style="display:none;" onclick="setFeedFilter('ba')">
+                    <div class="feed-ba-banner-title">🪄 Today's Before &amp; After</div>
+                    <div class="feed-ba-banner-sub" id="feedBABannerSub">0 amazing transformations to explore</div>
+                </div>
+
                 <div class="item-list" id="itemList">
                     <div class="loading">
                         <div class="loading-spinner"></div>
@@ -2090,6 +2791,15 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         let userStreak = 0;
         let userBadges = [];
         let bingoProgress = {};
+
+        // Before & After state
+        let baEnabled = false;
+        let baBeforePhotoURL = '';
+        let baAfterPhotoURL = '';
+        let baCurrentSlot = ''; // 'cluttered' or 'cleared'
+        let feedFilter = 'all'; // 'all' or 'ba'
+        let baPopupCurrentIndex = 0;
+        let baPopupItems = [];
 
         const bingoSpaces = [
             { key: 'kitchen_space', name: 'Kitchen', emoji: '🍳' },
@@ -3169,16 +3879,166 @@ Don't copy examples - be creative.`
             }
         });
 
+        // B&A file input handler
+        document.getElementById('baFileInput').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                alert('Please select a valid image file (JPG, PNG, GIF, or WebP)');
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                alert('Image is too large! Please choose an image smaller than 10MB.');
+                return;
+            }
+
+            if (!currentUserId) {
+                alert('You must be logged in to upload photos!');
+                return;
+            }
+
+            const slot = baCurrentSlot;
+            const slotEl = document.getElementById(slot === 'cluttered' ? 'baSlotCluttered' : 'baSlotCleared');
+
+            try {
+                let fileToUpload = file;
+                if (file.size > 1024 * 1024) {
+                    fileToUpload = await compressImage(file);
+                }
+
+                const timestamp = Date.now();
+                const randomId = Math.random().toString(36).substring(2, 9);
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                const fileName = `${timestamp}_${randomId}.${fileExtension}`;
+
+                const storagePath = `items/${currentUserId}/ba_${slot}_${fileName}`;
+                const storageRef = ref(storage, storagePath);
+
+                slotEl.innerHTML = '<span class="ba-slot-icon" style="font-size:16px;color:#999;">Uploading...</span>';
+
+                const snapshot = await uploadBytes(storageRef, fileToUpload);
+                const downloadURL = await getDownloadURL(snapshot.ref);
+
+                if (slot === 'cluttered') {
+                    baBeforePhotoURL = downloadURL;
+                } else {
+                    baAfterPhotoURL = downloadURL;
+                }
+
+                slotEl.innerHTML = `<img class="ba-slot-preview" src="${downloadURL}" alt="${slot}"><div class="ba-slot-overlay-label">${slot.toUpperCase()}</div>`;
+                slotEl.classList.add('has-photo');
+
+                updateBAProgress();
+            } catch (error) {
+                console.error('BA upload failed:', error);
+                const label = slot === 'cluttered' ? 'CLUTTERED' : 'CLEARED';
+                slotEl.innerHTML = `<span class="ba-slot-icon">+</span><span class="ba-slot-label">${label}</span>`;
+                alert('Upload failed! Please try again.');
+            }
+
+            this.value = '';
+        });
+
+        // Toggle B&A mode
+        window.toggleBeforeAfter = function() {
+            baEnabled = !baEnabled;
+            const chip = document.getElementById('baChip');
+            const chipIcon = document.getElementById('baChipIcon');
+            const photoArea = document.getElementById('baPhotoArea');
+            const progressText = document.getElementById('baProgressText');
+            const bonusHint = document.getElementById('baBonusHint');
+
+            if (baEnabled) {
+                chip.classList.add('active');
+                chipIcon.textContent = '✓';
+                photoArea.classList.add('show');
+                progressText.style.display = 'block';
+                bonusHint.style.display = 'none';
+            } else {
+                chip.classList.remove('active');
+                chipIcon.textContent = '⊕';
+                photoArea.classList.remove('show');
+                progressText.style.display = 'none';
+                bonusHint.style.display = '';
+                resetBASlots();
+            }
+            updateBABonusBadge();
+        };
+
+        // Open B&A file upload for a specific slot
+        window.openBAUpload = function(slot) {
+            baCurrentSlot = slot;
+            document.getElementById('baFileInput').click();
+        };
+
+        // Reset B&A slots
+        function resetBASlots() {
+            baBeforePhotoURL = '';
+            baAfterPhotoURL = '';
+            const cluttered = document.getElementById('baSlotCluttered');
+            const cleared = document.getElementById('baSlotCleared');
+            cluttered.innerHTML = '<span class="ba-slot-icon">+</span><span class="ba-slot-label">CLUTTERED</span>';
+            cluttered.classList.remove('has-photo');
+            cleared.innerHTML = '<span class="ba-slot-icon">+</span><span class="ba-slot-label">CLEARED</span>';
+            cleared.classList.remove('has-photo');
+            updateBAProgress();
+        }
+
+        // Update B&A progress text
+        function updateBAProgress() {
+            const progressEl = document.getElementById('baProgressText');
+            if (!baEnabled) return;
+
+            const hasCluttered = !!baBeforePhotoURL;
+            const hasCleared = !!baAfterPhotoURL;
+
+            if (hasCluttered && hasCleared) {
+                progressEl.textContent = '✅ +30 Bonus points unlocked!';
+                progressEl.classList.add('complete');
+            } else if (hasCluttered) {
+                progressEl.textContent = 'Now add your Cleared photo! 📸';
+                progressEl.classList.remove('complete');
+            } else if (hasCleared) {
+                progressEl.textContent = 'Now add your Cluttered photo! 📸';
+                progressEl.classList.remove('complete');
+            } else {
+                progressEl.textContent = 'Upload both photos to earn +30 bonus pts';
+                progressEl.classList.remove('complete');
+            }
+            updateBABonusBadge();
+        }
+
+        // Update bonus badge in points info
+        function updateBABonusBadge() {
+            const badge = document.getElementById('baBonusBadge');
+            const category = document.getElementById('itemCategory').value;
+            if (!category || !baEnabled) {
+                badge.style.display = 'none';
+                return;
+            }
+            badge.style.display = 'inline-block';
+            const bothUploaded = baBeforePhotoURL && baAfterPhotoURL;
+            if (bothUploaded) {
+                badge.classList.add('active');
+            } else {
+                badge.classList.remove('active');
+            }
+        }
+
         document.getElementById('itemCategory').addEventListener('change', function(e) {
             const pointsInfo = document.getElementById('pointsInfo');
             const expectedPoints = document.getElementById('expectedPoints');
-            
+
             if (e.target.value) {
                 expectedPoints.textContent = categoryPoints[e.target.value];
                 pointsInfo.style.display = 'block';
             } else {
                 pointsInfo.style.display = 'none';
             }
+            updateBABonusBadge();
         });
 
         window.addItem = async function() {
@@ -3212,9 +4072,12 @@ Don't copy examples - be creative.`
             submitBtn.textContent = 'Uploading...';
 
             try {
-                const points = categoryPoints[category] || 5;
+                const basePoints = categoryPoints[category] || 5;
+                const hasBeforeAfter = baEnabled && !!baBeforePhotoURL && !!baAfterPhotoURL;
+                const bonusPoints = hasBeforeAfter ? 30 : 0;
+                const points = basePoints + bonusPoints;
 
-                await addDoc(collection(db, 'items'), {
+                const itemData = {
                     userId: currentUserId,
                     userName: userName,
                     name: name,
@@ -3226,8 +4089,14 @@ Don't copy examples - be creative.`
                     likes: [],
                     likeCount: 0,
                     comments: [],
+                    hasBeforeAfter: hasBeforeAfter,
+                    beforePhotoURL: hasBeforeAfter ? baBeforePhotoURL : null,
+                    afterPhotoURL: hasBeforeAfter ? baAfterPhotoURL : null,
+                    bonusPoints: bonusPoints,
                     createdAt: serverTimestamp()
-                });
+                };
+
+                await addDoc(collection(db, 'items'), itemData);
 
                 totalScore += points;
                 await updateUserScore();
@@ -3237,8 +4106,9 @@ Don't copy examples - be creative.`
                 playTrashSound();
                 playSuccessSound();
 
-                const aiMessage = await generateAIEncouragement(name, category, points, totalScore, userStreak);
+                const aiMessage = await generateAIEncouragement(name, category, basePoints, totalScore, userStreak);
 
+                // Reset form
                 document.getElementById('itemName').value = '';
                 document.getElementById('itemCategory').value = '';
                 document.getElementById('itemSpace').value = '';
@@ -3253,7 +4123,20 @@ Don't copy examples - be creative.`
                 document.getElementById('spaceHint').style.display = 'none';
                 currentPhotoURL = '';
 
-                alert(`+${points} pts earned!\n\n${aiMessage}\n\nTotal: ${totalScore} pts`);
+                // Reset B&A state
+                if (baEnabled) {
+                    baEnabled = false;
+                    document.getElementById('baChip').classList.remove('active');
+                    document.getElementById('baChipIcon').textContent = '⊕';
+                    document.getElementById('baPhotoArea').classList.remove('show');
+                    document.getElementById('baProgressText').style.display = 'none';
+                    document.getElementById('baBonusHint').style.display = '';
+                    document.getElementById('baBonusBadge').style.display = 'none';
+                    resetBASlots();
+                }
+
+                const bonusMsg = hasBeforeAfter ? ` (includes +30 B&A bonus!)` : '';
+                alert(`+${points} pts earned!${bonusMsg}\n\n${aiMessage}\n\nTotal: ${totalScore} pts`);
 
                 switchTab('history');
             } catch (error) {
@@ -3401,9 +4284,152 @@ Don't copy examples - be creative.`
             }
         };
 
+        // Feed filter handler
+        window.setFeedFilter = function(filter) {
+            feedFilter = filter;
+            document.getElementById('feedFilterAll').classList.toggle('active', filter === 'all');
+            document.getElementById('feedFilterBA').classList.toggle('active', filter === 'ba');
+            renderFeedItems();
+        };
+
+        let allFeedItems = [];
+
+        function renderFeedItems() {
+            const listElement = document.getElementById('itemList');
+            const banner = document.getElementById('feedBABanner');
+            const bannerSub = document.getElementById('feedBABannerSub');
+            const baCountEl = document.getElementById('baFilterCount');
+
+            const baItems = allFeedItems.filter(i => i.hasBeforeAfter);
+            const baCount = baItems.length;
+            baCountEl.textContent = baCount;
+
+            if (feedFilter === 'all' && baCount > 0) {
+                banner.style.display = 'block';
+                bannerSub.textContent = `${baCount} amazing transformation${baCount !== 1 ? 's' : ''} to explore`;
+            } else {
+                banner.style.display = 'none';
+            }
+
+            const displayItems = feedFilter === 'ba' ? baItems : allFeedItems;
+
+            if (displayItems.length === 0) {
+                listElement.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">${feedFilter === 'ba' ? '📸' : '📦'}</div>
+                        <div>${feedFilter === 'ba' ? 'No Before & After posts yet' : 'No items yet'}</div>
+                        <div style="font-size: 14px; margin-top: 10px;">${feedFilter === 'ba' ? 'Be the first to share a transformation!' : 'Declutter your first item!'}</div>
+                    </div>
+                `;
+                return;
+            }
+
+            listElement.innerHTML = displayItems.map(item => {
+                const date = item.createdAt?.toDate() || new Date();
+                const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+                const isMyItem = item.userId === currentUserId;
+                const isLiked = (item.likes || []).includes(currentUserId);
+                const likeCount = item.likeCount || 0;
+                const comments = item.comments || [];
+                const hasNote = item.note && item.note.trim();
+
+                if (item.hasBeforeAfter && item.beforePhotoURL && item.afterPhotoURL) {
+                    // B&A Premium Card
+                    const basePoints = (item.points || 0) - (item.bonusPoints || 0);
+                    return `
+                        <div class="item ba-card" style="${isMyItem ? 'background: #FAFAFA;' : ''}">
+                            <div class="item-header">
+                                <img src="${item.image}" alt="${item.name}" class="item-image">
+                                <div class="item-info">
+                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-date">${item.userName || 'Anonymous'} · ${dateStr}</div>
+                                    ${hasNote ? `<div class="item-note">"${item.note}"</div>` : ''}
+                                </div>
+                                <div class="ba-card-points">
+                                    <span class="item-points">+${basePoints}</span>
+                                    <span class="ba-card-bonus">+${item.bonusPoints || 30} bonus</span>
+                                </div>
+                            </div>
+                            <div class="ba-slider-container" data-before="${item.beforePhotoURL}" data-after="${item.afterPhotoURL}" data-celebration="feed">
+                                <img class="ba-slider-img cluttered-img" src="${item.beforePhotoURL}" alt="Cluttered">
+                                <img class="ba-slider-img cleared-img" src="${item.afterPhotoURL}" alt="Cleared" style="clip-path: inset(0 0 0 80%);">
+                                <div class="ba-slider-divider" style="left: 80%;"></div>
+                                <div class="ba-slider-handle" style="left: 80%;">◂ ▸</div>
+                                <div class="ba-slider-label left">CLUTTERED</div>
+                                <div class="ba-slider-label right">CLEARED</div>
+                                <div class="ba-slider-hint"><span class="hint-emoji">👈</span> Slide to reveal</div>
+                                <div class="ba-slider-celebration">🎉 What a transformation! 🎉</div>
+                            </div>
+                            <div class="item-actions">
+                                <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${item.id}', '${item.docId}')">
+                                    ❤️ ${likeCount}
+                                </button>
+                                <button class="comment-btn" onclick="toggleComments('${item.id}')">
+                                    💬 ${comments.length}
+                                </button>
+                                ${isMyItem ? `<button class="delete-btn" onclick="deleteItem('${item.docId}', '${item.userId}', ${item.points})">🗑️ Delete</button>` : ''}
+                            </div>
+                            <div class="comments-section" id="comments-${item.id}">
+                                ${comments.map(c => `
+                                    <div class="comment">
+                                        <div class="comment-author">${c.userName}</div>
+                                        <div class="comment-text">${c.text}</div>
+                                    </div>
+                                `).join('')}
+                                <div class="comment-input">
+                                    <input type="text" id="comment-input-${item.id}" placeholder="Add comment...">
+                                    <button onclick="addComment('${item.id}', '${item.docId}')">Post</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Normal Post Card
+                    return `
+                        <div class="item" style="${isMyItem ? 'background: #FAFAFA;' : ''}">
+                            <div class="item-header">
+                                <img src="${item.image}" alt="${item.name}" class="item-image">
+                                <div class="item-info">
+                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-date">${item.userName || 'Anonymous'} · ${dateStr}</div>
+                                    ${hasNote ? `<div class="item-note">"${item.note}"</div>` : ''}
+                                </div>
+                                <div class="item-points">+${item.points}</div>
+                            </div>
+                            <div class="ba-nudge">📸 Add Before &amp; After to earn <span class="ba-nudge-highlight">bonus points</span></div>
+                            <div class="item-actions">
+                                <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${item.id}', '${item.docId}')">
+                                    ❤️ ${likeCount}
+                                </button>
+                                <button class="comment-btn" onclick="toggleComments('${item.id}')">
+                                    💬 ${comments.length}
+                                </button>
+                                ${isMyItem ? `<button class="delete-btn" onclick="deleteItem('${item.docId}', '${item.userId}', ${item.points})">🗑️ Delete</button>` : ''}
+                            </div>
+                            <div class="comments-section" id="comments-${item.id}">
+                                ${comments.map(c => `
+                                    <div class="comment">
+                                        <div class="comment-author">${c.userName}</div>
+                                        <div class="comment-text">${c.text}</div>
+                                    </div>
+                                `).join('')}
+                                <div class="comment-input">
+                                    <input type="text" id="comment-input-${item.id}" placeholder="Add comment...">
+                                    <button onclick="addComment('${item.id}', '${item.docId}')">Post</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+
+            // Initialize sliders after rendering
+            initBASliders();
+        }
+
         async function loadMyItems() {
             const listElement = document.getElementById('itemList');
-            
+
             try {
                 const itemsQuery = query(collection(db, 'items'), limit(50));
 
@@ -3439,61 +4465,8 @@ Don't copy examples - be creative.`
                     document.getElementById('totalScore').textContent = totalScore;
                     updateHeaderStats();
 
-                    if (items.length === 0) {
-                        listElement.innerHTML = `
-                            <div class="empty-state">
-                                <div class="empty-icon">📦</div>
-                                <div>No items yet</div>
-                                <div style="font-size: 14px; margin-top: 10px;">Declutter your first item!</div>
-                            </div>
-                        `;
-                        return;
-                    }
-
-                    listElement.innerHTML = items.map(item => {
-                        const date = item.createdAt?.toDate() || new Date();
-                        const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
-                        const isMyItem = item.userId === currentUserId;
-                        const isLiked = (item.likes || []).includes(currentUserId);
-                        const likeCount = item.likeCount || 0;
-                        const comments = item.comments || [];
-                        const hasNote = item.note && item.note.trim();
-                        
-                        return `
-                            <div class="item" style="${isMyItem ? 'background: #FAFAFA;' : ''}">
-                                <div class="item-header">
-                                    <img src="${item.image}" alt="${item.name}" class="item-image">
-                                    <div class="item-info">
-                                        <div class="item-name">${item.name}</div>
-                                        <div class="item-date">${item.userName || 'Anonymous'} • ${dateStr}</div>
-                                        ${hasNote ? `<div class="item-note">"${item.note}"</div>` : ''}
-                                    </div>
-                                    <div class="item-points">+${item.points}</div>
-                                </div>
-                                <div class="item-actions">
-                                    <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${item.id}', '${item.docId}')">
-                                        ❤️ ${likeCount}
-                                    </button>
-                                    <button class="comment-btn" onclick="toggleComments('${item.id}')">
-                                        💬 ${comments.length}
-                                    </button>
-                                    ${isMyItem ? `<button class="delete-btn" onclick="deleteItem('${item.docId}', '${item.userId}', ${item.points})">🗑️ Delete</button>` : ''}
-                                </div>
-                                <div class="comments-section" id="comments-${item.id}">
-                                    ${comments.map(c => `
-                                        <div class="comment">
-                                            <div class="comment-author">${c.userName}</div>
-                                            <div class="comment-text">${c.text}</div>
-                                        </div>
-                                    `).join('')}
-                                    <div class="comment-input">
-                                        <input type="text" id="comment-input-${item.id}" placeholder="Add comment...">
-                                        <button onclick="addComment('${item.id}', '${item.docId}')">Post</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
+                    allFeedItems = items;
+                    renderFeedItems();
                 });
             } catch (error) {
                 console.error('Items load failed:', error);
@@ -3975,6 +4948,194 @@ Don't copy examples - be creative.`
             link.click();
         };
 
+        // ===== Interactive B&A Slider =====
+        function initBASliders() {
+            document.querySelectorAll('.ba-slider-container').forEach(container => {
+                if (container.dataset.initialized) return;
+                container.dataset.initialized = 'true';
+
+                let isDragging = false;
+                const divider = container.querySelector('.ba-slider-divider');
+                const handle = container.querySelector('.ba-slider-handle');
+                const clearedImg = container.querySelector('.cleared-img');
+                const hint = container.querySelector('.ba-slider-hint');
+                const celebration = container.querySelector('.ba-slider-celebration');
+                const celebType = container.dataset.celebration || 'feed';
+                let hasCelebrated = false;
+
+                function updateSlider(pct) {
+                    pct = Math.max(0, Math.min(100, pct));
+                    divider.style.left = pct + '%';
+                    handle.style.left = pct + '%';
+                    clearedImg.style.clipPath = `inset(0 0 0 ${pct}%)`;
+
+                    if (hint) hint.style.display = pct < 75 ? 'none' : '';
+
+                    const threshold = celebType === 'popup' ? 25 : 30;
+                    if (!hasCelebrated && pct < threshold && celebration) {
+                        hasCelebrated = true;
+                        celebration.style.display = 'block';
+                        if (celebType === 'popup') {
+                            celebration.textContent = '🎉 Amazing!';
+                        }
+                        setTimeout(() => { if (celebration) celebration.style.display = 'none'; }, 2500);
+                    }
+                }
+
+                function getPercent(e) {
+                    const rect = container.getBoundingClientRect();
+                    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+                    return (x / rect.width) * 100;
+                }
+
+                container.addEventListener('mousedown', (e) => { isDragging = true; updateSlider(getPercent(e)); });
+                container.addEventListener('touchstart', (e) => { isDragging = true; updateSlider(getPercent(e)); }, { passive: true });
+
+                document.addEventListener('mousemove', (e) => { if (isDragging) updateSlider(getPercent(e)); });
+                document.addEventListener('touchmove', (e) => { if (isDragging) updateSlider(getPercent(e)); }, { passive: true });
+
+                document.addEventListener('mouseup', () => { isDragging = false; });
+                document.addEventListener('touchend', () => { isDragging = false; });
+            });
+        }
+
+        // ===== B&A Popup Logic =====
+        window.closeBAPopup = function(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('baPopupOverlay').classList.remove('show');
+        };
+
+        function showBAPopup() {
+            const baItems = allFeedItems.filter(i => i.hasBeforeAfter && i.beforePhotoURL && i.afterPhotoURL);
+            if (baItems.length === 0) return;
+
+            // Check once-per-day
+            const today = new Date().toISOString().split('T')[0];
+            const lastDate = localStorage.getItem('lastBAPopupDate');
+            if (lastDate === today) return;
+            localStorage.setItem('lastBAPopupDate', today);
+
+            baPopupItems = baItems.slice(0, 3);
+            baPopupCurrentIndex = 0;
+
+            renderBAPopupCard();
+            setTimeout(() => {
+                document.getElementById('baPopupOverlay').classList.add('show');
+                // Auto-animate the slider hint on first card
+                autoAnimatePopupSlider();
+            }, 600);
+        }
+
+        function renderBAPopupCard() {
+            const carousel = document.getElementById('baPopupCarousel');
+            const dotsEl = document.getElementById('baPopupDots');
+            const buttonsEl = document.getElementById('baPopupButtons');
+            const item = baPopupItems[baPopupCurrentIndex];
+            const total = baPopupItems.length;
+            const isLast = baPopupCurrentIndex === total - 1;
+
+            const date = item.createdAt?.toDate() || new Date();
+            const now = new Date();
+            const diffH = Math.floor((now - date) / (1000 * 60 * 60));
+            const timeAgo = diffH < 1 ? 'Just now' : diffH < 24 ? `${diffH}h ago` : `${Math.floor(diffH/24)}d ago`;
+
+            const spaceNames = {
+                kitchen_space: '🍳 Kitchen', bathroom: '🚿 Bathroom', bedroom: '🛏️ Bedroom',
+                living: '🛋️ Living Room', kids_room: '🧒 Kids Room', closet: '👔 Closet',
+                office: '💻 Office', garage: '🔧 Garage', pantry: '🥫 Pantry'
+            };
+            const spaceTag = spaceNames[item.space] || item.space || '';
+            const initial = (item.userName || 'A').charAt(0).toUpperCase();
+            const likeCount = item.likeCount || 0;
+
+            carousel.innerHTML = `
+                <div class="ba-popup-card active">
+                    <div class="ba-popup-user">
+                        <div class="ba-popup-avatar">${initial}</div>
+                        <div>
+                            <div class="ba-popup-username">${item.userName || 'Anonymous'} · ${timeAgo}</div>
+                        </div>
+                        ${spaceTag ? `<span class="ba-popup-space-tag">${spaceTag}</span>` : ''}
+                    </div>
+                    <div class="ba-slider-container" data-before="${item.beforePhotoURL}" data-after="${item.afterPhotoURL}" data-celebration="popup">
+                        <img class="ba-slider-img cluttered-img" src="${item.beforePhotoURL}" alt="Cluttered">
+                        <img class="ba-slider-img cleared-img" src="${item.afterPhotoURL}" alt="Cleared" style="clip-path: inset(0 0 0 80%);">
+                        <div class="ba-slider-divider" style="left: 80%;"></div>
+                        <div class="ba-slider-handle" style="left: 80%;">◂ ▸</div>
+                        <div class="ba-slider-label left">CLUTTERED</div>
+                        <div class="ba-slider-label right">CLEARED</div>
+                        <div class="ba-slider-hint"><span class="hint-emoji">👈</span> Slide to reveal</div>
+                        <div class="ba-slider-celebration">🎉 Amazing!</div>
+                    </div>
+                    <div class="ba-popup-reactions">
+                        <button class="ba-popup-reaction-btn" onclick="this.style.transform='scale(1.2)';setTimeout(()=>this.style.transform='',200)">😍</button>
+                        <button class="ba-popup-reaction-btn" onclick="this.style.transform='scale(1.2)';setTimeout(()=>this.style.transform='',200)">🔥</button>
+                        <button class="ba-popup-reaction-btn" onclick="this.style.transform='scale(1.2)';setTimeout(()=>this.style.transform='',200)">👏</button>
+                        <span class="ba-popup-like-count">❤️ ${likeCount}</span>
+                    </div>
+                </div>
+            `;
+
+            // Dots
+            dotsEl.innerHTML = baPopupItems.map((_, i) =>
+                `<div class="ba-popup-dot ${i === baPopupCurrentIndex ? 'active' : ''}"></div>`
+            ).join('');
+
+            // Buttons
+            if (isLast) {
+                buttonsEl.innerHTML = `<button class="ba-popup-start" onclick="closeBAPopup();switchTab('add');">Start Decluttering ✨</button>`;
+            } else {
+                buttonsEl.innerHTML = `
+                    <button class="ba-popup-skip" onclick="closeBAPopup()">Skip</button>
+                    <button class="ba-popup-next" onclick="nextBAPopupCard()">Next →</button>
+                `;
+            }
+
+            // Init sliders in popup
+            initBASliders();
+        }
+
+        window.nextBAPopupCard = function() {
+            if (baPopupCurrentIndex < baPopupItems.length - 1) {
+                baPopupCurrentIndex++;
+                renderBAPopupCard();
+                autoAnimatePopupSlider();
+            }
+        };
+
+        function autoAnimatePopupSlider() {
+            setTimeout(() => {
+                const container = document.querySelector('#baPopupCarousel .ba-slider-container');
+                if (!container) return;
+                const divider = container.querySelector('.ba-slider-divider');
+                const handle = container.querySelector('.ba-slider-handle');
+                const clearedImg = container.querySelector('.cleared-img');
+                if (!divider || !handle || !clearedImg) return;
+
+                // Animate from 80% to 55%
+                let start = 80;
+                const end = 55;
+                const duration = 600;
+                const startTime = performance.now();
+
+                function animate(time) {
+                    const elapsed = time - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+                    const current = start + (end - start) * eased;
+
+                    divider.style.left = current + '%';
+                    handle.style.left = current + '%';
+                    clearedImg.style.clipPath = `inset(0 0 0 ${current}%)`;
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    }
+                }
+                requestAnimationFrame(animate);
+            }, 800);
+        }
+
         async function initApp() {
             if (!currentUserId) return;
             updateProfileUI();
@@ -4000,6 +5161,9 @@ Don't copy examples - be creative.`
                 renderBadges();
                 renderBingoGrid();
             }
+
+            // Show B&A popup after items load (0.6s delay)
+            setTimeout(() => showBAPopup(), 600);
         }
 
         (function checkAuthState() {
@@ -4021,6 +5185,23 @@ Don't copy examples - be creative.`
             navigator.serviceWorker.register('sw.js');
         }
     </script>
+
+    <!-- B&A Popup / Bottom Sheet -->
+    <div class="ba-popup-overlay" id="baPopupOverlay" onclick="closeBAPopup(event)">
+        <div class="ba-popup-sheet" onclick="event.stopPropagation()">
+            <div class="ba-popup-handle"></div>
+            <div class="ba-popup-header">
+                <div>
+                    <div class="ba-popup-supertitle">🔥 Trending Now</div>
+                    <div class="ba-popup-title">Who's Feeling Lighter?</div>
+                </div>
+                <button class="ba-popup-close" onclick="closeBAPopup()">&times;</button>
+            </div>
+            <div id="baPopupCarousel"></div>
+            <div class="ba-popup-dots" id="baPopupDots"></div>
+            <div class="ba-popup-buttons" id="baPopupButtons"></div>
+        </div>
+    </div>
 
     <!-- Settings Bottom Sheet -->
     <div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()"></div>
