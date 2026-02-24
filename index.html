@@ -232,12 +232,7 @@
         }
 
         .profile-provider {
-            font-size: 11px;
-            color: #6B6B6B;
-            background: #F0F0F0;
-            padding: 3px 8px;
-            border-radius: 10px;
-            display: inline-block;
+            display: none;
         }
 
         .profile-stats {
@@ -4632,24 +4627,115 @@ Don't copy examples - be creative.`
 
             try {
                 const { deleteDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+
+                // Find item in feed to get full data (space, createdAt)
+                const feedItem = allFeedItems.find(i => i.docId === itemDocId);
+                const itemSpace = feedItem ? feedItem.space : null;
+                const itemCreatedAt = feedItem && feedItem.createdAt ? feedItem.createdAt.toDate() : null;
+
                 await deleteDoc(doc(db, 'items', itemDocId));
 
+                // --- Revert bingo progress ---
+                let bingoBonusToSubtract = 0;
+                if (itemSpace && (bingoProgress[itemSpace] || 0) > 0) {
+                    const oldCompleted = countCompletedSpaces();
+                    const oldLines = countBingoLines();
+
+                    bingoProgress[itemSpace] = Math.max(0, (bingoProgress[itemSpace] || 0) - 1);
+
+                    const newCompleted = countCompletedSpaces();
+                    const newLines = countBingoLines();
+
+                    // Calculate lost bingo bonuses
+                    const lostSpaces = oldCompleted - newCompleted;
+                    const lostLines = oldLines - newLines;
+                    const lostAllClear = (oldCompleted === 9 && newCompleted < 9) ? 1 : 0;
+                    bingoBonusToSubtract = lostSpaces * 100 + lostLines * 500 + lostAllClear * 3000;
+
+                    renderBingoGrid();
+                    updateSpaceHint();
+                }
+
+                // --- Update user score, item count, bingo, and streak ---
                 const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
                 const userSnapshot = await getDocs(userQuery);
-                
+
                 if (!userSnapshot.empty) {
                     const userDoc = userSnapshot.docs[0];
                     const userData = userDoc.data();
-                    const newScore = Math.max(0, (userData.score || 0) - itemPoints);
+                    const totalToSubtract = itemPoints + bingoBonusToSubtract;
+                    const newScore = Math.max(0, (userData.score || 0) - totalToSubtract);
                     const newItemCount = Math.max(0, (userData.itemCount || 0) - 1);
-                    
-                    await updateDoc(doc(db, 'users', userDoc.id), {
+
+                    // --- Recalculate streak ---
+                    let newStreak = userData.streak || 0;
+                    let newLastDeclutterDate = userData.lastDeclutterDate;
+
+                    if (itemCreatedAt) {
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        const itemDate = new Date(itemCreatedAt);
+                        itemDate.setHours(0, 0, 0, 0);
+
+                        if (itemDate.getTime() === today.getTime()) {
+                            // Check if there are other items from today
+                            const todayItems = allFeedItems.filter(i => {
+                                if (i.docId === itemDocId) return false;
+                                if (i.userId !== currentUserId) return false;
+                                const d = i.createdAt ? i.createdAt.toDate() : null;
+                                if (!d) return false;
+                                const day = new Date(d);
+                                day.setHours(0, 0, 0, 0);
+                                return day.getTime() === today.getTime();
+                            });
+
+                            if (todayItems.length === 0) {
+                                // No other items today — find most recent previous item
+                                const previousItems = allFeedItems.filter(i => {
+                                    if (i.docId === itemDocId) return false;
+                                    if (i.userId !== currentUserId) return false;
+                                    const d = i.createdAt ? i.createdAt.toDate() : null;
+                                    if (!d) return false;
+                                    const day = new Date(d);
+                                    day.setHours(0, 0, 0, 0);
+                                    return day.getTime() < today.getTime();
+                                }).sort((a, b) => {
+                                    const dateA = a.createdAt ? a.createdAt.toDate() : new Date(0);
+                                    const dateB = b.createdAt ? b.createdAt.toDate() : new Date(0);
+                                    return dateB - dateA;
+                                });
+
+                                if (previousItems.length > 0) {
+                                    newLastDeclutterDate = previousItems[0].createdAt;
+                                    newStreak = Math.max(0, newStreak - 1);
+                                } else {
+                                    newLastDeclutterDate = null;
+                                    newStreak = 0;
+                                }
+                            }
+                        }
+                    }
+
+                    userStreak = newStreak;
+
+                    const updateData = {
                         score: newScore,
-                        itemCount: newItemCount
-                    });
+                        itemCount: newItemCount,
+                        streak: newStreak,
+                        bingoProgress: bingoProgress
+                    };
+                    if (newLastDeclutterDate === null) {
+                        updateData.lastDeclutterDate = null;
+                    } else if (newLastDeclutterDate !== userData.lastDeclutterDate) {
+                        updateData.lastDeclutterDate = newLastDeclutterDate;
+                    }
+
+                    await updateDoc(doc(db, 'users', userDoc.id), updateData);
 
                     totalScore = newScore;
                     document.getElementById('totalScore').textContent = totalScore;
+                    const streakBadge = document.getElementById('streakBadge');
+                    if (streakBadge) streakBadge.textContent = `${userStreak} Day Streak`;
                     updateHeaderStats();
                 }
 
