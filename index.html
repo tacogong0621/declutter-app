@@ -2106,22 +2106,13 @@
             font-size: 12px;
         }
 
-        /* B&A Premium Card */
+        /* B&A Compact Card — collapsed looks like normal card */
         .item.ba-item {
             position: relative;
             border: none;
-            padding-top: 3px;
-        }
-
-        .item.ba-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #e8d5b8, #4CAF50, #81C784);
-            border-radius: 3px 3px 0 0;
+            border-left: 3px solid #4CAF50;
+            border-radius: 18px;
+            padding: 12px 14px;
         }
 
         .ba-badge {
@@ -2133,6 +2124,44 @@
             color: white;
             background: #4CAF50;
             margin-left: 6px;
+        }
+
+        /* B&A photo badge overlay (bottom-right of item photo) */
+        .ba-photo-badge {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .ba-photo-badge-icon {
+            display: inline-flex;
+            gap: 1px;
+        }
+
+        .ba-photo-badge-icon .half-warm {
+            display: inline-block;
+            width: 6px;
+            height: 10px;
+            background: #e8d5b8;
+            border-radius: 2px 0 0 2px;
+        }
+
+        .ba-photo-badge-icon .half-green {
+            display: inline-block;
+            width: 6px;
+            height: 10px;
+            background: #4CAF50;
+            border-radius: 0 2px 2px 0;
         }
 
         .ba-points-display {
@@ -2154,6 +2183,51 @@
             background: #e8f5e9;
             padding: 2px 8px;
             border-radius: 8px;
+        }
+
+        /* B&A Expand Section — hidden by default */
+        .ba-expand-section {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+        }
+
+        .ba-expand-section.expanded {
+            max-height: 500px;
+        }
+
+        .ba-expand-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0 4px;
+        }
+
+        .ba-expand-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1C1C1E;
+        }
+
+        .ba-expand-close {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            color: #6B6B6B;
+            line-height: 1;
+            padding: 0;
+        }
+
+        /* Make B&A item photo clickable */
+        .ba-item-photo-container {
+            cursor: pointer;
         }
 
         /* Interactive Slider */
@@ -4641,11 +4715,11 @@ Don't copy examples - be creative.`
                 const basePoints = (item.points || 0) - (item.bonusPoints || 0);
 
                 if (isBA) {
-                    // B&A Premium Card
+                    // B&A Compact Card — collapsed looks like normal card
                     return `
                         <div class="item ba-item" style="${isMyItem ? 'background: #FAFAFA;' : ''}">
                             <div class="item-header">
-                                <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#e8d5b8,#4CAF50);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:white;margin-right:12px;flex-shrink:0">${(item.userName || 'A').charAt(0).toUpperCase()}</div>
+                                <div style="width:34px;height:34px;border-radius:50%;background:#4CAF50;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;margin-right:12px;flex-shrink:0">${(item.userName || 'A').charAt(0).toUpperCase()}</div>
                                 <div class="item-info">
                                     <div class="item-name">${item.name} <span class="ba-badge">B&A</span></div>
                                     <div class="item-date">${item.userName || 'Anonymous'} &bull; ${dateStr}</div>
@@ -4656,22 +4730,31 @@ Don't copy examples - be creative.`
                                     <span class="bonus-pts">+${item.bonusPoints || 30} bonus</span>
                                 </div>
                             </div>
-                            <div class="ba-item-photo-container" style="position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;margin:10px 0;">
+                            <div class="ba-item-photo-container" style="position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;margin:10px 0;" onclick="toggleBASlider('${item.id}')">
                                 <img src="${item.image}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;">
-                                <span style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.6);color:white;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:600;">&#128247; Item</span>
+                                <div class="ba-photo-badge">
+                                    <span class="ba-photo-badge-icon"><span class="half-warm"></span><span class="half-green"></span></span>
+                                    B&A
+                                </div>
                             </div>
-                            <div class="ba-slider-container" id="slider-${item.id}" style="--slider-pos: 80%"
-                                 onpointerdown="startSlider(event, '${item.id}')"
-                                 onpointermove="moveSlider(event, '${item.id}')"
-                                 onpointerup="endSlider(event, '${item.id}')">
-                                <img src="${item.beforePhotoURL}" alt="Cluttered" class="ba-slider-before">
-                                <img src="${item.afterPhotoURL}" alt="Cleared" class="ba-slider-after">
-                                <div class="ba-slider-divider"></div>
-                                <div class="ba-slider-handle">&#9664; &#9654;</div>
-                                <div class="ba-slider-label left" id="label-left-${item.id}">CLUTTERED</div>
-                                <div class="ba-slider-label right" id="label-right-${item.id}">CLEARED</div>
-                                <div class="ba-slider-hint" id="hint-${item.id}"><span class="hint-emoji">&#128072;</span> Slide to reveal</div>
-                                <div class="ba-slider-celebration" id="celebration-${item.id}">&#10024;</div>
+                            <div class="ba-expand-section" id="ba-expand-${item.id}">
+                                <div class="ba-expand-header">
+                                    <span class="ba-expand-label">Before &amp; After</span>
+                                    <button class="ba-expand-close" onclick="toggleBASlider('${item.id}')" aria-label="Close slider">&#10005;</button>
+                                </div>
+                                <div class="ba-slider-container" id="slider-${item.id}" style="--slider-pos: 80%"
+                                     onpointerdown="startSlider(event, '${item.id}')"
+                                     onpointermove="moveSlider(event, '${item.id}')"
+                                     onpointerup="endSlider(event, '${item.id}')">
+                                    <img src="${item.beforePhotoURL}" alt="Cluttered" class="ba-slider-before">
+                                    <img src="${item.afterPhotoURL}" alt="Cleared" class="ba-slider-after">
+                                    <div class="ba-slider-divider"></div>
+                                    <div class="ba-slider-handle">&#9664; &#9654;</div>
+                                    <div class="ba-slider-label left" id="label-left-${item.id}">CLUTTERED</div>
+                                    <div class="ba-slider-label right" id="label-right-${item.id}">CLEARED</div>
+                                    <div class="ba-slider-hint" id="hint-${item.id}"><span class="hint-emoji">&#128072;</span> Slide to reveal</div>
+                                    <div class="ba-slider-celebration" id="celebration-${item.id}">&#10024;</div>
+                                </div>
                             </div>
                             <div class="item-actions">
                                 <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${item.id}', '${item.docId}')">
@@ -4784,6 +4867,13 @@ Don't copy examples - be creative.`
 
         window.endSlider = function(e, id) {
             activeSliders[id] = false;
+        };
+
+        // Toggle B&A slider expand/collapse
+        window.toggleBASlider = function(id) {
+            const section = document.getElementById('ba-expand-' + id);
+            if (!section) return;
+            section.classList.toggle('expanded');
         };
 
         async function loadMyItems() {
