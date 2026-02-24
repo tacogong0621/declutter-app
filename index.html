@@ -457,6 +457,12 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
         }
 
         .btn {
@@ -2547,7 +2553,7 @@
 
                     <textarea id="itemNote" placeholder="Notes (optional)"></textarea>
 
-                    <button class="submit-btn" id="submitBtn" onclick="addItem()">Done!</button>
+                    <button class="submit-btn" id="submitBtn" onclick="addItem()" disabled>Done!</button>
                 </div>
             </div>
 
@@ -3997,6 +4003,7 @@ Don't copy examples - be creative.`
                 const downloadURL = await getDownloadURL(snapshot.ref);
 
                 currentPhotoURL = downloadURL;
+                updateSubmitButton();
 
                 preview.src = downloadURL;
                 preview.classList.add('show');
@@ -4050,7 +4057,19 @@ Don't copy examples - be creative.`
             } else {
                 pointsInfo.style.display = 'none';
             }
+            updateSubmitButton();
         });
+
+        document.getElementById('itemSpace').addEventListener('change', function() {
+            updateSubmitButton();
+        });
+
+        function updateSubmitButton() {
+            const photo = !!currentPhotoURL;
+            const category = !!document.getElementById('itemCategory').value;
+            const space = !!document.getElementById('itemSpace').value;
+            document.getElementById('submitBtn').disabled = !(photo && category && space);
+        }
 
         window.addItem = async function() {
             const name = document.getElementById('itemName').value.trim();
@@ -4166,8 +4185,8 @@ Don't copy examples - be creative.`
                 console.error('Item add failed:', error);
                 alert('Upload failed! Please try again.');
             } finally {
-                submitBtn.disabled = false;
                 submitBtn.textContent = 'Done!';
+                updateSubmitButton();
             }
         };
 
