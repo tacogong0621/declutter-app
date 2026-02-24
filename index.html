@@ -751,52 +751,144 @@
             font-weight: 600;
         }
 
-        .leaderboard-item {
+        .ranking-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+
+        .ranking-card-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 14px;
+        }
+
+        .ranking-row {
+            margin-bottom: 8px;
+        }
+
+        .ranking-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .ranking-row-top {
             display: flex;
             align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #f0f0f0;
         }
 
-        .leaderboard-item:last-child {
-            border-bottom: none;
+        .ranking-rank {
+            width: 20px;
+            text-align: center;
+            flex-shrink: 0;
+            margin-right: 6px;
         }
 
-        .rank {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #1C1C1E;
-            color: #FFFFFF;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            margin-right: 15px;
+        .ranking-rank-medal {
+            font-size: 14px;
+            line-height: 1;
         }
 
-        .rank.top3 {
-            background: #1C1C1E;
-        }
-
-        .leaderboard-info {
-            flex: 1;
-        }
-
-        .leaderboard-name {
-            font-weight: 600;
-            color: #1C1C1E;
-        }
-
-        .leaderboard-items {
-            font-size: 12px;
-            color: #6B6B6B;
-        }
-
-        .leaderboard-score {
+        .ranking-rank-num {
+            font-size: 11px;
             font-weight: 700;
-            color: #1C1C1E;
-            font-size: 20px;
+            color: #ccc;
+        }
+
+        .ranking-name {
+            flex: 1;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ranking-name.top3 {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .ranking-name.regular {
+            font-size: 12px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .ranking-you-badge {
+            display: inline-block;
+            font-size: 8px;
+            color: #fff;
+            background: #1a1a1a;
+            border-radius: 4px;
+            padding: 1px 4px;
+            margin-left: 4px;
+            vertical-align: middle;
+            line-height: 1.4;
+        }
+
+        .ranking-streak {
+            margin-left: 3px;
+            font-size: 11px;
+        }
+
+        .ranking-points {
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+
+        .ranking-points.top3 {
+            font-size: 13px;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+
+        .ranking-points.regular {
+            font-size: 11px;
+            font-weight: 800;
+            color: #999;
+        }
+
+        .ranking-bar-wrapper {
+            margin-left: 26px;
+            margin-top: 3px;
+            border-radius: 3px;
+            background: #f5f5f5;
+        }
+
+        .ranking-bar-wrapper.top3 {
+            height: 6px;
+        }
+
+        .ranking-bar-wrapper.regular {
+            height: 4px;
+        }
+
+        .ranking-bar {
+            height: 100%;
+            border-radius: 3px;
+            min-width: 0;
+        }
+
+        .ranking-bar.rank-1 {
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+        }
+
+        .ranking-bar.rank-2 {
+            background: linear-gradient(90deg, #C0C0C0, #b0b0b0);
+        }
+
+        .ranking-bar.rank-3 {
+            background: linear-gradient(90deg, #CD7F32, #b8763a);
+        }
+
+        .ranking-bar.current-user {
+            background: #4CAF50;
+        }
+
+        .ranking-bar.others {
+            background: #e0e0e0;
         }
 
         .empty-state {
@@ -2829,8 +2921,8 @@
         </div>
 
         <div id="leaderboardTab" class="tab-content">
-            <div class="card">
-                <h2 style="margin-bottom: 20px; color: #1C1C1E; font-weight: 600;">Global Rankings</h2>
+            <div class="ranking-card">
+                <div class="ranking-card-title">Global Rankings</div>
                 <div id="leaderboardList">
                     <div class="loading">
                         <div class="loading-spinner"></div>
@@ -4748,13 +4840,13 @@ Don't copy examples - be creative.`
 
         async function loadLeaderboard() {
             const leaderboardElement = document.getElementById('leaderboardList');
-            
+
             try {
                 const usersQuery = query(collection(db, 'users'), orderBy('score', 'desc'), limit(20));
 
                 onSnapshot(usersQuery, (snapshot) => {
                     const users = [];
-                    
+
                     snapshot.forEach((doc) => {
                         const user = doc.data();
                         users.push(user);
@@ -4770,20 +4862,44 @@ Don't copy examples - be creative.`
                         return;
                     }
 
+                    const topScore = users[0].score || 1;
+
                     leaderboardElement.innerHTML = users.map((user, index) => {
                         const isCurrentUser = user.userId === currentUserId;
                         const rank = index + 1;
-                        const rankClass = rank <= 3 ? 'top3' : '';
+                        const isTop3 = rank <= 3;
+                        const tierClass = isTop3 ? 'top3' : 'regular';
                         const userStreak = user.streak || 0;
-                        
+                        const userPoints = user.score || 0;
+                        const barPercent = userPoints > 0 ? Math.max(3, (userPoints / topScore) * 100) : 0;
+
+                        // Rank display: medal emoji for top 3, number for others
+                        const medals = ['🥇', '🥈', '🥉'];
+                        const rankDisplay = isTop3
+                            ? `<span class="ranking-rank-medal">${medals[rank - 1]}</span>`
+                            : `<span class="ranking-rank-num">${rank}</span>`;
+
+                        // Name with optional YOU badge and streak
+                        const youBadge = isCurrentUser ? '<span class="ranking-you-badge">YOU</span>' : '';
+                        const streakEmoji = userStreak > 0 ? '<span class="ranking-streak">🔥</span>' : '';
+
+                        // Bar color class
+                        let barClass = 'others';
+                        if (rank === 1) barClass = 'rank-1';
+                        else if (rank === 2) barClass = 'rank-2';
+                        else if (rank === 3) barClass = 'rank-3';
+                        else if (isCurrentUser) barClass = 'current-user';
+
                         return `
-                            <div class="leaderboard-item" style="${isCurrentUser ? 'background: #FAFAFA;' : ''}">
-                                <div class="rank ${rankClass}">${rank}</div>
-                                <div class="leaderboard-info">
-                                    <div class="leaderboard-name">${user.name || 'Anonymous'}${isCurrentUser ? ' 👤' : ''}</div>
-                                    <div class="leaderboard-items">${user.itemCount || 0} items • ${userStreak} day streak</div>
+                            <div class="ranking-row">
+                                <div class="ranking-row-top">
+                                    <div class="ranking-rank">${rankDisplay}</div>
+                                    <div class="ranking-name ${tierClass}">${user.name || 'Anonymous'}${youBadge}${streakEmoji}</div>
+                                    <div class="ranking-points ${tierClass}">${userPoints}</div>
                                 </div>
-                                <div class="leaderboard-score">${user.score || 0}</div>
+                                <div class="ranking-bar-wrapper ${tierClass}">
+                                    <div class="ranking-bar ${barClass}" style="width: ${barPercent}%"></div>
+                                </div>
                             </div>
                         `;
                     }).join('');
