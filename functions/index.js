@@ -3,13 +3,38 @@ const { defineSecret } = require("firebase-functions/params");
 
 const anthropicApiKey = defineSecret("ANTHROPIC_API_KEY");
 
+const ALLOWED_ORIGINS = [
+  "https://tacogong0621.github.io",
+  "http://localhost:5000",
+  "http://localhost:3000",
+];
+
+function setCorsHeaders(req, res) {
+  const origin = req.headers.origin;
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    res.set("Access-Control-Allow-Origin", origin);
+  } else {
+    res.set("Access-Control-Allow-Origin", ALLOWED_ORIGINS[0]);
+  }
+  res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Max-Age", "3600");
+}
+
 /**
  * generateEncouragement — HTTP endpoint called via fetch from the frontend.
  * Returns a one-sentence AI encouragement message after an item is decluttered.
  */
 exports.generateEncouragement = onRequest(
-  { cors: true, secrets: [anthropicApiKey] },
+  { secrets: [anthropicApiKey] },
   async (req, res) => {
+    setCorsHeaders(req, res);
+
+    if (req.method === "OPTIONS") {
+      res.status(204).send("");
+      return;
+    }
+
     if (req.method !== "POST") {
       res.status(405).json({ error: "Method not allowed" });
       return;
@@ -48,7 +73,7 @@ Don't copy examples - be creative.`;
           "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
+          model: "claude-haiku-4-5-20251001",
           max_tokens: 150,
           messages: [{ role: "user", content: prompt }],
         }),
@@ -75,8 +100,15 @@ Don't copy examples - be creative.`;
  * Returns a Tidy AI Coach comment for the feed.
  */
 exports.generateTidyComment = onRequest(
-  { cors: true, secrets: [anthropicApiKey] },
+  { secrets: [anthropicApiKey] },
   async (req, res) => {
+    setCorsHeaders(req, res);
+
+    if (req.method === "OPTIONS") {
+      res.status(204).send("");
+      return;
+    }
+
     if (req.method !== "POST") {
       res.status(405).json({ error: "Method not allowed" });
       return;
