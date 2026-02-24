@@ -201,18 +201,219 @@
             margin-top: 30px;
         }
 
+        .profile-avatar-wrapper {
+            position: relative;
+            width: 72px;
+            height: 72px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
         .profile-avatar {
-            width: 60px;
-            height: 60px;
+            width: 72px;
+            height: 72px;
             border-radius: 50%;
             background: linear-gradient(135deg, #1C1C1E 0%, #4A4A4A 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
             color: white;
             flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        .profile-avatar-camera {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            border: 2px solid #FAFAFA;
+        }
+
+        .profile-avatar-camera svg {
+            width: 12px;
+            height: 12px;
+            fill: #555;
+        }
+
+        /* Profile Photo Bottom Sheet */
+        .photo-sheet-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 300;
+        }
+
+        .photo-sheet {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(100%);
+            width: 100%;
+            max-width: 480px;
+            background: white;
+            border-radius: 22px 22px 0 0;
+            padding: 16px 20px 40px;
+            z-index: 301;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-sheet-grab {
+            width: 36px;
+            height: 4px;
+            background: #D1D1D6;
+            border-radius: 2px;
+            margin: 0 auto 16px;
+        }
+
+        .photo-sheet-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #1C1C1E;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .photo-sheet-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background-size: cover;
+            background-position: center;
+            display: none;
+        }
+
+        .photo-sheet-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .photo-sheet-btn.primary {
+            background: #1C1C1E;
+            color: white;
+        }
+
+        .photo-sheet-btn.primary:active {
+            opacity: 0.8;
+        }
+
+        .photo-sheet-btn.danger {
+            background: white;
+            color: #E53E3E;
+            border: 1px solid #F0F0F0;
+        }
+
+        .photo-sheet-btn.danger:active {
+            background: #FFF5F5;
+        }
+
+        .photo-sheet-btn.cancel {
+            background: #F5F5F5;
+            color: #6B6B6B;
+        }
+
+        .photo-sheet-btn.cancel:active {
+            background: #EBEBEB;
+        }
+
+        .photo-sheet-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        /* Feed/Comment User Avatars */
+        .feed-user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1C1C1E 0%, #4A4A4A 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        .comment-user-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1C1C1E 0%, #4A4A4A 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        .comment-with-avatar {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .comment-with-avatar .comment-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ranking-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1C1C1E 0%, #4A4A4A 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        .item-header-with-avatar {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
         }
 
         .profile-info {
@@ -1854,6 +2055,10 @@
         }
 
         @media (max-height: 700px) {
+            .profile-avatar-wrapper {
+                width: 50px;
+                height: 50px;
+            }
             .profile-avatar {
                 width: 50px;
                 height: 50px;
@@ -2789,7 +2994,13 @@
 
 
             <div class="profile-content">
-                <div class="profile-avatar" id="profileAvatar">YK</div>
+                <div class="profile-avatar-wrapper" onclick="openProfilePhotoSheet()">
+                    <div class="profile-avatar" id="profileAvatar">YK</div>
+                    <div class="profile-avatar-camera">
+                        <svg viewBox="0 0 24 24"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"/><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+                    </div>
+                </div>
+                <input type="file" id="profilePhotoInput" accept="image/*" style="display:none" onchange="handleProfilePhotoSelect(event)">
                 <div class="profile-info">
                     <div class="profile-name" id="profileName">User</div>
                     <span class="profile-provider" id="profileProvider">Google</span>
@@ -3152,7 +3363,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getFirestore, collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp, arrayUnion, arrayRemove, increment } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+        import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
         import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js';
 
         const firebaseConfig = {
@@ -3178,6 +3389,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         let userName = localStorage.getItem('userName') || '';
         let totalScore = 0;
         let currentPhotoURL = '';
+        let userProfilePhotoURL = localStorage.getItem('userProfilePhotoURL') || '';
         let userStreak = 0;
         let userBadges = [];
         let bingoProgress = {};
@@ -3468,10 +3680,18 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             if (profileName) profileName.textContent = userName || 'User';
             if (profileProvider) profileProvider.textContent = provider === 'google' ? 'Google' : '';
 
-            // Create avatar initials
+            // Show profile photo or initials
             if (profileAvatar) {
-                const initials = (userName || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-                profileAvatar.textContent = initials;
+                if (userProfilePhotoURL) {
+                    profileAvatar.textContent = '';
+                    profileAvatar.style.backgroundImage = `url(${userProfilePhotoURL})`;
+                    profileAvatar.style.fontSize = '28px';
+                } else {
+                    const initials = (userName || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+                    profileAvatar.textContent = initials;
+                    profileAvatar.style.backgroundImage = 'none';
+                    profileAvatar.style.fontSize = '28px';
+                }
             }
         }
 
@@ -3571,9 +3791,11 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             localStorage.removeItem('userName');
             localStorage.removeItem('authProvider');
             localStorage.removeItem('userPhoto');
+            localStorage.removeItem('userProfilePhotoURL');
             currentUserId = null;
             userName = '';
             totalScore = 0;
+            userProfilePhotoURL = '';
             userStreak = 0;
             userBadges = [];
             dreamVisionText = '';
@@ -4574,6 +4796,7 @@ Rules:
                 const itemData = {
                     userId: currentUserId,
                     userName: userName,
+                    userPhotoURL: userProfilePhotoURL || null,
                     name: name,
                     category: category,
                     space: space,
@@ -4762,6 +4985,7 @@ Rules:
                     comments: arrayUnion({
                         userId: currentUserId,
                         userName: userName,
+                        userPhotoURL: userProfilePhotoURL || null,
                         text: commentText,
                         createdAt: new Date().toISOString()
                     })
@@ -4926,10 +5150,14 @@ Rules:
                         <div class="tidy-comment-text">${c.text}</div>
                     </div>`;
             }
+            const commentAvatar = getUserAvatarHTML(c.userName, c.userPhotoURL, 26);
             return `
-                <div class="comment">
-                    <div class="comment-author">${c.userName}</div>
-                    <div class="comment-text">${c.text}</div>
+                <div class="comment comment-with-avatar">
+                    ${commentAvatar}
+                    <div class="comment-body">
+                        <div class="comment-author">${c.userName}</div>
+                        <div class="comment-text">${c.text}</div>
+                    </div>
                 </div>`;
         }
 
@@ -4965,6 +5193,7 @@ Rules:
                 const hasNote = item.note && item.note.trim();
                 const isBA = item.hasBeforeAfter;
                 const basePoints = (item.points || 0) - (item.bonusPoints || 0);
+                const feedAvatar = getUserAvatarHTML(item.userName, item.userPhotoURL, 30);
 
                 if (isBA) {
                     // B&A Compact Card — collapsed looks like normal card, same size
@@ -4980,7 +5209,7 @@ Rules:
                                 </div>
                                 <div class="item-info">
                                     <div class="item-name">${item.name} <span class="ba-badge">B&A</span></div>
-                                    <div class="item-date">${item.userName || 'Anonymous'} &bull; ${dateStr}</div>
+                                    <div class="item-date" style="display:flex;align-items:center;gap:6px;">${feedAvatar} ${item.userName || 'Anonymous'} &bull; ${dateStr}</div>
                                     ${hasNote ? `<div class="item-note">"${item.note}"</div>` : ''}
                                 </div>
                                 <div class="ba-points-display">
@@ -5033,7 +5262,7 @@ Rules:
                                 <img src="${item.image}" alt="${item.name}" class="item-image">
                                 <div class="item-info">
                                     <div class="item-name">${item.name}</div>
-                                    <div class="item-date">${item.userName || 'Anonymous'} &bull; ${dateStr}</div>
+                                    <div class="item-date" style="display:flex;align-items:center;gap:6px;">${feedAvatar} ${item.userName || 'Anonymous'} &bull; ${dateStr}</div>
                                     ${hasNote ? `<div class="item-note">"${item.note}"</div>` : ''}
                                 </div>
                                 <div class="item-points">+${item.points}</div>
@@ -5221,10 +5450,13 @@ Rules:
                         else if (rank === 3) barClass = 'rank-3';
                         else if (isCurrentUser) barClass = 'current-user';
 
+                        const rankAvatar = getUserAvatarHTML(user.name, user.photoURL, 28);
+
                         return `
                             <div class="ranking-row">
                                 <div class="ranking-row-top">
                                     <div class="ranking-rank">${rankDisplay}</div>
+                                    ${rankAvatar}
                                     <div class="ranking-name ${tierClass}">${user.name || 'Anonymous'}${youBadge}${streakEmoji}</div>
                                     <div class="ranking-points ${tierClass}">${userPoints}</div>
                                 </div>
@@ -5699,12 +5931,13 @@ Rules:
             const initial = (item.userName || 'A').charAt(0).toUpperCase();
             const likeCount = item.likeCount || 0;
             const sliderId = 'popup-slider-' + item.id;
+            const baPopupAvatarStyle = item.userPhotoURL ? `background-image:url(${item.userPhotoURL});background-size:cover;background-position:center;` : '';
 
             const container = document.getElementById('baPopupCardContainer');
             container.innerHTML = `
                 <div class="ba-popup-card">
                     <div class="ba-popup-user-info">
-                        <div class="ba-popup-avatar">${initial}</div>
+                        <div class="ba-popup-avatar" style="${baPopupAvatarStyle}">${item.userPhotoURL ? '' : initial}</div>
                         <div>
                             <div class="ba-popup-user-name">${item.userName || 'Anonymous'} &bull; ${timeAgo}</div>
                             <div class="ba-popup-user-meta">${spaceName}</div>
@@ -5880,6 +6113,160 @@ Rules:
             }
         }
 
+        // ===== Profile Photo Upload =====
+        window.openProfilePhotoSheet = function() {
+            const overlay = document.getElementById('photoSheetOverlay');
+            const sheet = document.getElementById('photoSheet');
+            const preview = document.getElementById('photoSheetPreview');
+            const buttonsDiv = document.getElementById('photoSheetButtons');
+
+            if (userProfilePhotoURL) {
+                preview.style.display = 'block';
+                preview.style.backgroundImage = `url(${userProfilePhotoURL})`;
+                buttonsDiv.innerHTML = `
+                    <button class="photo-sheet-btn primary" onclick="triggerProfilePhotoInput()">
+                        <svg viewBox="0 0 24 24"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"/><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+                        Change Photo
+                    </button>
+                    <button class="photo-sheet-btn danger" onclick="removeProfilePhoto()">Remove Photo</button>
+                    <button class="photo-sheet-btn cancel" onclick="closeProfilePhotoSheet()">Cancel</button>
+                `;
+            } else {
+                preview.style.display = 'none';
+                buttonsDiv.innerHTML = `
+                    <button class="photo-sheet-btn primary" onclick="triggerProfilePhotoInput()">
+                        <svg viewBox="0 0 24 24"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"/><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+                        Upload Photo
+                    </button>
+                    <button class="photo-sheet-btn cancel" onclick="closeProfilePhotoSheet()">Cancel</button>
+                `;
+            }
+
+            overlay.style.display = 'block';
+            sheet.style.display = 'block';
+            requestAnimationFrame(() => {
+                sheet.style.transform = 'translateX(-50%) translateY(0)';
+            });
+        };
+
+        window.closeProfilePhotoSheet = function() {
+            const overlay = document.getElementById('photoSheetOverlay');
+            const sheet = document.getElementById('photoSheet');
+            sheet.style.transform = 'translateX(-50%) translateY(100%)';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                sheet.style.display = 'none';
+            }, 300);
+        };
+
+        window.triggerProfilePhotoInput = function() {
+            document.getElementById('profilePhotoInput').click();
+        };
+
+        function compressImage(file, maxSize) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width;
+                        let h = img.height;
+                        if (w > maxSize || h > maxSize) {
+                            if (w > h) {
+                                h = Math.round(h * maxSize / w);
+                                w = maxSize;
+                            } else {
+                                w = Math.round(w * maxSize / h);
+                                h = maxSize;
+                            }
+                        }
+                        canvas.width = w;
+                        canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, w, h);
+                        canvas.toBlob((blob) => {
+                            resolve(blob);
+                        }, 'image/jpeg', 0.85);
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        window.handleProfilePhotoSelect = async function(event) {
+            const file = event.target.files[0];
+            if (!file || !currentUserId) return;
+
+            closeProfilePhotoSheet();
+
+            try {
+                const profileAvatar = document.getElementById('profileAvatar');
+                if (profileAvatar) {
+                    profileAvatar.textContent = '...';
+                    profileAvatar.style.fontSize = '14px';
+                }
+
+                const compressed = await compressImage(file, 400);
+                const storageRef = ref(storage, `profilePhotos/${currentUserId}/avatar.jpg`);
+                await uploadBytes(storageRef, compressed);
+                const downloadURL = await getDownloadURL(storageRef);
+
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                if (!userSnapshot.empty) {
+                    const userDoc = userSnapshot.docs[0];
+                    await updateDoc(doc(db, 'users', userDoc.id), { photoURL: downloadURL });
+                }
+
+                userProfilePhotoURL = downloadURL;
+                localStorage.setItem('userProfilePhotoURL', downloadURL);
+                updateProfileUI();
+            } catch (error) {
+                console.error('Profile photo upload failed:', error);
+                updateProfileUI();
+            }
+
+            event.target.value = '';
+        };
+
+        window.removeProfilePhoto = async function() {
+            if (!currentUserId) return;
+            closeProfilePhotoSheet();
+
+            try {
+                const storageRef = ref(storage, `profilePhotos/${currentUserId}/avatar.jpg`);
+                try {
+                    await deleteObject(storageRef);
+                } catch (e) {
+                    // File may not exist, continue
+                }
+
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                if (!userSnapshot.empty) {
+                    const userDoc = userSnapshot.docs[0];
+                    await updateDoc(doc(db, 'users', userDoc.id), { photoURL: null });
+                }
+
+                userProfilePhotoURL = '';
+                localStorage.removeItem('userProfilePhotoURL');
+                updateProfileUI();
+            } catch (error) {
+                console.error('Profile photo remove failed:', error);
+            }
+        };
+
+        function getUserAvatarHTML(name, photoURL, size) {
+            const initial = (name || 'U').charAt(0).toUpperCase();
+            const sizeClass = size === 30 ? 'feed-user-avatar' : size === 26 ? 'comment-user-avatar' : size === 28 ? 'ranking-avatar' : 'feed-user-avatar';
+            if (photoURL) {
+                return `<div class="${sizeClass}" style="background-image:url(${photoURL})"></div>`;
+            }
+            return `<div class="${sizeClass}">${initial}</div>`;
+        }
+
         async function initApp() {
             if (!currentUserId) return;
             updateProfileUI();
@@ -5893,6 +6280,16 @@ Rules:
                 userStreak = userData.streak || 0;
                 userBadges = userData.badges || [];
                 bingoProgress = userData.bingoProgress || {};
+
+                // Load profile photo URL
+                if (userData.photoURL) {
+                    userProfilePhotoURL = userData.photoURL;
+                    localStorage.setItem('userProfilePhotoURL', userData.photoURL);
+                } else {
+                    userProfilePhotoURL = '';
+                    localStorage.removeItem('userProfilePhotoURL');
+                }
+                updateProfileUI();
 
                 const streakBadge = document.getElementById('streakBadge');
                 if (streakBadge) streakBadge.textContent = `${userStreak} Day Streak`;
@@ -5948,6 +6345,15 @@ Rules:
         <hr class="settings-divider">
 
         <button class="settings-logout-btn" onclick="handleSettingsLogout()">Logout</button>
+    </div>
+
+    <!-- Profile Photo Bottom Sheet -->
+    <div class="photo-sheet-overlay" id="photoSheetOverlay" onclick="closeProfilePhotoSheet()"></div>
+    <div class="photo-sheet" id="photoSheet">
+        <div class="photo-sheet-grab"></div>
+        <div class="photo-sheet-title">Profile Photo</div>
+        <div class="photo-sheet-preview" id="photoSheetPreview"></div>
+        <div id="photoSheetButtons"></div>
     </div>
 
     <!-- Before & After Popup -->
