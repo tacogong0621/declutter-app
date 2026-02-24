@@ -2067,52 +2067,12 @@
             margin-left: 5px;
         }
 
-        /* Feed Highlight Banner */
-        .ba-highlight-banner {
-            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin-bottom: 16px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ba-highlight-banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 200%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            animation: shimmer 3s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(50%); }
-        }
-
-        .ba-highlight-banner .banner-title {
-            color: white;
-            font-size: 15px;
-            font-weight: 700;
-            margin-bottom: 2px;
-        }
-
-        .ba-highlight-banner .banner-subtitle {
-            color: rgba(255,255,255,0.6);
-            font-size: 12px;
-        }
-
         /* B&A Compact Card — collapsed looks like normal card */
         .item.ba-item {
             position: relative;
-            border: none;
+            border-bottom: 1px solid #f0f0f0;
             border-left: 3px solid #4CAF50;
-            border-radius: 18px;
-            padding: 12px 14px;
+            padding: 12px 15px;
         }
 
         .ba-badge {
@@ -2124,6 +2084,47 @@
             color: white;
             background: #4CAF50;
             margin-left: 6px;
+        }
+
+        /* B&A thumbnail wrapper — same size as normal item-image */
+        .ba-thumb-wrap {
+            position: relative;
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .ba-thumb-wrap .item-image {
+            margin-right: 0;
+        }
+
+        /* Small B&A badge on bottom-right of thumbnail */
+        .ba-thumb-badge {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 9px;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .ba-thumb-badge .ba-photo-badge-icon .half-warm {
+            width: 5px;
+            height: 8px;
+        }
+
+        .ba-thumb-badge .ba-photo-badge-icon .half-green {
+            width: 5px;
+            height: 8px;
         }
 
         /* B&A photo badge overlay (bottom-right of item photo) */
@@ -2913,12 +2914,6 @@
                 <div class="feed-filters">
                     <button class="feed-filter-btn active" id="filterAll" onclick="setFeedFilter('all')">All</button>
                     <button class="feed-filter-btn ba-filter" id="filterBA" onclick="setFeedFilter('ba')">&#10024; Before &amp; After <span class="feed-filter-count" id="baFilterCount">0</span></button>
-                </div>
-
-                <!-- Highlight Banner -->
-                <div class="ba-highlight-banner" id="baHighlightBanner" style="display:none" onclick="setFeedFilter('ba')">
-                    <div class="banner-title">&#129668; Today's Before &amp; After</div>
-                    <div class="banner-subtitle" id="baBannerSubtitle">0 amazing transformations to explore</div>
                 </div>
 
                 <div class="item-list" id="itemList">
@@ -4679,18 +4674,10 @@ Don't copy examples - be creative.`
                 ? allFeedItems.filter(i => i.hasBeforeAfter)
                 : allFeedItems;
 
-            // Update highlight banner visibility
+            // Update B&A filter count
             const baCount = allFeedItems.filter(i => i.hasBeforeAfter).length;
-            const banner = document.getElementById('baHighlightBanner');
-            const bannerSub = document.getElementById('baBannerSubtitle');
             const filterCount = document.getElementById('baFilterCount');
             filterCount.textContent = baCount;
-            if (currentFeedFilter === 'all' && baCount > 0) {
-                banner.style.display = 'block';
-                bannerSub.textContent = `${baCount} amazing transformation${baCount !== 1 ? 's' : ''} to explore`;
-            } else {
-                banner.style.display = 'none';
-            }
 
             if (items.length === 0) {
                 listElement.innerHTML = `
@@ -4715,11 +4702,17 @@ Don't copy examples - be creative.`
                 const basePoints = (item.points || 0) - (item.bonusPoints || 0);
 
                 if (isBA) {
-                    // B&A Compact Card — collapsed looks like normal card
+                    // B&A Compact Card — collapsed looks like normal card, same size
                     return `
                         <div class="item ba-item" style="${isMyItem ? 'background: #FAFAFA;' : ''}">
                             <div class="item-header">
-                                <div style="width:34px;height:34px;border-radius:50%;background:#4CAF50;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;margin-right:12px;flex-shrink:0">${(item.userName || 'A').charAt(0).toUpperCase()}</div>
+                                <div class="ba-thumb-wrap" onclick="toggleBASlider('${item.id}')">
+                                    <img src="${item.image}" alt="${item.name}" class="item-image">
+                                    <div class="ba-thumb-badge">
+                                        <span class="ba-photo-badge-icon"><span class="half-warm"></span><span class="half-green"></span></span>
+                                        B&A
+                                    </div>
+                                </div>
                                 <div class="item-info">
                                     <div class="item-name">${item.name} <span class="ba-badge">B&A</span></div>
                                     <div class="item-date">${item.userName || 'Anonymous'} &bull; ${dateStr}</div>
@@ -4728,13 +4721,6 @@ Don't copy examples - be creative.`
                                 <div class="ba-points-display">
                                     <span class="base-pts">+${basePoints}</span>
                                     <span class="bonus-pts">+${item.bonusPoints || 30} bonus</span>
-                                </div>
-                            </div>
-                            <div class="ba-item-photo-container" style="position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;margin:10px 0;" onclick="toggleBASlider('${item.id}')">
-                                <img src="${item.image}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;">
-                                <div class="ba-photo-badge">
-                                    <span class="ba-photo-badge-icon"><span class="half-warm"></span><span class="half-green"></span></span>
-                                    B&A
                                 </div>
                             </div>
                             <div class="ba-expand-section" id="ba-expand-${item.id}">
