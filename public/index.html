@@ -3791,6 +3791,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         }
 
         async function generateTidyComment(itemData) {
+            console.log('[Tidy] generateTidyComment called', itemData.name);
             try {
                 const itemsQuery = query(collection(db, 'items'), where('userId', '==', currentUserId));
                 const itemsSnapshot = await getDocs(itemsQuery);
@@ -3848,11 +3849,13 @@ Rules:
 - Keep it natural, like a supportive friend — not a corporate bot`;
                 }
 
+                console.log('[Tidy] Calling Cloud Function...');
                 const generateComment = httpsCallable(functions, 'generateTidyComment');
                 const result = await generateComment({ prompt });
+                console.log('[Tidy] Cloud Function returned:', result.data);
                 return result.data.text;
             } catch (error) {
-                console.error('Tidy comment generation failed:', error);
+                console.error('[Tidy] Comment generation failed:', error);
                 return null;
             }
         }
@@ -4596,6 +4599,7 @@ Rules:
 
                 // Generate Tidy AI Coach comment (non-blocking)
                 generateTidyComment(itemData).then(async (tidyText) => {
+                    console.log('[Tidy] generateTidyComment result:', tidyText ? 'got text' : 'null');
                     if (tidyText) {
                         try {
                             await updateDoc(itemDocRef, {
@@ -4607,8 +4611,9 @@ Rules:
                                     createdAt: new Date().toISOString()
                                 })
                             });
+                            console.log('[Tidy] Comment saved to Firestore');
                         } catch (err) {
-                            console.error('Failed to save Tidy comment:', err);
+                            console.error('[Tidy] Failed to save comment:', err);
                         }
                     }
                 });

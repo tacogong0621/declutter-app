@@ -1,4 +1,4 @@
-const { onRequest, onCall } = require("firebase-functions/v2/https");
+const { onRequest, onCall, HttpsError } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
 
 const anthropicApiKey = defineSecret("ANTHROPIC_API_KEY");
@@ -79,7 +79,7 @@ exports.generateTidyComment = onCall(
   async (request) => {
     const { prompt } = request.data;
     if (!prompt || typeof prompt !== "string") {
-      throw new Error("prompt is required");
+      throw new HttpsError("invalid-argument", "prompt is required");
     }
 
     try {
@@ -106,14 +106,15 @@ exports.generateTidyComment = onCall(
       if (!response.ok) {
         const errBody = await response.text();
         console.error("Anthropic API error:", response.status, errBody);
-        throw new Error("Anthropic API request failed");
+        throw new HttpsError("unavailable", "AI service temporarily unavailable");
       }
 
       const result = await response.json();
       return { text: result.content[0].text.trim() };
     } catch (error) {
+      if (error instanceof HttpsError) throw error;
       console.error("generateTidyComment error:", error);
-      throw new Error("Failed to generate comment");
+      throw new HttpsError("internal", "Failed to generate comment");
     }
   }
 );
