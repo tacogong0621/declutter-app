@@ -64,7 +64,7 @@
         /* Profile Header - Compact */
         .profile-header {
             background: white;
-            padding: 15px 20px 20px;
+            padding: 12px 20px 12px;
             border-bottom: 1px solid #F0F0F0;
             position: relative;
             flex-shrink: 0;
@@ -306,7 +306,7 @@
         .main-content {
             flex: 1;
             padding: 20px;
-            padding-bottom: 80px;
+            padding-bottom: 64px;
             overflow-y: auto;
             overflow-x: hidden;
             width: 100%;
@@ -345,8 +345,8 @@
         .card {
             background: #FFFFFF;
             border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 20px;
+            padding: 16px;
+            margin-bottom: 12px;
             border: 1px solid #E5E5E5;
             box-shadow: none;
         }
@@ -532,8 +532,8 @@
             width: 100%;
             background: white;
             border-top: 1px solid #F0F0F0;
-            padding: 8px 0;
-            padding-bottom: max(8px, env(safe-area-inset-bottom));
+            padding: 6px 0;
+            padding-bottom: max(6px, env(safe-area-inset-bottom));
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             z-index: 100;
@@ -543,15 +543,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            padding: 8px 0;
+            gap: 2px;
+            padding: 4px 0;
             cursor: pointer;
             border: none;
             background: none;
         }
 
         .nav-icon {
-            font-size: 22px;
+            font-size: 20px;
             line-height: 1;
         }
 
@@ -572,7 +572,7 @@
         }
 
         .item {
-            padding: 15px;
+            padding: 12px 15px;
             border-bottom: 1px solid #f0f0f0;
         }
 
@@ -1266,8 +1266,8 @@
         .bingo-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .bingo-cell {
@@ -1292,8 +1292,8 @@
         }
 
         .bingo-cell .cell-emoji {
-            font-size: 28px;
-            margin-bottom: 4px;
+            font-size: 24px;
+            margin-bottom: 2px;
         }
 
         .bingo-cell .cell-name {
@@ -1343,59 +1343,59 @@
 
         .bingo-lines-info {
             background: #FAFAFA;
-            padding: 12px;
+            padding: 10px;
             border-radius: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             text-align: center;
             border: 1px solid #E5E5E5;
         }
 
         .bingo-lines-info .line-count {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
             color: #1C1C1E;
         }
 
         .bingo-lines-info .line-label {
-            font-size: 13px;
+            font-size: 12px;
             color: #B0B0B0;
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         .bingo-stats {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
 
         .bingo-stat {
             background: #1C1C1E;
-            padding: 12px 8px;
+            padding: 8px 6px;
             border-radius: 10px;
             text-align: center;
         }
 
         .bingo-stat .stat-value {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: #FFFFFF;
         }
 
         .bingo-stat .stat-label {
-            font-size: 11px;
+            font-size: 10px;
             color: rgba(255, 255, 255, 0.7);
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         .bingo-reset-btn {
             width: 100%;
-            padding: 14px;
+            padding: 10px;
             background: #1C1C1E;
             color: #FFFFFF;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             display: none;
@@ -1583,12 +1583,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 10px;
             padding: 0 5px;
         }
 
         .calendar-month {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
             color: #1C1C1E;
             margin: 0;
@@ -1597,12 +1597,12 @@
         .share-btn {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: transparent;
             border: 1px solid #E5E5E5;
             border-radius: 20px;
-            padding: 8px 16px;
-            font-size: 14px;
+            padding: 6px 12px;
+            font-size: 13px;
             font-weight: 500;
             color: #1C1C1E;
             cursor: pointer;
@@ -1627,24 +1627,24 @@
         .calendar-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 10px;
+            margin-bottom: 10px;
         }
 
         .stat-item {
             background: #FAFAFA;
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: 10px;
+            padding: 10px 12px;
         }
 
         .stat-item .stat-label {
-            font-size: 12px;
+            font-size: 11px;
             color: #6B6B6B;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .stat-item .stat-value {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 600;
             color: #1C1C1E;
         }
@@ -1654,24 +1654,24 @@
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 4px;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             padding: 0 5px;
         }
 
         .day-label {
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: #6B6B6B;
-            padding: 8px 0;
+            padding: 4px 0;
         }
 
         /* Calendar Grid */
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-            margin-bottom: 25px;
+            gap: 3px;
+            margin-bottom: 10px;
         }
 
         /* Calendar Day Cell */
@@ -1681,7 +1681,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
+            border-radius: 6px;
             background: #FFFFFF;
             border: 1px solid #F0F0F0;
             position: relative;
@@ -1696,15 +1696,15 @@
 
         /* Day Number */
         .day-number {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
             color: #1C1C1E;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
 
         /* Day Icon */
         .day-icon {
-            font-size: 16px;
+            font-size: 14px;
             line-height: 1;
         }
 
@@ -1745,22 +1745,22 @@
         /* Month Summary */
         .month-summary {
             background: #FAFAFA;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 25px;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 10px;
         }
 
         .summary-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #1C1C1E;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
 
         .summary-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 10px;
         }
 
         .summary-item {
@@ -1770,26 +1770,26 @@
         }
 
         .summary-number {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
             color: #1C1C1E;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
 
         .summary-label {
-            font-size: 11px;
+            font-size: 10px;
             color: #6B6B6B;
         }
 
         /* CRITICAL - Mobile Responsive */
         @media (max-width: 414px) {
             .profile-header {
-                padding: 12px 15px 15px;
+                padding: 10px 15px 10px;
             }
 
             .main-content {
                 padding: 15px;
-                padding-bottom: 80px;
+                padding-bottom: 64px;
             }
 
             .add-card {
@@ -1797,7 +1797,7 @@
             }
 
             .card {
-                padding: 15px;
+                padding: 14px;
             }
         }
 
@@ -1815,19 +1815,19 @@
 
         @media (max-width: 380px) {
             .calendar-month {
-                font-size: 20px;
+                font-size: 18px;
             }
 
             .day-number {
-                font-size: 13px;
+                font-size: 11px;
             }
 
             .day-icon {
-                font-size: 14px;
+                font-size: 12px;
             }
 
             .summary-number {
-                font-size: 20px;
+                font-size: 18px;
             }
 
             .profile-name {
@@ -1835,7 +1835,7 @@
             }
 
             .nav-icon {
-                font-size: 20px;
+                font-size: 18px;
             }
 
             .nav-label {
@@ -2025,7 +2025,7 @@
         .feed-filters {
             display: flex;
             gap: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
         }
 
         .feed-filter-btn {
@@ -2876,8 +2876,8 @@
 
         <div id="bingoTab" class="tab-content">
             <div class="card">
-                <h2 style="margin-bottom: 20px; color: #1C1C1E; font-weight: 600;">Space Bingo</h2>
-                <p style="color: #6B6B6B; margin-bottom: 15px; text-align: center; font-size: 14px;">Declutter 10 items per space for bingo! Complete lines for bonus!</p>
+                <h2 style="margin-bottom: 10px; color: #1C1C1E; font-weight: 600;">Space Bingo</h2>
+                <p style="color: #6B6B6B; margin-bottom: 10px; text-align: center; font-size: 13px;">Declutter 10 items per space for bingo! Complete lines for bonus!</p>
 
                 <div class="bingo-stats">
                     <div class="bingo-stat">
@@ -2907,7 +2907,7 @@
 
         <div id="historyTab" class="tab-content">
             <div class="card">
-                <h2 style="margin-bottom: 20px; color: #1C1C1E; font-weight: 600;">Community Feed</h2>
+                <h2 style="margin-bottom: 12px; color: #1C1C1E; font-weight: 600;">Community Feed</h2>
 
                 <!-- Feed Filter Tabs -->
                 <div class="feed-filters">
