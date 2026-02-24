@@ -1,4 +1,4 @@
-const { onRequest, onCall, HttpsError } = require("firebase-functions/v2/https");
+const { onRequest } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
 
 const anthropicApiKey = defineSecret("ANTHROPIC_API_KEY");
@@ -71,15 +71,21 @@ Don't copy examples - be creative.`;
 );
 
 /**
- * generateTidyComment — Callable function invoked via httpsCallable from the frontend.
+ * generateTidyComment — HTTP endpoint called via fetch from the frontend.
  * Returns a Tidy AI Coach comment for the feed.
  */
-exports.generateTidyComment = onCall(
-  { secrets: [anthropicApiKey] },
-  async (request) => {
-    const { prompt } = request.data;
+exports.generateTidyComment = onRequest(
+  { cors: true, secrets: [anthropicApiKey] },
+  async (req, res) => {
+    if (req.method !== "POST") {
+      res.status(405).json({ error: "Method not allowed" });
+      return;
+    }
+
+    const { prompt } = req.body;
     if (!prompt || typeof prompt !== "string") {
-      throw new HttpsError("invalid-argument", "prompt is required");
+      res.status(400).json({ error: "prompt is required" });
+      return;
     }
 
     try {
@@ -106,15 +112,15 @@ exports.generateTidyComment = onCall(
       if (!response.ok) {
         const errBody = await response.text();
         console.error("Anthropic API error:", response.status, errBody);
-        throw new HttpsError("unavailable", "AI service temporarily unavailable");
+        res.status(502).json({ error: "AI service unavailable" });
+        return;
       }
 
       const result = await response.json();
-      return { text: result.content[0].text.trim() };
+      res.json({ text: result.content[0].text.trim() });
     } catch (error) {
-      if (error instanceof HttpsError) throw error;
       console.error("generateTidyComment error:", error);
-      throw new HttpsError("internal", "Failed to generate comment");
+      res.status(500).json({ error: "Failed to generate comment" });
     }
   }
 );
