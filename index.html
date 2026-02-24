@@ -329,17 +329,17 @@
         .add-card {
             background: white;
             border-radius: 16px;
-            padding: 20px;
+            padding: 18px;
             border: 1px solid #F0F0F0;
             width: 100%;
             max-width: 100%;
         }
 
         .add-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
             color: #1C1C1E;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .card {
@@ -354,29 +354,38 @@
         /* Upload Area */
         .upload-area {
             background: #FAFAFA;
-            border: 1px solid #E5E5E5;
-            border-radius: 12px;
-            padding: 30px 20px;
+            border: 2px dashed #E5E5E5;
+            border-radius: 14px;
+            padding: 10px;
             text-align: center;
             cursor: pointer;
-            margin-bottom: 15px;
             position: relative;
             width: 100%;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
         .upload-area.has-image {
             padding: 0;
+            border-style: solid;
         }
 
         .upload-preview {
             width: 100%;
-            max-height: 200px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 12px;
         }
 
         .preview-image {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
             border-radius: 12px;
             display: none;
         }
@@ -387,9 +396,30 @@
 
         .upload-icon-svg {
             display: inline-block;
-            margin-bottom: 12px;
+            margin-bottom: 4px;
             opacity: 0.7;
             transition: opacity 0.2s;
+        }
+
+        /* Photo Row Container */
+        .photo-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .photo-row .upload-area {
+            flex: 1;
+        }
+
+        .photo-row.ba-active .upload-area {
+            flex: none;
+            width: 80px;
+            height: 80px;
+        }
+
+        .photo-row.ba-active .ba-photo-slot {
+            display: flex !important;
         }
 
         .upload-area:hover .upload-icon-svg {
@@ -413,11 +443,11 @@
         input[type="text"], select, textarea {
             width: 100%;
             max-width: 100%;
-            padding: 12px 15px;
+            padding: 12px 14px;
             border: 1px solid #E5E5E5;
-            border-radius: 10px;
-            font-size: 16px;
-            margin-bottom: 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-bottom: 8px;
             background: white;
             color: #1C1C1E;
             -webkit-appearance: none;
@@ -443,21 +473,23 @@
 
         textarea {
             resize: none;
-            min-height: 80px;
+            min-height: 44px;
+            font-size: 13px;
         }
 
         /* Submit Button */
         .submit-btn {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             background: #1C1C1E;
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: 14px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s;
+            margin-top: 10px;
         }
 
         .submit-btn:disabled {
@@ -782,11 +814,11 @@
         .category-select {
             width: 100%;
             max-width: 100%;
-            padding: 12px 15px;
+            padding: 12px 10px;
             border: 1px solid #E5E5E5;
-            border-radius: 10px;
-            font-size: 16px;
-            margin-bottom: 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-bottom: 0;
             font-family: inherit;
             background: white;
             color: #1C1C1E;
@@ -794,18 +826,32 @@
             box-sizing: border-box;
             background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%236B6B6B' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 15px center;
-            padding-right: 40px;
+            background-position: right 10px center;
+            padding-right: 30px;
+        }
+
+        /* Category + Space Side-by-Side Row */
+        .category-space-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .category-space-row .category-select {
+            flex: 1;
+            min-width: 0;
         }
 
         .points-info {
             background: #FAFAFA;
-            padding: 12px;
+            padding: 8px 12px;
             border-radius: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 0;
+            margin-top: 8px;
             text-align: center;
             color: #1C1C1E;
             font-weight: 600;
+            font-size: 12px;
             border: 1px solid #E5E5E5;
         }
 
@@ -1269,12 +1315,12 @@
         }
 
         .space-hint {
-            font-size: 13px;
+            font-size: 12px;
             color: #1C1C1E;
             font-weight: 600;
-            margin-top: -10px;
-            margin-bottom: 15px;
-            padding: 8px 12px;
+            margin-top: 4px;
+            margin-bottom: 0;
+            padding: 6px 10px;
             background: #FAFAFA;
             border-radius: 8px;
             border: 1px solid #E5E5E5;
@@ -1673,10 +1719,6 @@
             .profile-stats .stat-value {
                 font-size: 20px;
             }
-
-            .upload-area {
-                padding: 25px 20px;
-            }
         }
 
         @media (max-width: 380px) {
@@ -1715,25 +1757,26 @@
         .ba-chip-container {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
 
         .ba-chip {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            border-radius: 20px;
+            gap: 4px;
+            padding: 5px 12px;
+            border-radius: 16px;
             border: 1.5px solid #ddd;
             background: white;
             color: #888;
-            font-size: 14px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.25s ease;
             font-family: inherit;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .ba-chip.active {
@@ -1743,7 +1786,7 @@
         }
 
         .ba-bonus-hint {
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 600;
             color: #4CAF50;
             animation: gentlePulse 3s ease-in-out infinite;
@@ -1757,8 +1800,8 @@
         /* B&A Photo Slots */
         .ba-photo-slots {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
             animation: fadeInUp 0.35s ease;
         }
 
@@ -1769,9 +1812,9 @@
 
         .ba-photo-slot {
             flex: 1;
-            aspect-ratio: 1;
+            height: 80px;
             border: 2px dashed #d4c4a8;
-            border-radius: 12px;
+            border-radius: 14px;
             background: #fdf9f3;
             display: flex;
             flex-direction: column;
@@ -1789,9 +1832,9 @@
         }
 
         .ba-photo-slot .slot-icon {
-            font-size: 28px;
+            font-size: 22px;
             color: #c4a882;
-            margin-bottom: 6px;
+            margin-bottom: 2px;
         }
 
         .ba-photo-slot.cleared-slot .slot-icon {
@@ -1815,7 +1858,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 10px;
+            border-radius: 12px;
         }
 
         .ba-photo-slot .slot-label-overlay {
@@ -1844,10 +1887,8 @@
 
         /* B&A Progress Feedback */
         .ba-progress-text {
-            text-align: center;
-            font-size: 13px;
-            color: #bbb;
-            margin-bottom: 15px;
+            font-size: 11px;
+            color: #999;
         }
 
         .ba-progress-text.complete {
@@ -2465,7 +2506,7 @@
             font-size: 13px;
             font-style: italic;
             color: #999;
-            padding: 0 20px 10px;
+            padding: 0 20px 8px;
             cursor: pointer;
             line-height: 1.4;
         }
@@ -2585,93 +2626,86 @@
                 <div class="add-card">
                     <h2 class="add-title">What are you letting go?</h2>
 
-                    <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
-                        <img id="previewImage" class="preview-image" alt="Preview">
-                        <div id="uploadPlaceholder">
-                            <div class="upload-icon-svg">
-                                <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
-                                    <circle cx="25" cy="25" r="23"
-                                            stroke="#6B6B6B"
-                                            stroke-width="2.5"/>
-                                    <line x1="12" y1="25" x2="38" y2="25"
-                                          stroke="#6B6B6B"
-                                          stroke-width="3"
-                                          stroke-linecap="round"/>
-                                </svg>
+                    <!-- Photo Row: single photo or 3-column with B&A -->
+                    <div class="photo-row" id="photoRow">
+                        <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                            <img id="previewImage" class="preview-image" alt="Preview">
+                            <div id="uploadPlaceholder">
+                                <div class="upload-icon-svg">
+                                    <svg width="32" height="32" viewBox="0 0 50 50" fill="none">
+                                        <circle cx="25" cy="25" r="23" stroke="#6B6B6B" stroke-width="2.5"/>
+                                        <line x1="12" y1="25" x2="38" y2="25" stroke="#6B6B6B" stroke-width="3" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                                <div class="upload-text">Item Photo</div>
                             </div>
-                            <div class="upload-text">Item Photo</div>
-                            <div class="upload-text" style="font-size:11px;color:#B0B0B0;margin-top:2px;">Required</div>
+                        </div>
+                        <div class="ba-photo-slot" id="beforeSlot" onclick="document.getElementById('beforeFileInput').click()" style="display:none;">
+                            <div class="slot-icon">+</div>
+                            <div class="slot-label">CLUTTERED</div>
+                            <img class="slot-preview" id="beforePreview" alt="">
+                            <div class="slot-label-overlay">CLUTTERED</div>
+                        </div>
+                        <div class="ba-photo-slot cleared-slot" id="afterSlot" onclick="document.getElementById('afterFileInput').click()" style="display:none;">
+                            <div class="slot-icon">+</div>
+                            <div class="slot-label">CLEARED</div>
+                            <img class="slot-preview" id="afterPreview" alt="">
+                            <div class="slot-label-overlay">CLEARED</div>
                         </div>
                     </div>
                     <input type="file" id="fileInput" accept="image/*">
                     <input type="file" id="beforeFileInput" accept="image/*" style="display:none">
                     <input type="file" id="afterFileInput" accept="image/*" style="display:none">
 
-                    <!-- Before & After Chip Toggle -->
+                    <!-- B&A Chip + inline status text -->
                     <div class="ba-chip-container" id="baChipContainer" style="display:none;opacity:0;">
                         <button class="ba-chip" id="baChip" onclick="toggleBeforeAfter()">
                             <span id="baChipIcon">&#8853;</span> Before &amp; After
                         </button>
                         <span class="ba-bonus-hint" id="baBonusHint">+30 bonus pts &#10024;</span>
+                        <span class="ba-progress-text" id="baProgressText" style="display:none;">Both for +30 bonus</span>
                     </div>
 
-                    <!-- Before & After Photo Slots (hidden by default) -->
-                    <div id="baPhotoSlots" style="display: none;">
-                        <div class="ba-photo-slots">
-                            <div class="ba-photo-slot" id="beforeSlot" onclick="document.getElementById('beforeFileInput').click()">
-                                <div class="slot-icon">+</div>
-                                <div class="slot-label">CLUTTERED</div>
-                                <img class="slot-preview" id="beforePreview" alt="">
-                                <div class="slot-label-overlay">CLUTTERED</div>
-                            </div>
-                            <div class="ba-photo-slot cleared-slot" id="afterSlot" onclick="document.getElementById('afterFileInput').click()">
-                                <div class="slot-icon">+</div>
-                                <div class="slot-label">CLEARED</div>
-                                <img class="slot-preview" id="afterPreview" alt="">
-                                <div class="slot-label-overlay">CLEARED</div>
-                            </div>
-                        </div>
-                        <div class="ba-progress-text" id="baProgressText">Upload both photos to earn +30 bonus pts</div>
+                    <input type="text" id="itemName" placeholder="Item (e.g., Old clothes)" oninput="updateSubmitButton()">
+
+                    <!-- Category + Space side by side -->
+                    <div class="category-space-row">
+                        <select class="category-select" id="itemCategory" required>
+                            <option value="">Category</option>
+                            <option value="clothing">👕 Clothing (10)</option>
+                            <option value="books">📖 Books (15)</option>
+                            <option value="electronics">📱 Electronics (20)</option>
+                            <option value="furniture">🪑 Furniture (30)</option>
+                            <option value="kitchenware">🍽️ Kitchenware (10)</option>
+                            <option value="shoes">👟 Shoes (10)</option>
+                            <option value="food">🥫 Food (5)</option>
+                            <option value="toys">🧸 Toys (5)</option>
+                            <option value="digital">📄 Digital Docs (5)</option>
+                            <option value="other">📦 Other (5)</option>
+                        </select>
+                        <select class="category-select" id="itemSpace">
+                            <option value="">Space</option>
+                            <option value="kitchen_space">🍳 Kitchen</option>
+                            <option value="bathroom">🚿 Bathroom</option>
+                            <option value="bedroom">🛏️ Bedroom</option>
+                            <option value="living">🛋️ Living Room</option>
+                            <option value="kids_room">🧒 Kids Room</option>
+                            <option value="closet">👔 Closet</option>
+                            <option value="office">💻 Office</option>
+                            <option value="garage">🔧 Garage</option>
+                            <option value="pantry">🥫 Pantry</option>
+                        </select>
                     </div>
-
-                    <input type="text" id="itemName" placeholder="Item (e.g., Old clothes)">
-
-                    <select class="category-select" id="itemCategory" required>
-                        <option value="">Category</option>
-                        <option value="clothing">👕 Clothing (10)</option>
-                        <option value="books">📖 Books (15)</option>
-                        <option value="electronics">📱 Electronics (20)</option>
-                        <option value="furniture">🪑 Furniture (30)</option>
-                        <option value="kitchenware">🍽️ Kitchenware (10)</option>
-                        <option value="shoes">👟 Shoes (10)</option>
-                        <option value="food">🥫 Food (5)</option>
-                        <option value="toys">🧸 Toys (5)</option>
-                        <option value="digital">📄 Digital Docs (5)</option>
-                        <option value="other">📦 Other (5)</option>
-                    </select>
-
-                    <select class="category-select" id="itemSpace">
-                        <option value="">Space</option>
-                        <option value="kitchen_space">🍳 Kitchen</option>
-                        <option value="bathroom">🚿 Bathroom</option>
-                        <option value="bedroom">🛏️ Bedroom</option>
-                        <option value="living">🛋️ Living Room</option>
-                        <option value="kids_room">🧒 Kids Room</option>
-                        <option value="closet">👔 Closet</option>
-                        <option value="office">💻 Office</option>
-                        <option value="garage">🔧 Garage</option>
-                        <option value="pantry">🥫 Pantry</option>
-                    </select>
                     <div class="space-hint" id="spaceHint"></div>
 
                     <div class="points-info" id="pointsInfo" style="display: none;">
                         Expected: <span id="expectedPoints">0</span> pts<span class="bonus-points-badge" id="bonusBadge" style="display:none">+30 bonus</span>
                     </div>
 
-                    <textarea id="itemNote" placeholder="Notes (optional)"></textarea>
-
                     <button class="submit-btn" id="submitBtn" onclick="addItem()" disabled>Done!</button>
                 </div>
+
+                <textarea id="itemNote" placeholder="Notes (optional)" rows="2" style="margin-top:10px;font-size:13px;"></textarea>
             </div>
 
         <div id="bingoTab" class="tab-content">
@@ -3955,27 +3989,37 @@ Don't copy examples - be creative.`
             const chip = document.getElementById('baChip');
             const chipIcon = document.getElementById('baChipIcon');
             const bonusHint = document.getElementById('baBonusHint');
-            const photoSlots = document.getElementById('baPhotoSlots');
+            const photoRow = document.getElementById('photoRow');
+            const beforeSlot = document.getElementById('beforeSlot');
+            const afterSlot = document.getElementById('afterSlot');
+            const progressText = document.getElementById('baProgressText');
 
             if (baEnabled) {
                 chip.classList.add('active');
                 chipIcon.innerHTML = '&#10003;';
                 bonusHint.style.display = 'none';
-                photoSlots.style.display = 'block';
+                photoRow.classList.add('ba-active');
+                beforeSlot.style.display = 'flex';
+                afterSlot.style.display = 'flex';
+                progressText.style.display = '';
+                updateBAProgress();
             } else {
                 chip.classList.remove('active');
                 chipIcon.innerHTML = '&#8853;';
                 bonusHint.style.display = '';
-                photoSlots.style.display = 'none';
+                photoRow.classList.remove('ba-active');
+                beforeSlot.style.display = 'none';
+                afterSlot.style.display = 'none';
+                progressText.style.display = 'none';
                 // Reset B&A photos
                 beforePhotoURL = '';
                 afterPhotoURL = '';
-                document.getElementById('beforeSlot').classList.remove('has-photo');
-                document.getElementById('afterSlot').classList.remove('has-photo');
+                beforeSlot.classList.remove('has-photo');
+                afterSlot.classList.remove('has-photo');
                 document.getElementById('beforePreview').src = '';
                 document.getElementById('afterPreview').src = '';
-                document.getElementById('baProgressText').textContent = 'Upload both photos to earn +30 bonus pts';
-                document.getElementById('baProgressText').classList.remove('complete');
+                progressText.textContent = 'Both for +30 bonus';
+                progressText.classList.remove('complete');
             }
             updateBonusBadge();
         };
@@ -3986,17 +4030,21 @@ Don't copy examples - be creative.`
             const hasAfter = !!afterPhotoURL;
 
             if (hasBefore && hasAfter) {
-                progressText.innerHTML = '&#9989; +30 Bonus points unlocked!';
+                progressText.innerHTML = '&#9989; +30 bonus!';
                 progressText.classList.add('complete');
+                progressText.style.color = '#4CAF50';
             } else if (hasBefore) {
-                progressText.innerHTML = 'Now add your Cleared photo! &#128248;';
+                progressText.innerHTML = 'Add Cleared &#128248;';
                 progressText.classList.remove('complete');
+                progressText.style.color = '#999';
             } else if (hasAfter) {
-                progressText.innerHTML = 'Now add your Cluttered photo! &#128248;';
+                progressText.innerHTML = 'Add Cluttered &#128248;';
                 progressText.classList.remove('complete');
+                progressText.style.color = '#999';
             } else {
-                progressText.textContent = 'Upload both photos to earn +30 bonus pts';
+                progressText.textContent = 'Both for +30 bonus';
                 progressText.classList.remove('complete');
+                progressText.style.color = '#999';
             }
             updateBonusBadge();
         }
@@ -4147,7 +4195,7 @@ Don't copy examples - be creative.`
             } catch (error) {
                 console.error('Upload failed:', error);
 
-                uploadPrompt.innerHTML = '<div class="upload-icon-svg"><svg width="50" height="50" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="25" r="23" stroke="#6B6B6B" stroke-width="2.5"/><line x1="12" y1="25" x2="38" y2="25" stroke="#6B6B6B" stroke-width="3" stroke-linecap="round"/></svg></div><div class="upload-text">Item Photo</div><div class="upload-text" style="font-size:11px;color:#B0B0B0;margin-top:2px;">Required</div>';
+                uploadPrompt.innerHTML = '<div class="upload-icon-svg"><svg width="32" height="32" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="25" r="23" stroke="#6B6B6B" stroke-width="2.5"/><line x1="12" y1="25" x2="38" y2="25" stroke="#6B6B6B" stroke-width="3" stroke-linecap="round"/></svg></div><div class="upload-text">Item Photo</div>';
                 uploadPrompt.style.display = '';
 
                 let errorMsg = 'Upload failed! ';
@@ -4186,10 +4234,12 @@ Don't copy examples - be creative.`
 
         function updateSubmitButton() {
             const photo = !!currentPhotoURL;
+            const name = !!document.getElementById('itemName').value.trim();
             const category = !!document.getElementById('itemCategory').value;
             const space = !!document.getElementById('itemSpace').value;
-            document.getElementById('submitBtn').disabled = !(photo && category && space);
+            document.getElementById('submitBtn').disabled = !(photo && name && category && space);
         }
+        window.updateSubmitButton = updateSubmitButton;
 
         window.addItem = async function() {
             const name = document.getElementById('itemName').value.trim();
@@ -4267,7 +4317,7 @@ Don't copy examples - be creative.`
                 document.getElementById('fileInput').value = '';
                 document.getElementById('previewImage').classList.remove('show');
                 const uploadPrompt = document.getElementById('uploadPlaceholder');
-                uploadPrompt.innerHTML = '<div class="upload-icon-svg"><svg width="50" height="50" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="25" r="23" stroke="#6B6B6B" stroke-width="2.5"/><line x1="12" y1="25" x2="38" y2="25" stroke="#6B6B6B" stroke-width="3" stroke-linecap="round"/></svg></div><div class="upload-text">Item Photo</div><div class="upload-text" style="font-size:11px;color:#B0B0B0;margin-top:2px;">Required</div>';
+                uploadPrompt.innerHTML = '<div class="upload-icon-svg"><svg width="32" height="32" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="25" r="23" stroke="#6B6B6B" stroke-width="2.5"/><line x1="12" y1="25" x2="38" y2="25" stroke="#6B6B6B" stroke-width="3" stroke-linecap="round"/></svg></div><div class="upload-text">Item Photo</div>';
                 uploadPrompt.style.display = 'block';
                 document.getElementById('uploadArea').classList.remove('has-image');
                 document.getElementById('uploadArea').style.display = '';
@@ -4282,12 +4332,15 @@ Don't copy examples - be creative.`
                 document.getElementById('baChip').classList.remove('active');
                 document.getElementById('baChipIcon').innerHTML = '&#8853;';
                 document.getElementById('baBonusHint').style.display = '';
-                document.getElementById('baPhotoSlots').style.display = 'none';
+                document.getElementById('photoRow').classList.remove('ba-active');
+                document.getElementById('beforeSlot').style.display = 'none';
+                document.getElementById('afterSlot').style.display = 'none';
                 document.getElementById('beforeSlot').classList.remove('has-photo');
                 document.getElementById('afterSlot').classList.remove('has-photo');
                 document.getElementById('beforePreview').src = '';
                 document.getElementById('afterPreview').src = '';
-                document.getElementById('baProgressText').textContent = 'Upload both photos to earn +30 bonus pts';
+                document.getElementById('baProgressText').textContent = 'Both for +30 bonus';
+                document.getElementById('baProgressText').style.display = 'none';
                 document.getElementById('baProgressText').classList.remove('complete');
                 document.getElementById('bonusBadge').style.display = 'none';
                 // Hide B&A chip container until next item photo is uploaded
