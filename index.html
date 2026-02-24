@@ -2384,6 +2384,120 @@
             from { transform: translateX(30px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
+
+        /* Dream Home Vision - Onboarding Card */
+        .dream-vision-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 22px;
+            padding: 24px 20px;
+            margin-bottom: 16px;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dream-vision-card .dream-heading {
+            font-size: 17px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .dream-vision-card .dream-subtitle {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 16px;
+        }
+
+        .dream-vision-card .dream-input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .dream-vision-card .dream-input::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+
+        .dream-vision-card .dream-input:focus {
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .dream-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+            margin-bottom: 16px;
+        }
+
+        .dream-chip {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px;
+            padding: 6px 14px;
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dream-chip:active {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .dream-set-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            background: #fff;
+            color: #1a1a1a;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+
+        .dream-set-btn.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Dream Home Vision - One-liner (after set) */
+        .dream-vision-line {
+            font-size: 13px;
+            font-style: italic;
+            color: #999;
+            padding: 0 20px 10px;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+
+        .dream-vision-line-edit {
+            width: 100%;
+            font-size: 13px;
+            font-style: italic;
+            color: #999;
+            background: none;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            outline: none;
+            padding: 0;
+            margin-left: 4px;
+            flex: 1;
+        }
     </style>
 </head>
 <body>
@@ -2465,6 +2579,24 @@
         <!-- Main Content Area -->
         <div class="main-content" id="mainContent">
             <div id="addTab" class="tab-content active">
+                <!-- Dream Home Vision: Onboarding Card (shown when no vision set) -->
+                <div class="dream-vision-card" id="dreamVisionCard" style="display:none;">
+                    <div class="dream-heading">🏡 What does your dream home look like?</div>
+                    <div class="dream-subtitle">One sentence to keep you motivated</div>
+                    <input type="text" class="dream-input" id="dreamVisionInput" placeholder="A home where everything has its place..." oninput="onDreamVisionInput()">
+                    <div class="dream-chips">
+                        <div class="dream-chip" onclick="selectDreamChip(this)">A home where everything has its place</div>
+                        <div class="dream-chip" onclick="selectDreamChip(this)">Calm, minimal space with only things I love</div>
+                        <div class="dream-chip" onclick="selectDreamChip(this)">A clutter-free home my kids can play freely in</div>
+                        <div class="dream-chip" onclick="selectDreamChip(this)">Clean surfaces, open shelves, breathing room</div>
+                    </div>
+                    <button class="dream-set-btn" id="dreamSetBtn" onclick="setDreamVision()">Set My Vision</button>
+                </div>
+
+                <!-- Dream Home Vision: One-liner (shown when vision is set) -->
+                <div class="dream-vision-line" id="dreamVisionLine" style="display:none;" onclick="editDreamVision()">
+                </div>
+
                 <div class="add-card">
                     <h2 class="add-title">What are you letting go?</h2>
 
@@ -3210,6 +3342,9 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             totalScore = 0;
             userStreak = 0;
             userBadges = [];
+            dreamVisionText = '';
+            document.getElementById('dreamVisionCard').style.display = 'none';
+            document.getElementById('dreamVisionLine').style.display = 'none';
             showLoginScreen();
         };
 
@@ -5167,6 +5302,99 @@ Don't copy examples - be creative.`
             document.getElementById('baPopupOverlay').classList.remove('show');
         };
 
+        // ===== Dream Home Vision =====
+        let dreamVisionText = '';
+
+        function renderDreamVision(vision) {
+            dreamVisionText = vision || '';
+            const card = document.getElementById('dreamVisionCard');
+            const line = document.getElementById('dreamVisionLine');
+
+            if (!dreamVisionText) {
+                // Show onboarding card
+                card.style.display = 'block';
+                line.style.display = 'none';
+                document.getElementById('dreamVisionInput').value = '';
+                document.getElementById('dreamSetBtn').classList.remove('active');
+            } else {
+                // Show one-liner
+                card.style.display = 'none';
+                line.style.display = 'block';
+                line.innerHTML = '🏡 "<span class="dream-vision-text">' + escapeHtml(dreamVisionText) + '</span>"';
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        window.onDreamVisionInput = function() {
+            const val = document.getElementById('dreamVisionInput').value.trim();
+            const btn = document.getElementById('dreamSetBtn');
+            if (val) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        };
+
+        window.selectDreamChip = function(chip) {
+            const input = document.getElementById('dreamVisionInput');
+            input.value = chip.textContent;
+            onDreamVisionInput();
+        };
+
+        window.setDreamVision = async function() {
+            const val = document.getElementById('dreamVisionInput').value.trim();
+            if (!val || !currentUserId) return;
+            try {
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                if (!userSnapshot.empty) {
+                    const userDoc = userSnapshot.docs[0];
+                    await updateDoc(doc(db, 'users', userDoc.id), { dreamVision: val });
+                }
+                renderDreamVision(val);
+            } catch (error) {
+                console.error('Failed to save dream vision:', error);
+            }
+        };
+
+        window.editDreamVision = function() {
+            const line = document.getElementById('dreamVisionLine');
+            line.innerHTML = '🏡 "<input type="text" class="dream-vision-line-edit" id="dreamVisionEditInput" value="' + escapeHtml(dreamVisionText).replace(/"/g, '&quot;') + '">"';
+            const input = document.getElementById('dreamVisionEditInput');
+            input.focus();
+            input.addEventListener('blur', saveDreamVisionEdit);
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+            });
+        };
+
+        async function saveDreamVisionEdit() {
+            const input = document.getElementById('dreamVisionEditInput');
+            if (!input) return;
+            const val = input.value.trim();
+            if (!val || !currentUserId) {
+                renderDreamVision(dreamVisionText);
+                return;
+            }
+            try {
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                if (!userSnapshot.empty) {
+                    const userDoc = userSnapshot.docs[0];
+                    await updateDoc(doc(db, 'users', userDoc.id), { dreamVision: val });
+                }
+                renderDreamVision(val);
+            } catch (error) {
+                console.error('Failed to update dream vision:', error);
+                renderDreamVision(dreamVisionText);
+            }
+        }
+
         async function initApp() {
             if (!currentUserId) return;
             updateProfileUI();
@@ -5191,6 +5419,9 @@ Don't copy examples - be creative.`
                 updateHeaderStats();
                 renderBadges();
                 renderBingoGrid();
+
+                // Load dream vision
+                renderDreamVision(userData.dreamVision || '');
             }
 
             // Check B&A popup after data loads
