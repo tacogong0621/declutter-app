@@ -746,6 +746,63 @@
             font-weight: 600;
         }
 
+        /* Tidy AI Coach Comment Styles */
+        .comment.tidy-comment {
+            background: #F0FAF0;
+            border: 1px solid rgba(76, 175, 80, 0.15);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .tidy-comment-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 5px;
+        }
+
+        .tidy-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a8e6cf, #88d8b0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .tidy-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: #4CAF50;
+        }
+
+        .tidy-badge {
+            font-size: 8px;
+            font-weight: 700;
+            color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+            padding: 2px 5px;
+            border-radius: 4px;
+            letter-spacing: 0.3px;
+        }
+
+        .tidy-comment-time {
+            font-size: 10px;
+            color: #ccc;
+            margin-left: auto;
+        }
+
+        .tidy-comment-text {
+            font-size: 12px;
+            color: #555;
+            line-height: 1.5;
+            margin-left: 32px;
+        }
+
         .ranking-card {
             background: #fff;
             border-radius: 18px;
@@ -3096,6 +3153,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         import { getFirestore, collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp, arrayUnion, arrayRemove, increment } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+        import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyCgRc0r845aR7tTS7GNUmm8TMdLtSzeljY",
@@ -3110,6 +3168,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         const db = getFirestore(app);
         const auth = getAuth(app);
         const storage = getStorage(app);
+        const functions = getFunctions(app);
         const googleProvider = new GoogleAuthProvider();
 
         window.db = db;
@@ -3726,6 +3785,91 @@ Don't copy examples - be creative.`
                 other: '📦 Other'
             };
             return categories[category] || '📦 Other';
+        }
+
+        function getSpaceDisplayName(spaceKey) {
+            const space = bingoSpaces.find(s => s.key === spaceKey);
+            return space ? space.name : spaceKey;
+        }
+
+        function getRelativeTime(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffSec = Math.floor(diffMs / 1000);
+            if (diffSec < 60) return 'just now';
+            const diffMin = Math.floor(diffSec / 60);
+            if (diffMin < 60) return `${diffMin}m`;
+            const diffHr = Math.floor(diffMin / 60);
+            if (diffHr < 24) return `${diffHr}h`;
+            const diffDay = Math.floor(diffHr / 24);
+            return `${diffDay}d`;
+        }
+
+        async function generateTidyComment(itemData) {
+            try {
+                const itemsQuery = query(collection(db, 'items'), where('userId', '==', currentUserId));
+                const itemsSnapshot = await getDocs(itemsQuery);
+                const totalItems = itemsSnapshot.size;
+
+                const spaceName = getSpaceDisplayName(itemData.space);
+                const categoryName = getCategoryName(itemData.category);
+                const hasBA = itemData.hasBeforeAfter;
+
+                let prompt;
+                if (hasBA) {
+                    prompt = `You are "Tidy", a warm and encouraging AI decluttering coach in a decluttering app called "Declutter Daily".
+
+A user just decluttered with before & after photos:
+- Item: ${itemData.name}
+- Category: ${categoryName}
+- Space: ${spaceName}
+- Points earned: ${itemData.points} + 30 bonus for B&A
+- Current streak: ${userStreak} days
+- Total items decluttered: ${totalItems}
+
+Write a short, encouraging comment with ONE practical tip (2-3 sentences max).
+
+Rules:
+- First sentence: celebrate the transformation and their effort
+- Second/third sentence: give ONE practical tip for MAINTAINING the cleared space using what they already have
+- Tips should be about HABITS and ORGANIZATION with existing items — NEVER about buying new things
+- Good tips: "one in one out rule", rearranging by frequency of use, weekly reset habit, folding methods, keeping surfaces clear, grouping similar items together
+- NEVER suggest buying storage bins, containers, organizers, shelves, or ANY product
+- NEVER recommend shopping or purchases — this is a minimalism app
+- Use 1 emoji max
+- Match the user's language: if the item name is in Korean, respond in Korean. If in English, respond in English.
+- Keep it natural, like a supportive friend — not a corporate bot`;
+                } else {
+                    prompt = `You are "Tidy", a warm and encouraging AI decluttering coach in a decluttering app called "Declutter Daily".
+
+A user just decluttered the following:
+- Item: ${itemData.name}
+- Category: ${categoryName}
+- Space: ${spaceName}
+- Points earned: ${itemData.points}
+- Current streak: ${userStreak} days
+- Total items decluttered: ${totalItems}
+
+Write a short, warm, encouraging comment (2-3 sentences max).
+
+Rules:
+- Be genuinely encouraging and specific to what they decluttered
+- Mention their streak or milestone if impressive (3+ days, 10+ items, etc.)
+- Use 1 emoji max
+- Match the user's language: if the item name is in Korean, respond in Korean. If in English, respond in English.
+- Do NOT suggest buying anything (no storage bins, organizers, containers, etc.)
+- Do NOT recommend products or shopping links
+- Do NOT give practical tips or suggestions — just encourage and celebrate
+- Keep it natural, like a supportive friend — not a corporate bot`;
+                }
+
+                const generateComment = httpsCallable(functions, 'generateTidyComment');
+                const result = await generateComment({ prompt });
+                return result.data.text;
+            } catch (error) {
+                console.error('Tidy comment generation failed:', error);
+                return null;
+            }
         }
 
         async function calculateStreak() {
@@ -4453,7 +4597,7 @@ Don't copy examples - be creative.`
                     createdAt: serverTimestamp()
                 };
 
-                await addDoc(collection(db, 'items'), itemData);
+                const itemDocRef = await addDoc(collection(db, 'items'), itemData);
 
                 totalScore += points;
                 await updateUserScore();
@@ -4464,6 +4608,25 @@ Don't copy examples - be creative.`
                 playSuccessSound();
 
                 const aiMessage = await generateAIEncouragement(name, category, points, totalScore, userStreak);
+
+                // Generate Tidy AI Coach comment (non-blocking)
+                generateTidyComment(itemData).then(async (tidyText) => {
+                    if (tidyText) {
+                        try {
+                            await updateDoc(itemDocRef, {
+                                comments: arrayUnion({
+                                    userName: 'Tidy',
+                                    authorAvatar: '🏠',
+                                    isAI: true,
+                                    text: tidyText,
+                                    createdAt: new Date().toISOString()
+                                })
+                            });
+                        } catch (err) {
+                            console.error('Failed to save Tidy comment:', err);
+                        }
+                    }
+                });
 
                 // Reset form
                 document.getElementById('itemName').value = '';
@@ -4754,6 +4917,27 @@ Don't copy examples - be creative.`
             renderFeedItems();
         };
 
+        function renderComment(c) {
+            if (c.isAI) {
+                const timeStr = c.createdAt ? getRelativeTime(new Date(c.createdAt)) : '';
+                return `
+                    <div class="comment tidy-comment">
+                        <div class="tidy-comment-header">
+                            <div class="tidy-avatar">🏠</div>
+                            <span class="tidy-name">Tidy</span>
+                            <span class="tidy-badge">AI COACH</span>
+                            <span class="tidy-comment-time">${timeStr}</span>
+                        </div>
+                        <div class="tidy-comment-text">${c.text}</div>
+                    </div>`;
+            }
+            return `
+                <div class="comment">
+                    <div class="comment-author">${c.userName}</div>
+                    <div class="comment-text">${c.text}</div>
+                </div>`;
+        }
+
         function renderFeedItems() {
             const listElement = document.getElementById('itemList');
             const items = currentFeedFilter === 'ba'
@@ -4838,12 +5022,7 @@ Don't copy examples - be creative.`
                                 ${isMyItem ? `<button class="delete-btn" onclick="deleteItem('${item.docId}', '${item.userId}', ${item.points})">&#128465;&#65039; Delete</button>` : ''}
                             </div>
                             <div class="comments-section" id="comments-${item.id}">
-                                ${comments.map(c => `
-                                    <div class="comment">
-                                        <div class="comment-author">${c.userName}</div>
-                                        <div class="comment-text">${c.text}</div>
-                                    </div>
-                                `).join('')}
+                                ${comments.map(c => renderComment(c)).join('')}
                                 <div class="comment-input">
                                     <input type="text" id="comment-input-${item.id}" placeholder="Add comment...">
                                     <button onclick="addComment('${item.id}', '${item.docId}')">Post</button>
@@ -4875,12 +5054,7 @@ Don't copy examples - be creative.`
                                 ${isMyItem ? `<button class="delete-btn" onclick="deleteItem('${item.docId}', '${item.userId}', ${item.points})">&#128465;&#65039; Delete</button>` : ''}
                             </div>
                             <div class="comments-section" id="comments-${item.id}">
-                                ${comments.map(c => `
-                                    <div class="comment">
-                                        <div class="comment-author">${c.userName}</div>
-                                        <div class="comment-text">${c.text}</div>
-                                    </div>
-                                `).join('')}
+                                ${comments.map(c => renderComment(c)).join('')}
                                 <div class="comment-input">
                                     <input type="text" id="comment-input-${item.id}" placeholder="Add comment...">
                                     <button onclick="addComment('${item.id}', '${item.docId}')">Post</button>
