@@ -1833,7 +1833,7 @@
         }
 
         .ba-photo-slot.has-photo .slot-label-overlay {
-            display: block;
+            display: none;
         }
 
         /* B&A Progress Feedback */
@@ -2085,6 +2085,7 @@
             letter-spacing: 0.5px;
             z-index: 2;
             pointer-events: none;
+            transition: opacity 0.15s ease;
         }
 
         .ba-slider-label.left {
@@ -2475,7 +2476,8 @@
                                           stroke-linecap="round"/>
                                 </svg>
                             </div>
-                            <div class="upload-text">Photo</div>
+                            <div class="upload-text">Item Photo</div>
+                            <div class="upload-text" style="font-size:11px;color:#B0B0B0;margin-top:2px;">Required</div>
                         </div>
                     </div>
                     <input type="file" id="fileInput" accept="image/*">
@@ -2483,7 +2485,7 @@
                     <input type="file" id="afterFileInput" accept="image/*" style="display:none">
 
                     <!-- Before & After Chip Toggle -->
-                    <div class="ba-chip-container">
+                    <div class="ba-chip-container" id="baChipContainer" style="display:none;opacity:0;">
                         <button class="ba-chip" id="baChip" onclick="toggleBeforeAfter()">
                             <span id="baChipIcon">&#8853;</span> Before &amp; After
                         </button>
@@ -2526,7 +2528,7 @@
                     </select>
 
                     <select class="category-select" id="itemSpace">
-                        <option value="">Space (Required)</option>
+                        <option value="">Space</option>
                         <option value="kitchen_space">🍳 Kitchen</option>
                         <option value="bathroom">🚿 Bathroom</option>
                         <option value="bedroom">🛏️ Bedroom</option>
@@ -3828,20 +3830,17 @@ Don't copy examples - be creative.`
             const chipIcon = document.getElementById('baChipIcon');
             const bonusHint = document.getElementById('baBonusHint');
             const photoSlots = document.getElementById('baPhotoSlots');
-            const uploadArea = document.getElementById('uploadArea');
 
             if (baEnabled) {
                 chip.classList.add('active');
                 chipIcon.innerHTML = '&#10003;';
                 bonusHint.style.display = 'none';
                 photoSlots.style.display = 'block';
-                uploadArea.style.display = 'none';
             } else {
                 chip.classList.remove('active');
                 chipIcon.innerHTML = '&#8853;';
                 bonusHint.style.display = '';
                 photoSlots.style.display = 'none';
-                uploadArea.style.display = '';
                 // Reset B&A photos
                 beforePhotoURL = '';
                 afterPhotoURL = '';
@@ -3933,11 +3932,6 @@ Don't copy examples - be creative.`
                 preview.src = downloadURL;
                 slot.classList.add('has-photo');
                 updateBAProgress();
-
-                // If both B&A photos, set main photo to after photo for backward compatibility
-                if (beforePhotoURL && afterPhotoURL) {
-                    currentPhotoURL = afterPhotoURL;
-                }
             } catch (error) {
                 console.error('B&A upload failed:', error);
                 alert('Upload failed! Please try again.');
@@ -4009,10 +4003,24 @@ Don't copy examples - be creative.`
                 uploadPrompt.style.display = 'none';
                 uploadArea.classList.add('has-image');
 
+                // Show B&A chip container with fade-in-up animation
+                const baChipContainer = document.getElementById('baChipContainer');
+                if (baChipContainer && baChipContainer.style.display === 'none') {
+                    baChipContainer.style.display = 'flex';
+                    requestAnimationFrame(() => {
+                        baChipContainer.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+                        baChipContainer.style.transform = 'translateY(12px)';
+                        requestAnimationFrame(() => {
+                            baChipContainer.style.opacity = '1';
+                            baChipContainer.style.transform = 'translateY(0)';
+                        });
+                    });
+                }
+
             } catch (error) {
                 console.error('Upload failed:', error);
 
-                uploadPrompt.innerHTML = '<div class="upload-icon-svg"><svg width="50" height="50" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="25" r="23" stroke="#6B6B6B" stroke-width="2.5"/><line x1="12" y1="25" x2="38" y2="25" stroke="#6B6B6B" stroke-width="3" stroke-linecap="round"/></svg></div><div class="upload-text">Photo</div>';
+                uploadPrompt.innerHTML = '<div class="upload-icon-svg"><svg width="50" height="50" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="25" r="23" stroke="#6B6B6B" stroke-width="2.5"/><line x1="12" y1="25" x2="38" y2="25" stroke="#6B6B6B" stroke-width="3" stroke-linecap="round"/></svg></div><div class="upload-text">Item Photo</div><div class="upload-text" style="font-size:11px;color:#B0B0B0;margin-top:2px;">Required</div>';
                 uploadPrompt.style.display = '';
 
                 let errorMsg = 'Upload failed! ';
@@ -4066,14 +4074,9 @@ Don't copy examples - be creative.`
                 return;
             }
 
-            // Check photo requirement
-            if (baEnabled) {
-                if (!beforePhotoURL || !afterPhotoURL) {
-                    alert('Please upload both Cluttered and Cleared photos!');
-                    return;
-                }
-            } else if (!currentPhotoURL) {
-                alert('Please upload a photo!');
+            // Item Photo is required
+            if (!currentPhotoURL) {
+                alert('Please upload an item photo!');
                 return;
             }
 
@@ -4093,7 +4096,7 @@ Don't copy examples - be creative.`
                     category: category,
                     space: space,
                     note: note,
-                    image: hasBeforeAfter ? afterPhotoURL : currentPhotoURL,
+                    image: currentPhotoURL,
                     points: points,
                     likes: [],
                     likeCount: 0,
@@ -4125,7 +4128,7 @@ Don't copy examples - be creative.`
                 document.getElementById('fileInput').value = '';
                 document.getElementById('previewImage').classList.remove('show');
                 const uploadPrompt = document.getElementById('uploadPlaceholder');
-                uploadPrompt.innerHTML = '<div class="upload-icon-svg"><svg width="50" height="50" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="25" r="23" stroke="#6B6B6B" stroke-width="2.5"/><line x1="12" y1="25" x2="38" y2="25" stroke="#6B6B6B" stroke-width="3" stroke-linecap="round"/></svg></div><div class="upload-text">Photo</div>';
+                uploadPrompt.innerHTML = '<div class="upload-icon-svg"><svg width="50" height="50" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="25" r="23" stroke="#6B6B6B" stroke-width="2.5"/><line x1="12" y1="25" x2="38" y2="25" stroke="#6B6B6B" stroke-width="3" stroke-linecap="round"/></svg></div><div class="upload-text">Item Photo</div><div class="upload-text" style="font-size:11px;color:#B0B0B0;margin-top:2px;">Required</div>';
                 uploadPrompt.style.display = 'block';
                 document.getElementById('uploadArea').classList.remove('has-image');
                 document.getElementById('uploadArea').style.display = '';
@@ -4134,21 +4137,25 @@ Don't copy examples - be creative.`
                 currentPhotoURL = '';
 
                 // Reset B&A state
-                if (baEnabled) {
-                    baEnabled = false;
-                    beforePhotoURL = '';
-                    afterPhotoURL = '';
-                    document.getElementById('baChip').classList.remove('active');
-                    document.getElementById('baChipIcon').innerHTML = '&#8853;';
-                    document.getElementById('baBonusHint').style.display = '';
-                    document.getElementById('baPhotoSlots').style.display = 'none';
-                    document.getElementById('beforeSlot').classList.remove('has-photo');
-                    document.getElementById('afterSlot').classList.remove('has-photo');
-                    document.getElementById('beforePreview').src = '';
-                    document.getElementById('afterPreview').src = '';
-                    document.getElementById('baProgressText').textContent = 'Upload both photos to earn +30 bonus pts';
-                    document.getElementById('baProgressText').classList.remove('complete');
-                    document.getElementById('bonusBadge').style.display = 'none';
+                baEnabled = false;
+                beforePhotoURL = '';
+                afterPhotoURL = '';
+                document.getElementById('baChip').classList.remove('active');
+                document.getElementById('baChipIcon').innerHTML = '&#8853;';
+                document.getElementById('baBonusHint').style.display = '';
+                document.getElementById('baPhotoSlots').style.display = 'none';
+                document.getElementById('beforeSlot').classList.remove('has-photo');
+                document.getElementById('afterSlot').classList.remove('has-photo');
+                document.getElementById('beforePreview').src = '';
+                document.getElementById('afterPreview').src = '';
+                document.getElementById('baProgressText').textContent = 'Upload both photos to earn +30 bonus pts';
+                document.getElementById('baProgressText').classList.remove('complete');
+                document.getElementById('bonusBadge').style.display = 'none';
+                // Hide B&A chip container until next item photo is uploaded
+                const baChipContainer = document.getElementById('baChipContainer');
+                if (baChipContainer) {
+                    baChipContainer.style.display = 'none';
+                    baChipContainer.style.opacity = '0';
                 }
 
                 const bonusMsg = hasBeforeAfter ? ` (includes +30 B&A bonus!)` : '';
@@ -4365,6 +4372,10 @@ Don't copy examples - be creative.`
                                     <span class="bonus-pts">+${item.bonusPoints || 30} bonus</span>
                                 </div>
                             </div>
+                            <div class="ba-item-photo-container" style="position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;margin:10px 0;">
+                                <img src="${item.image}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;">
+                                <span style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.6);color:white;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:600;">&#128247; Item</span>
+                            </div>
                             <div class="ba-slider-container" id="slider-${item.id}" style="--slider-pos: 80%"
                                  onpointerdown="startSlider(event, '${item.id}')"
                                  onpointermove="moveSlider(event, '${item.id}')"
@@ -4373,10 +4384,10 @@ Don't copy examples - be creative.`
                                 <img src="${item.afterPhotoURL}" alt="Cleared" class="ba-slider-after">
                                 <div class="ba-slider-divider"></div>
                                 <div class="ba-slider-handle">&#9664; &#9654;</div>
-                                <div class="ba-slider-label left">CLUTTERED</div>
-                                <div class="ba-slider-label right">CLEARED</div>
+                                <div class="ba-slider-label left" id="label-left-${item.id}">CLUTTERED</div>
+                                <div class="ba-slider-label right" id="label-right-${item.id}">CLEARED</div>
                                 <div class="ba-slider-hint" id="hint-${item.id}"><span class="hint-emoji">&#128072;</span> Slide to reveal</div>
-                                <div class="ba-slider-celebration" id="celebration-${item.id}">&#127881; What a transformation! &#127881;</div>
+                                <div class="ba-slider-celebration" id="celebration-${item.id}">&#10024;</div>
                             </div>
                             <div class="item-actions">
                                 <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${item.id}', '${item.docId}')">
@@ -4468,10 +4479,22 @@ Don't copy examples - be creative.`
             let pos = ((e.clientX - rect.left) / rect.width) * 100;
             pos = Math.max(2, Math.min(98, pos));
             container.style.setProperty('--slider-pos', pos + '%');
-            const celebrationThreshold = id.endsWith('_popup') ? 25 : 30;
+
+            // Label fading: CLUTTERED fades when slider < 25%, CLEARED fades when slider > 75%
+            const baseId = id.endsWith('_popup') ? id.replace('_popup', '') : id;
+            const leftLabel = document.getElementById('label-left-' + baseId) || container.querySelector('.ba-slider-label.left');
+            const rightLabel = document.getElementById('label-right-' + baseId) || container.querySelector('.ba-slider-label.right');
+            if (leftLabel) {
+                leftLabel.style.opacity = pos < 25 ? String(pos / 25) : '1';
+            }
+            if (rightLabel) {
+                rightLabel.style.opacity = pos > 75 ? String((100 - pos) / 25) : '1';
+            }
+
+            // Show sparkle when slider passes 30%
             const celebration = document.getElementById('celebration-' + id);
             if (celebration) {
-                celebration.classList.toggle('show', pos <= celebrationThreshold);
+                celebration.classList.toggle('show', pos <= 30);
             }
         };
 
@@ -5048,6 +5071,10 @@ Don't copy examples - be creative.`
                             <div class="ba-popup-user-meta">${spaceName}</div>
                         </div>
                     </div>
+                    <div style="position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;margin-bottom:8px;">
+                        <img src="${item.image}" alt="${item.name || 'Item'}" style="width:100%;height:100%;object-fit:cover;">
+                        <span style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.6);color:white;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:600;">&#128247; Item</span>
+                    </div>
                     <div class="ba-slider-container" id="${sliderId}" style="--slider-pos: 80%"
                          onpointerdown="startSlider(event, '${sliderId.replace('popup-slider-', '')}_popup')"
                          onpointermove="moveSlider(event, '${sliderId.replace('popup-slider-', '')}_popup')"
@@ -5056,10 +5083,10 @@ Don't copy examples - be creative.`
                         <img src="${item.afterPhotoURL}" alt="Cleared" class="ba-slider-after">
                         <div class="ba-slider-divider"></div>
                         <div class="ba-slider-handle">&#9664; &#9654;</div>
-                        <div class="ba-slider-label left">CLUTTERED</div>
-                        <div class="ba-slider-label right">CLEARED</div>
+                        <div class="ba-slider-label left" id="label-left-${item.id}">CLUTTERED</div>
+                        <div class="ba-slider-label right" id="label-right-${item.id}">CLEARED</div>
                         <div class="ba-slider-hint" id="hint-${sliderId.replace('popup-slider-', '')}_popup"><span class="hint-emoji">&#128072;</span> Slide to reveal</div>
-                        <div class="ba-slider-celebration" id="celebration-${sliderId.replace('popup-slider-', '')}_popup">&#127881; Amazing!</div>
+                        <div class="ba-slider-celebration" id="celebration-${sliderId.replace('popup-slider-', '')}_popup">&#10024;</div>
                     </div>
                     <div class="ba-popup-reactions">
                         <button class="ba-popup-reaction-btn">&#128525;</button>
