@@ -3362,13 +3362,13 @@
     <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getFirestore, collection, addDoc, query, where, orderBy, limit, getDocs, onSnapshot, updateDoc, doc, serverTimestamp, arrayUnion, arrayRemove, increment } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getAuth, signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
         import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyCgRc0r845aR7tTS7GNUmm8TMdLtSzeljY",
-            authDomain: "declutter-challenge-94366.firebaseapp.com",
+            authDomain: "declutter-challenge-94366.web.app",
             projectId: "declutter-challenge-94366",
             storageBucket: "declutter-challenge-94366.firebasestorage.app",
             messagingSenderId: "781105372309",
@@ -3698,39 +3698,57 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             }
         }
 
+        function handleGoogleLoginSuccess(user) {
+            currentUserId = 'google_' + user.uid;
+
+            // Store auth data
+            localStorage.setItem('userId', currentUserId);
+            localStorage.setItem('authProvider', 'google');
+            localStorage.setItem('userPhoto', user.photoURL || '');
+
+            // Check if nickname exists
+            const savedNickname = localStorage.getItem('userNickname_' + currentUserId);
+
+            if (savedNickname) {
+                // Existing user - use saved nickname
+                userName = savedNickname;
+                localStorage.setItem('userName', userName);
+                updateProfileUI();
+                hideLoginScreen();
+                initApp();
+            } else {
+                // New user - must set nickname
+                hideLoginScreen();
+                showNicknameModal();
+            }
+        }
+
         window.handleGoogleLogin = async function() {
             const btn = document.getElementById('googleLoginBtn');
             btn.disabled = true;
             btn.textContent = 'Signing in...';
             try {
                 const result = await signInWithPopup(auth, googleProvider);
-                const user = result.user;
-                currentUserId = 'google_' + user.uid;
-
-                // Store auth data
-                localStorage.setItem('userId', currentUserId);
-                localStorage.setItem('authProvider', 'google');
-                localStorage.setItem('userPhoto', user.photoURL || '');
-
-                // Check if nickname exists
-                const savedNickname = localStorage.getItem('userNickname_' + currentUserId);
-
-                if (savedNickname) {
-                    // Existing user - use saved nickname
-                    userName = savedNickname;
-                    localStorage.setItem('userName', userName);
-                    updateProfileUI();
-                    hideLoginScreen();
-                    await initApp();
-                } else {
-                    // New user - must set nickname
-                    hideLoginScreen();
-                    showNicknameModal();
-                }
+                handleGoogleLoginSuccess(result.user);
             } catch (error) {
-                console.error('Google login failed:', error);
-                if (error.code !== 'auth/popup-closed-by-user') {
-                    alert('Google login failed. Please check if Google login is enabled in Firebase Console.');
+                console.error('Google login popup failed:', error);
+                if (error.code === 'auth/popup-closed-by-user') {
+                    // User closed popup, do nothing
+                } else if (error.code === 'auth/popup-blocked' ||
+                           error.code === 'auth/cancelled-popup-request' ||
+                           error.code === 'auth/internal-error' ||
+                           error.code === 'auth/network-request-failed') {
+                    // Popup was blocked or failed, try redirect as fallback
+                    console.log('Popup failed, trying redirect login...');
+                    btn.textContent = 'Redirecting...';
+                    try {
+                        await signInWithRedirect(auth, googleProvider);
+                    } catch (redirectError) {
+                        console.error('Redirect login also failed:', redirectError);
+                        alert('Login failed. Please try again.');
+                    }
+                } else {
+                    alert('Google login failed. Please try again.');
                 }
             } finally {
                 btn.disabled = false;
@@ -6279,7 +6297,19 @@ Rules:
             setTimeout(() => checkBAPopup(), 300);
         }
 
-        (function checkAuthState() {
+        (async function checkAuthState() {
+            // Handle redirect result first (when returning from signInWithRedirect)
+            try {
+                const redirectResult = await getRedirectResult(auth);
+                if (redirectResult && redirectResult.user) {
+                    handleGoogleLoginSuccess(redirectResult.user);
+                    return;
+                }
+            } catch (error) {
+                console.error('Redirect result error:', error);
+            }
+
+            // Normal auth state check from localStorage
             const savedUserId = localStorage.getItem('userId');
             const savedProvider = localStorage.getItem('authProvider');
 
