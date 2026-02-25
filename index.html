@@ -5968,31 +5968,18 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
             roundRect(ctx, gridPad - 4, gridTop - 4, gridWidth + 8, gridHeight + 8, gridRadius);
             ctx.fill();
 
-            // Load images via fetch to avoid CORS canvas tainting
+            // Load images with crossOrigin to prevent canvas tainting
             const images = await Promise.all(selected.map(item => {
-                return new Promise(async (resolve) => {
-                    try {
-                        const response = await fetch(item.image);
-                        const blob = await response.blob();
-                        const blobUrl = URL.createObjectURL(blob);
-                        const img = new Image();
-                        img.onload = () => {
-                            URL.revokeObjectURL(blobUrl);
-                            resolve(img);
-                        };
-                        img.onerror = () => {
-                            URL.revokeObjectURL(blobUrl);
-                            resolve(null);
-                        };
-                        img.src = blobUrl;
-                    } catch (e) {
-                        resolve(null);
-                    }
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.crossOrigin = "anonymous";
+                    img.onload = () => resolve(img);
+                    img.onerror = () => resolve(null);
+                    img.src = item.image;
                 });
             }));
 
             images.forEach((img, idx) => {
-                if (!img) return;
                 const col = idx % cols;
                 const row = Math.floor(idx / cols);
                 const x = gridPad + col * (cellSize + cellGap);
@@ -6000,16 +5987,22 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
 
                 ctx.save();
                 // Clip to rounded cell
-                const cellR = idx === 0 ? gridRadius : (idx === cols - 1 ? gridRadius : (idx === selected.length - cols ? gridRadius : (idx === selected.length - 1 ? gridRadius : 4)));
                 roundRect(ctx, x, y, cellSize, cellSize, 4);
                 ctx.clip();
-                // Draw image cover
-                const scale = Math.max(cellSize / img.width, cellSize / img.height);
-                const sw = cellSize / scale;
-                const sh = cellSize / scale;
-                const sx = (img.width - sw) / 2;
-                const sy = (img.height - sh) / 2;
-                ctx.drawImage(img, sx, sy, sw, sh, x, y, cellSize, cellSize);
+
+                if (img) {
+                    // Draw image cover-fit
+                    const scale = Math.max(cellSize / img.width, cellSize / img.height);
+                    const sw = cellSize / scale;
+                    const sh = cellSize / scale;
+                    const sx = (img.width - sw) / 2;
+                    const sy = (img.height - sh) / 2;
+                    ctx.drawImage(img, sx, sy, sw, sh, x, y, cellSize, cellSize);
+                } else {
+                    // Fallback gray if image failed to load
+                    ctx.fillStyle = '#ddd';
+                    ctx.fillRect(x, y, cellSize, cellSize);
+                }
                 ctx.restore();
             });
 
@@ -6771,6 +6764,7 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
                 if (i < recentItems.length && recentItems[i].image) {
                     try {
                         const img = new Image();
+                        img.crossOrigin = "anonymous";
                         img.src = recentItems[i].image;
                         await new Promise(resolve => {
                             img.onload = () => {
