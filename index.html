@@ -4069,14 +4069,18 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         async function generateTidyComment(itemData) {
             console.log('[Tidy] generateTidyComment called', itemData.name);
             try {
-                // Fetch all user items for context
-                const itemsQuery = query(
-                    collection(db, 'items'),
-                    where('userId', '==', currentUserId),
-                    orderBy('createdAt', 'desc')
-                );
+                // Fetch user items — NO orderBy to avoid composite index requirement
+                const itemsQuery = query(collection(db, 'items'), where('userId', '==', currentUserId));
                 const itemsSnapshot = await getDocs(itemsQuery);
+                console.log('[Tidy] Firestore query returned', itemsSnapshot.size, 'items');
+
                 const allItems = itemsSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                // Sort by createdAt descending in JS (avoids Firestore composite index)
+                allItems.sort((a, b) => {
+                    const aTime = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 0;
+                    const bTime = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 0;
+                    return bTime - aTime;
+                });
                 const totalItems = allItems.length;
 
                 // Recent items (last 7)
@@ -4181,18 +4185,23 @@ BAD (generic): "Great job decluttering! Keep it up!"
 GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개째 — 모든 것이 제자리에 있는 집, 점점 가까워지고 있어요!"`;
                 }
 
-                console.log('[Tidy] Calling Cloud Function...');
+                console.log('[Tidy] Calling Cloud Function with prompt length:', prompt.length);
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 15000);
                 const response = await fetch('https://us-central1-declutter-challenge-94366.cloudfunctions.net/generateTidyComment', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt })
+                    body: JSON.stringify({ prompt }),
+                    signal: controller.signal
                 });
+                clearTimeout(timeout);
+                console.log('[Tidy] Cloud Function response status:', response.status);
                 if (!response.ok) throw new Error('Function returned ' + response.status);
                 const result = await response.json();
-                console.log('[Tidy] Cloud Function returned:', result);
+                console.log('[Tidy] Cloud Function returned text:', result.text ? result.text.substring(0, 50) + '...' : 'null');
                 return result.text;
             } catch (error) {
-                console.error('[Tidy] Comment generation failed:', error);
+                console.error('[Tidy] Comment generation failed:', error.name, error.message);
                 return null;
             }
         }
@@ -4933,8 +4942,10 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
 
                 const aiMessage = await generateAIEncouragement(name, category, points, totalScore, userStreak);
 
-                // Generate Tidy AI Coach comment (non-blocking)
-                generateTidyComment(itemData).then(async (tidyText) => {
+                // Start Tidy AI Coach comment generation (non-blocking)
+                // This kicks off the fetch BEFORE alert() blocks the event loop
+                const tidyPromise = generateTidyComment(itemData);
+                tidyPromise.then(async (tidyText) => {
                     console.log('[Tidy] generateTidyComment result:', tidyText ? 'got text' : 'null');
                     if (tidyText) {
                         try {
@@ -4952,6 +4963,8 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
                             console.error('[Tidy] Failed to save comment:', err);
                         }
                     }
+                }).catch(err => {
+                    console.error('[Tidy] Unhandled error in comment pipeline:', err);
                 });
 
                 // Reset form
