@@ -2278,50 +2278,385 @@
 
         /* ===== Feed Tab B&A Styles ===== */
 
-        /* Feed Filter Tabs */
-        .feed-filters {
+        /* Feed 3-Tab Segment Control */
+        .feed-segment {
             display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
+            background: #e8e8e8;
+            border-radius: 12px;
+            padding: 3px;
+            margin-bottom: 12px;
         }
 
-        .feed-filter-btn {
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: 1.5px solid #E5E5E5;
-            background: white;
-            color: #6B6B6B;
-            font-size: 13px;
-            font-weight: 600;
+        .feed-segment-btn {
+            flex: 1;
+            padding: 8px 4px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            color: #999;
+            font-size: 12px;
+            font-weight: 700;
             cursor: pointer;
             font-family: inherit;
             transition: all 0.2s ease;
+            text-align: center;
+            white-space: nowrap;
         }
 
-        .feed-filter-btn.active {
+        .feed-segment-btn.seg-ba {
+            flex: 1.4;
+        }
+
+        .feed-segment-btn.active {
+            background: white;
+            color: #1C1C1E;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Feed tab content areas */
+        .feed-tab-content {
+            display: none;
+        }
+
+        .feed-tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* You Tab — Stats Bar */
+        .you-stats-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+            border: 1px solid #E5E5E5;
+        }
+
+        .you-stats-left {
+            display: flex;
+            gap: 20px;
+        }
+
+        .you-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .you-stat-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1C1C1E;
+            line-height: 1.2;
+        }
+
+        .you-stat-value.points {
+            color: #4CAF50;
+        }
+
+        .you-stat-label {
+            font-size: 9px;
+            color: #999;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .you-share-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
             background: #1C1C1E;
             color: white;
-            border-color: #1C1C1E;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
         }
 
-        .feed-filter-btn.ba-filter.active {
-            background: linear-gradient(135deg, #43A047, #66BB6A);
-            border-color: #43A047;
+        .you-share-btn:active {
+            opacity: 0.8;
+        }
+
+        /* You Tab — Share Mode Buttons */
+        .you-share-mode-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .you-share-mode-bar .cancel-btn {
+            background: white;
+            color: #1C1C1E;
+            border: 1.5px solid #E5E5E5;
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .you-share-mode-bar .share-count-btn {
+            background: #1C1C1E;
             color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
         }
 
-        .feed-filter-count {
-            display: inline-flex;
+        .you-share-mode-bar .share-count-btn.disabled {
+            background: #ccc;
+            color: #999;
+            pointer-events: none;
+        }
+
+        .you-share-helper {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* You Tab — Grid */
+        .you-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .you-grid-cell {
+            aspect-ratio: 1 / 1;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            background: #f0f0f0;
+        }
+
+        .you-grid-cell img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .you-grid-cell .grid-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 4px 6px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.6));
+        }
+
+        .you-grid-cell .grid-item-name {
+            font-size: 9px;
+            color: white;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .you-grid-cell .grid-points-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        /* Selection mode */
+        .you-grid-cell.selectable {
+            transition: opacity 0.15s;
+        }
+
+        .you-grid-cell.selectable:not(.selected) {
+            opacity: 0.5;
+        }
+
+        .you-grid-cell.selected {
+            opacity: 1;
+        }
+
+        .you-grid-cell .grid-check {
+            display: none;
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #1C1C1E;
+            color: white;
+            font-size: 12px;
             align-items: center;
             justify-content: center;
-            min-width: 18px;
-            height: 18px;
-            padding: 0 5px;
-            border-radius: 9px;
-            background: rgba(255,255,255,0.3);
-            font-size: 11px;
+            z-index: 2;
+        }
+
+        .you-grid-cell.selectable .grid-check {
+            display: flex;
+            background: rgba(255,255,255,0.4);
+            border: 2px solid white;
+        }
+
+        .you-grid-cell.selected .grid-check {
+            display: flex;
+            background: #1C1C1E;
+            border: 2px solid #1C1C1E;
+        }
+
+        /* Share Bottom Sheet */
+        .share-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 300;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .share-overlay.active {
+            display: block;
+        }
+
+        .share-sheet {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 24px 20px 40px;
+            z-index: 301;
+            animation: slideUp 0.3s ease;
+        }
+
+        .share-sheet-handle {
+            width: 36px;
+            height: 4px;
+            background: #ddd;
+            border-radius: 2px;
+            margin: 0 auto 16px;
+        }
+
+        .share-preview-grid {
+            display: grid;
+            gap: 4px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .share-preview-grid img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+        }
+
+        .share-summary {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .share-summary-title {
+            font-size: 16px;
             font-weight: 700;
-            margin-left: 5px;
+            color: #1C1C1E;
+            margin-bottom: 4px;
+        }
+
+        .share-summary-points {
+            font-size: 14px;
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        .share-ig-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #833AB4, #E1306C, #F77737);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            margin-bottom: 10px;
+        }
+
+        .share-ig-btn:active {
+            opacity: 0.9;
+        }
+
+        .share-more-btn {
+            width: 100%;
+            padding: 14px;
+            background: white;
+            color: #1C1C1E;
+            border: 1.5px solid #E5E5E5;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            margin-bottom: 10px;
+        }
+
+        .share-save-btn {
+            width: 100%;
+            padding: 14px;
+            background: #F5F5F5;
+            color: #1C1C1E;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(100%); }
+            to { transform: translateX(-50%) translateY(0); }
+        }
+
+        /* You tab empty state */
+        .you-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .you-empty .empty-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
         }
 
         /* B&A Compact Card — collapsed looks like normal card */
@@ -3171,19 +3506,75 @@
 
         <div id="historyTab" class="tab-content">
             <div class="card">
-                <!-- Feed Filter Tabs -->
-                <div class="feed-filters">
-                    <button class="feed-filter-btn active" id="filterAll" onclick="setFeedFilter('all')">All</button>
-                    <button class="feed-filter-btn ba-filter" id="filterBA" onclick="setFeedFilter('ba')">&#10024; Before &amp; After <span class="feed-filter-count" id="baFilterCount">0</span></button>
+                <!-- 3-Tab Segment Control -->
+                <div class="feed-segment">
+                    <button class="feed-segment-btn active" id="segAll" onclick="setFeedFilter('all')">All</button>
+                    <button class="feed-segment-btn" id="segYou" onclick="setFeedFilter('you')">You</button>
+                    <button class="feed-segment-btn seg-ba" id="segBA" onclick="setFeedFilter('ba')">Before &amp; After</button>
                 </div>
 
-                <div class="item-list" id="itemList">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                        Loading...
+                <!-- All Tab Content -->
+                <div class="feed-tab-content active" id="feedContentAll">
+                    <div class="item-list" id="itemList">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            Loading...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- You Tab Content -->
+                <div class="feed-tab-content" id="feedContentYou">
+                    <div class="you-stats-bar" id="youStatsBar">
+                        <div class="you-stats-left">
+                            <div class="you-stat">
+                                <div class="you-stat-value" id="youItemCount">0</div>
+                                <div class="you-stat-label">ITEMS</div>
+                            </div>
+                            <div class="you-stat">
+                                <div class="you-stat-value points" id="youPointsCount">0</div>
+                                <div class="you-stat-label">POINTS</div>
+                            </div>
+                        </div>
+                        <div id="youShareActions">
+                            <button class="you-share-btn" id="youShareBtn" onclick="toggleYouShareMode()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/>
+                                    <polyline points="16 6 12 2 8 6"/>
+                                    <line x1="12" y1="2" x2="12" y2="15"/>
+                                </svg>
+                                Share
+                            </button>
+                        </div>
+                    </div>
+                    <div id="youShareHelper" class="you-share-helper" style="display:none;">Select up to 9 items to share</div>
+                    <div class="you-grid" id="youGrid"></div>
+                </div>
+
+                <!-- Before & After Tab Content -->
+                <div class="feed-tab-content" id="feedContentBA">
+                    <div class="item-list" id="baItemList">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            Loading...
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Share Bottom Sheet -->
+        <div class="share-overlay" id="shareSheetOverlay" onclick="closeShareSheet()"></div>
+        <div class="share-sheet" id="shareSheet" style="display:none;">
+            <div class="share-sheet-handle"></div>
+            <div class="share-preview-grid" id="sharePreviewGrid"></div>
+            <div class="share-summary">
+                <div class="share-summary-title" id="shareSummaryTitle"></div>
+                <div class="share-summary-points" id="shareSummaryPoints"></div>
+            </div>
+            <button class="share-ig-btn" onclick="shareToInstagram()">Share to Instagram</button>
+            <button class="share-more-btn" onclick="shareMore()">More options</button>
+            <button class="share-save-btn" onclick="saveShareImage()">Save image to gallery</button>
         </div>
 
         <div class="tab-content" id="calendarTab">
@@ -5249,12 +5640,28 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
             }
         };
 
-        // Feed filter
+        // Feed filter — 3-tab segment (All / You / Before & After)
+        let youShareMode = false;
+        let youSelectedItems = [];
+
         window.setFeedFilter = function(filter) {
             currentFeedFilter = filter;
-            document.getElementById('filterAll').classList.toggle('active', filter === 'all');
-            document.getElementById('filterBA').classList.toggle('active', filter === 'ba');
-            renderFeedItems();
+            // Update segment buttons
+            document.getElementById('segAll').classList.toggle('active', filter === 'all');
+            document.getElementById('segYou').classList.toggle('active', filter === 'you');
+            document.getElementById('segBA').classList.toggle('active', filter === 'ba');
+            // Show/hide tab content
+            document.getElementById('feedContentAll').classList.toggle('active', filter === 'all');
+            document.getElementById('feedContentYou').classList.toggle('active', filter === 'you');
+            document.getElementById('feedContentBA').classList.toggle('active', filter === 'ba');
+
+            if (filter === 'all') {
+                renderFeedItems();
+            } else if (filter === 'you') {
+                renderYouTab();
+            } else if (filter === 'ba') {
+                renderBAItems();
+            }
         };
 
         function renderComment(c) {
@@ -5284,21 +5691,14 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
 
         function renderFeedItems() {
             const listElement = document.getElementById('itemList');
-            const items = currentFeedFilter === 'ba'
-                ? allFeedItems.filter(i => i.hasBeforeAfter)
-                : allFeedItems;
-
-            // Update B&A filter count
-            const baCount = allFeedItems.filter(i => i.hasBeforeAfter).length;
-            const filterCount = document.getElementById('baFilterCount');
-            filterCount.textContent = baCount;
+            const items = allFeedItems;
 
             if (items.length === 0) {
                 listElement.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-icon">${currentFeedFilter === 'ba' ? '📸' : '📦'}</div>
-                        <div>${currentFeedFilter === 'ba' ? 'No Before & After posts yet' : 'No items yet'}</div>
-                        <div style="font-size: 14px; margin-top: 10px;">${currentFeedFilter === 'ba' ? 'Be the first to share a transformation!' : 'Declutter your first item!'}</div>
+                        <div class="empty-icon">📦</div>
+                        <div>No items yet</div>
+                        <div style="font-size: 14px; margin-top: 10px;">Declutter your first item!</div>
                     </div>
                 `;
                 return;
@@ -5411,6 +5811,393 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
             }).join('');
         }
 
+        // ===== "You" Tab — Grid View =====
+        function renderYouTab() {
+            const myItems = allFeedItems.filter(i => i.userId === currentUserId);
+            const totalItems = myItems.length;
+            const totalPoints = myItems.reduce((sum, i) => sum + (i.points || 0), 0);
+
+            document.getElementById('youItemCount').textContent = totalItems;
+            document.getElementById('youPointsCount').textContent = totalPoints;
+
+            const grid = document.getElementById('youGrid');
+
+            if (totalItems === 0) {
+                grid.innerHTML = `
+                    <div class="you-empty" style="grid-column: 1 / -1;">
+                        <div class="empty-icon">📦</div>
+                        <div>No items yet</div>
+                        <div style="font-size: 14px; margin-top: 10px;">Declutter your first item!</div>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = myItems.map(item => {
+                const isSelected = youSelectedItems.includes(item.docId);
+                const selectableClass = youShareMode ? 'selectable' : '';
+                const selectedClass = youShareMode && isSelected ? 'selected' : '';
+                return `
+                    <div class="you-grid-cell ${selectableClass} ${selectedClass}"
+                         onclick="${youShareMode ? `toggleYouSelect('${item.docId}')` : ''}"
+                         data-id="${item.docId}">
+                        <img src="${item.image}" alt="${item.name}" loading="lazy">
+                        <div class="grid-overlay">
+                            <div class="grid-item-name">${item.name}</div>
+                        </div>
+                        <div class="grid-points-badge">+${item.points || 0}</div>
+                        <div class="grid-check">${isSelected ? '&#10003;' : ''}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Toggle share mode on You tab
+        window.toggleYouShareMode = function() {
+            youShareMode = !youShareMode;
+            youSelectedItems = [];
+            updateYouShareUI();
+            renderYouTab();
+        };
+
+        function updateYouShareUI() {
+            const actions = document.getElementById('youShareActions');
+            const helper = document.getElementById('youShareHelper');
+
+            if (youShareMode) {
+                actions.innerHTML = `
+                    <div class="you-share-mode-bar">
+                        <button class="cancel-btn" onclick="toggleYouShareMode()">Cancel</button>
+                        <button class="share-count-btn ${youSelectedItems.length === 0 ? 'disabled' : ''}"
+                                id="youShareCountBtn"
+                                onclick="openShareSheet()">Share (${youSelectedItems.length})</button>
+                    </div>
+                `;
+                helper.style.display = 'block';
+            } else {
+                actions.innerHTML = `
+                    <button class="you-share-btn" id="youShareBtn" onclick="toggleYouShareMode()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/>
+                            <polyline points="16 6 12 2 8 6"/>
+                            <line x1="12" y1="2" x2="12" y2="15"/>
+                        </svg>
+                        Share
+                    </button>
+                `;
+                helper.style.display = 'none';
+            }
+        }
+
+        // Toggle item selection in share mode (max 9)
+        window.toggleYouSelect = function(docId) {
+            const idx = youSelectedItems.indexOf(docId);
+            if (idx >= 0) {
+                youSelectedItems.splice(idx, 1);
+            } else if (youSelectedItems.length < 9) {
+                youSelectedItems.push(docId);
+            }
+            updateYouShareUI();
+            renderYouTab();
+        };
+
+        // ===== Share Bottom Sheet =====
+        window.openShareSheet = function() {
+            if (youSelectedItems.length === 0) return;
+
+            const myItems = allFeedItems.filter(i => i.userId === currentUserId);
+            const selected = youSelectedItems.map(id => myItems.find(i => i.docId === id)).filter(Boolean);
+            const totalPoints = selected.reduce((sum, i) => sum + (i.points || 0), 0);
+            const cols = Math.min(selected.length, 3);
+
+            // Preview grid
+            const previewGrid = document.getElementById('sharePreviewGrid');
+            previewGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            previewGrid.innerHTML = selected.map(item =>
+                `<img src="${item.image}" alt="${item.name}">`
+            ).join('');
+
+            document.getElementById('shareSummaryTitle').textContent =
+                `I decluttered ${selected.length} item${selected.length > 1 ? 's' : ''} with Declutter Daily!`;
+            document.getElementById('shareSummaryPoints').textContent =
+                `${totalPoints} points earned`;
+
+            document.getElementById('shareSheetOverlay').classList.add('active');
+            document.getElementById('shareSheet').style.display = 'block';
+        };
+
+        window.closeShareSheet = function() {
+            document.getElementById('shareSheetOverlay').classList.remove('active');
+            document.getElementById('shareSheet').style.display = 'none';
+        };
+
+        // ===== Share Image Generation (1080×1350 Canvas) =====
+        async function generateShareImage() {
+            const myItems = allFeedItems.filter(i => i.userId === currentUserId);
+            const selected = youSelectedItems.map(id => myItems.find(i => i.docId === id)).filter(Boolean);
+            const totalPoints = selected.reduce((sum, i) => sum + (i.points || 0), 0);
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 1080;
+            canvas.height = 1350;
+            const ctx = canvas.getContext('2d');
+
+            // Background
+            ctx.fillStyle = '#FAFAFA';
+            ctx.fillRect(0, 0, 1080, 1350);
+
+            // App name at top
+            ctx.fillStyle = '#1C1C1E';
+            ctx.font = 'bold 48px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Declutter Daily', 540, 100);
+
+            // Subtitle
+            ctx.fillStyle = '#999';
+            ctx.font = '28px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText('One item at a time', 540, 145);
+
+            // Load and draw images in grid (3 cols)
+            const cols = Math.min(selected.length, 3);
+            const rows = Math.ceil(selected.length / cols);
+            const gridTop = 200;
+            const gridPad = 40;
+            const cellGap = 8;
+            const gridWidth = 1080 - gridPad * 2;
+            const cellSize = (gridWidth - (cols - 1) * cellGap) / cols;
+            const gridHeight = rows * cellSize + (rows - 1) * cellGap;
+
+            // Draw rounded rect background for grid
+            const gridRadius = 24;
+            ctx.fillStyle = '#E8E8E8';
+            roundRect(ctx, gridPad - 4, gridTop - 4, gridWidth + 8, gridHeight + 8, gridRadius);
+            ctx.fill();
+
+            // Load images
+            const images = await Promise.all(selected.map(item => {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.onload = () => resolve(img);
+                    img.onerror = () => resolve(null);
+                    img.src = item.image;
+                });
+            }));
+
+            images.forEach((img, idx) => {
+                if (!img) return;
+                const col = idx % cols;
+                const row = Math.floor(idx / cols);
+                const x = gridPad + col * (cellSize + cellGap);
+                const y = gridTop + row * (cellSize + cellGap);
+
+                ctx.save();
+                // Clip to rounded cell
+                const cellR = idx === 0 ? gridRadius : (idx === cols - 1 ? gridRadius : (idx === selected.length - cols ? gridRadius : (idx === selected.length - 1 ? gridRadius : 4)));
+                roundRect(ctx, x, y, cellSize, cellSize, 4);
+                ctx.clip();
+                // Draw image cover
+                const scale = Math.max(cellSize / img.width, cellSize / img.height);
+                const sw = cellSize / scale;
+                const sh = cellSize / scale;
+                const sx = (img.width - sw) / 2;
+                const sy = (img.height - sh) / 2;
+                ctx.drawImage(img, sx, sy, sw, sh, x, y, cellSize, cellSize);
+                ctx.restore();
+            });
+
+            // Bottom section
+            const bottomY = gridTop + gridHeight + 60;
+
+            ctx.fillStyle = '#1C1C1E';
+            ctx.font = 'bold 44px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(`I decluttered ${selected.length} item${selected.length > 1 ? 's' : ''}!`, 540, bottomY);
+
+            ctx.fillStyle = '#4CAF50';
+            ctx.font = 'bold 36px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText(`${totalPoints} points earned`, 540, bottomY + 55);
+
+            // App URL at bottom
+            ctx.fillStyle = '#BBB';
+            ctx.font = '24px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText('declutterdaily.app', 540, 1310);
+
+            return new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.9));
+        }
+
+        // Helper: draw rounded rect path
+        function roundRect(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+        }
+
+        // Share to Instagram (uses native share with file)
+        window.shareToInstagram = async function() {
+            try {
+                const blob = await generateShareImage();
+                const file = new File([blob], 'declutter-daily.jpg', { type: 'image/jpeg' });
+                const myItems = allFeedItems.filter(i => i.userId === currentUserId);
+                const count = youSelectedItems.length;
+
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'My Declutter Journey',
+                        text: `I decluttered ${count} item${count > 1 ? 's' : ''} with Declutter Daily!`,
+                    });
+                } else {
+                    // Fallback: download
+                    await saveShareImageFromBlob(blob);
+                    alert('Image saved! You can now share it to Instagram manually.');
+                }
+                closeShareSheet();
+            } catch (err) {
+                if (err.name !== 'AbortError') console.error('Share failed:', err);
+            }
+        };
+
+        // More options (native share sheet)
+        window.shareMore = async function() {
+            try {
+                const blob = await generateShareImage();
+                const file = new File([blob], 'declutter-daily.jpg', { type: 'image/jpeg' });
+                const count = youSelectedItems.length;
+
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'My Declutter Journey',
+                        text: `I decluttered ${count} item${count > 1 ? 's' : ''} with Declutter Daily!`,
+                    });
+                } else {
+                    await saveShareImageFromBlob(blob);
+                    alert('Image saved! Share it from your gallery.');
+                }
+                closeShareSheet();
+            } catch (err) {
+                if (err.name !== 'AbortError') console.error('Share failed:', err);
+            }
+        };
+
+        // Save image to gallery (download)
+        window.saveShareImage = async function() {
+            try {
+                const blob = await generateShareImage();
+                await saveShareImageFromBlob(blob);
+                closeShareSheet();
+            } catch (err) {
+                console.error('Save failed:', err);
+            }
+        };
+
+        function saveShareImageFromBlob(blob) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'declutter-daily.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // ===== "Before & After" Tab =====
+        function renderBAItems() {
+            const listElement = document.getElementById('baItemList');
+            const items = allFeedItems.filter(i => i.hasBeforeAfter);
+
+            if (items.length === 0) {
+                listElement.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📸</div>
+                        <div>No Before & After posts yet</div>
+                        <div style="font-size: 14px; margin-top: 10px;">Be the first to share a transformation!</div>
+                    </div>
+                `;
+                return;
+            }
+
+            listElement.innerHTML = items.map(item => {
+                const date = item.createdAt?.toDate() || new Date();
+                const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+                const isMyItem = item.userId === currentUserId;
+                const isLiked = (item.likes || []).includes(currentUserId);
+                const likeCount = item.likeCount || 0;
+                const comments = item.comments || [];
+                const hasNote = item.note && item.note.trim();
+                const basePoints = (item.points || 0) - (item.bonusPoints || 0);
+                const feedAvatar = getUserAvatarHTML(item.userName, item.userPhotoURL, 30);
+
+                return `
+                    <div class="item ba-item" style="${isMyItem ? 'background: #FAFAFA;' : ''}">
+                        <div class="item-header">
+                            <div class="ba-thumb-wrap" onclick="toggleBASlider('ba_${item.id}')">
+                                <img src="${item.image}" alt="${item.name}" class="item-image">
+                                <div class="ba-thumb-badge">
+                                    <span class="ba-photo-badge-icon"><span class="half-warm"></span><span class="half-green"></span></span>
+                                    B&A
+                                </div>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-name">${item.name} <span class="ba-badge">B&A</span></div>
+                                <div class="item-date" style="display:flex;align-items:center;gap:6px;">${feedAvatar} ${item.userName || 'Anonymous'} &bull; ${dateStr}</div>
+                                ${hasNote ? `<div class="item-note">"${item.note}"</div>` : ''}
+                            </div>
+                            <div class="ba-points-display">
+                                <span class="base-pts">+${basePoints}</span>
+                                <span class="bonus-pts">+${item.bonusPoints || 30} bonus</span>
+                            </div>
+                        </div>
+                        <div class="ba-expand-section" id="ba-expand-ba_${item.id}">
+                            <div class="ba-expand-header">
+                                <span class="ba-expand-label">Before &amp; After</span>
+                                <button class="ba-expand-close" onclick="toggleBASlider('ba_${item.id}')" aria-label="Close slider">&#10005;</button>
+                            </div>
+                            <div class="ba-slider-container" id="slider-ba_${item.id}" style="--slider-pos: 80%"
+                                 onpointerdown="startSlider(event, 'ba_${item.id}')"
+                                 onpointermove="moveSlider(event, 'ba_${item.id}')"
+                                 onpointerup="endSlider(event, 'ba_${item.id}')">
+                                <img src="${item.beforePhotoURL}" alt="Cluttered" class="ba-slider-before">
+                                <img src="${item.afterPhotoURL}" alt="Cleared" class="ba-slider-after">
+                                <div class="ba-slider-divider"></div>
+                                <div class="ba-slider-handle">&#9664; &#9654;</div>
+                                <div class="ba-slider-label left" id="label-left-ba_${item.id}">CLUTTERED</div>
+                                <div class="ba-slider-label right" id="label-right-ba_${item.id}">CLEARED</div>
+                                <div class="ba-slider-hint" id="hint-ba_${item.id}"><span class="hint-emoji">&#128072;</span> Slide to reveal</div>
+                                <div class="ba-slider-celebration" id="celebration-ba_${item.id}">&#10024;</div>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${item.id}', '${item.docId}')">
+                                &#10084;&#65039; ${likeCount}
+                            </button>
+                            <button class="comment-btn" onclick="toggleComments('ba_${item.id}')">
+                                &#128172; ${comments.length}
+                            </button>
+                            ${isMyItem ? `<button class="delete-btn" onclick="deleteItem('${item.docId}', '${item.userId}', ${item.points})">&#128465;&#65039; Delete</button>` : ''}
+                        </div>
+                        <div class="comments-section" id="comments-ba_${item.id}">
+                            ${comments.map(c => renderComment(c)).join('')}
+                            <div class="comment-input">
+                                <input type="text" id="comment-input-ba_${item.id}" placeholder="Add comment...">
+                                <button onclick="addComment('ba_${item.id}', '${item.docId}')">Post</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
         // Interactive Slider Logic (unified for feed and popup)
         const activeSliders = {};
         function getSliderElement(id) {
@@ -5506,7 +6293,14 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
                     updateHeaderStats();
 
                     allFeedItems = items;
-                    renderFeedItems();
+                    // Render the currently active feed sub-tab
+                    if (currentFeedFilter === 'you') {
+                        renderYouTab();
+                    } else if (currentFeedFilter === 'ba') {
+                        renderBAItems();
+                    } else {
+                        renderFeedItems();
+                    }
                 });
             } catch (error) {
                 console.error('Items load failed:', error);
