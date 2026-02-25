@@ -5915,7 +5915,7 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
             ).join('');
 
             document.getElementById('shareSummaryTitle').textContent =
-                `I decluttered ${selected.length} item${selected.length > 1 ? 's' : ''} with Declutter Daily!`;
+                `${selected.length} Item${selected.length > 1 ? 's' : ''} lighter. One a day. It adds up with Declutter Daily.`;
 
             document.getElementById('shareSheetOverlay').classList.add('active');
             document.getElementById('shareSheet').style.display = 'block';
@@ -6019,7 +6019,11 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
             ctx.fillStyle = '#1C1C1E';
             ctx.font = 'bold 44px -apple-system, BlinkMacSystemFont, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText(`I decluttered ${selected.length} item${selected.length > 1 ? 's' : ''}!`, 540, bottomY);
+            ctx.fillText(`${selected.length} Item${selected.length > 1 ? 's' : ''} lighter.`, 540, bottomY);
+
+            ctx.fillStyle = '#666';
+            ctx.font = '32px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText('One a day. It adds up with Declutter Daily.', 540, bottomY + 50);
 
             // App URL at bottom
             ctx.fillStyle = '#BBB';
@@ -6056,7 +6060,7 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
                     await navigator.share({
                         files: [file],
                         title: 'My Declutter Journey',
-                        text: `I decluttered ${count} item${count > 1 ? 's' : ''} with Declutter Daily!`,
+                        text: `${count} Item${count > 1 ? 's' : ''} lighter. One a day. It adds up with Declutter Daily.`,
                     });
                 } else {
                     // Fallback: download
@@ -6080,7 +6084,7 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
                     await navigator.share({
                         files: [file],
                         title: 'My Declutter Journey',
-                        text: `I decluttered ${count} item${count > 1 ? 's' : ''} with Declutter Daily!`,
+                        text: `${count} Item${count > 1 ? 's' : ''} lighter. One a day. It adds up with Declutter Daily.`,
                     });
                 } else {
                     await saveShareImageFromBlob(blob);
