@@ -2,12 +2,14 @@ const { onRequest } = require("firebase-functions/v2/https");
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 const { defineSecret } = require("firebase-functions/params");
 const { getFirestore, FieldValue } = require("firebase-admin/firestore");
+const { getStorage } = require("firebase-admin/storage");
 const { initializeApp } = require("firebase-admin/app");
 
 initializeApp();
 const firestoreDb = getFirestore();
 
 const anthropicApiKey = defineSecret("ANTHROPIC_API_KEY");
+const openaiApiKey = defineSecret("OPENAI_API_KEY");
 
 const ALLOWED_ORIGINS = [
   "https://tacogong0621.github.io",
@@ -116,7 +118,7 @@ const CATEGORY_NAMES = {
   other: "📦 Other",
 };
 
-const BINGO_SPACES = {
+const SPACES = {
   kitchen_space: "Kitchen",
   bathroom: "Bathroom",
   bedroom: "Bedroom",
@@ -133,7 +135,7 @@ function getCategoryName(category) {
 }
 
 function getSpaceDisplayName(spaceKey) {
-  return BINGO_SPACES[spaceKey] || spaceKey;
+  return SPACES[spaceKey] || spaceKey;
 }
 
 function getMostFrequent(items, field) {
@@ -428,3 +430,248 @@ exports.generateTidyComment = onDocumentCreated(
     }
   }
 );
+
+/**
+ * analyzeSpace — HTTP endpoint for AI Coach Tidy.
+ * Accepts a base64 photo of a messy space, analyzes it with Claude,
+ * generates a "cleaned up" visualization with DALL-E, and returns the results.
+ */
+exports.analyzeSpace = onRequest(
+  {
+    secrets: [anthropicApiKey, openaiApiKey],
+    timeoutSeconds: 120,
+    memory: "512MiB",
+  },
+  async (req, res) => {
+    setCorsHeaders(req, res);
+
+    if (req.method === "OPTIONS") {
+      res.status(204).send("");
+      return;
+    }
+
+    if (req.method !== "POST") {
+      res.status(405).json({ error: "Method not allowed" });
+      return;
+    }
+
+    const { imageBase64, userId, userVision } = req.body;
+
+    if (!imageBase64 || !userId) {
+      res.status(400).json({ error: "Missing required fields" });
+      return;
+    }
+
+    const analysisPrompt = `You are "Tidy", an AI decluttering coach for a minimalism app.
+
+Analyze this photo of a messy space. Respond ONLY in valid JSON (no markdown, no backticks).
+
+USER'S VISION: "${userVision || ""}"
+
+{
+  "spaceName": "Kitchen Island",
+  "itemCount": 12,
+  "steps": [
+    { "text": "Mail & papers → recycle or file", "minutes": 2 },
+    { "text": "Keys, wallet → landing zone by door", "minutes": 1 }
+  ],
+  "totalMinutes": 8,
+  "mainTip": "The 'nothing lives here' rule — this surface is for cooking, not storing. 60-second nightly sweep keeps it clear.",
+  "encouragement": "About 12 items don't belong here. Clear in ~8 minutes:",
+  "imagePrompt": "A clean, minimalist kitchen island with clear granite countertop, no clutter, soft natural lighting, same kitchen layout as original photo, photorealistic, tidy and organized"
+}
+
+Rules for steps:
+- NEVER suggest buying anything (no bins, organizers, containers, shelves, products)
+- Only suggest REMOVING items or RELOCATING them to where they already belong
+- Tips should be about HABITS, not purchases
+- Match the user's language (Korean photo context → Korean response, etc.)
+- Keep steps actionable and specific
+- The imagePrompt should describe the SAME space but clean and minimal — fewer items, not reorganized with new products
+- imagePrompt must always be in English for DALL-E compatibility`;
+
+    try {
+      // STEP 1: Claude API — analyze the photo
+      console.log("[Coach] Analyzing space for user:", userId);
+      const analysisResponse = await fetch(
+        "https://api.anthropic.com/v1/messages",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": anthropicApiKey.value(),
+            "anthropic-version": "2023-06-01",
+          },
+          body: JSON.stringify({
+            model: "claude-haiku-4-5-20251001",
+            max_tokens: 500,
+            messages: [
+              {
+                role: "user",
+                content: [
+                  {
+                    type: "image",
+                    source: {
+                      type: "base64",
+                      media_type: "image/jpeg",
+                      data: imageBase64,
+                    },
+                  },
+                  {
+                    type: "text",
+                    text: analysisPrompt,
+                  },
+                ],
+              },
+            ],
+          }),
+        }
+      );
+
+      if (!analysisResponse.ok) {
+        const errText = await analysisResponse.text();
+        console.error("[Coach] Claude API error:", analysisResponse.status, errText);
+        res.status(502).json({ error: "Analysis failed" });
+        return;
+      }
+
+      const analysisData = await analysisResponse.json();
+      const analysisText = analysisData.content[0].text;
+
+      // STEP 2: Parse the analysis JSON
+      let parsed;
+      try {
+        parsed = JSON.parse(analysisText);
+      } catch (parseErr) {
+        console.error("[Coach] JSON parse error:", parseErr, analysisText);
+        // Try to extract JSON from the text
+        const jsonMatch = analysisText.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          parsed = JSON.parse(jsonMatch[0]);
+        } else {
+          res.status(502).json({ error: "Analysis returned invalid format" });
+          return;
+        }
+      }
+
+      // STEP 3: DALL-E — generate the "after" image
+      let afterImageUrl = null;
+      try {
+        console.log("[Coach] Generating after image with DALL-E");
+        const dalleResponse = await fetch(
+          "https://api.openai.com/v1/images/generations",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${openaiApiKey.value()}`,
+            },
+            body: JSON.stringify({
+              model: "dall-e-3",
+              prompt: parsed.imagePrompt || "A clean, minimalist room, photorealistic, tidy",
+              n: 1,
+              size: "1024x1024",
+              quality: "standard",
+            }),
+          }
+        );
+
+        if (dalleResponse.ok) {
+          const dalleResult = await dalleResponse.json();
+          const generatedUrl = dalleResult.data[0].url;
+
+          // STEP 4: Download and save to Firebase Storage
+          const imgResponse = await fetch(generatedUrl);
+          const imgArrayBuffer = await imgResponse.arrayBuffer();
+          const imgBuffer = Buffer.from(imgArrayBuffer);
+
+          const bucket = getStorage().bucket();
+          const timestamp = Date.now();
+          const filePath = `coach/${userId}/${timestamp}_after.jpg`;
+          const file = bucket.file(filePath);
+          await file.save(imgBuffer, {
+            contentType: "image/jpeg",
+            metadata: { cacheControl: "public,max-age=31536000" },
+          });
+          await file.makePublic();
+          afterImageUrl = `https://storage.googleapis.com/${bucket.name}/${filePath}`;
+        } else {
+          const dalleErr = await dalleResponse.text();
+          console.error("[Coach] DALL-E error:", dalleResponse.status, dalleErr);
+          // Continue without after image — analysis is still useful
+        }
+      } catch (dalleError) {
+        console.error("[Coach] DALL-E generation failed:", dalleError);
+        // Continue without after image
+      }
+
+      // STEP 5: Save before photo to Storage
+      try {
+        const beforeBuffer = Buffer.from(imageBase64, "base64");
+        const bucket = getStorage().bucket();
+        const timestamp = Date.now();
+        const beforePath = `coach/${userId}/${timestamp}_before.jpg`;
+        const beforeFile = bucket.file(beforePath);
+        await beforeFile.save(beforeBuffer, {
+          contentType: "image/jpeg",
+          metadata: { cacheControl: "public,max-age=31536000" },
+        });
+        await beforeFile.makePublic();
+        const beforeUrl = `https://storage.googleapis.com/${bucket.name}/${beforePath}`;
+
+        // Save session to Firestore
+        await firestoreDb.collection("coachSessions").add({
+          userId,
+          beforeImageUrl: beforeUrl,
+          afterImageUrl: afterImageUrl || null,
+          analysis: parsed,
+          createdAt: FieldValue.serverTimestamp(),
+        });
+      } catch (saveError) {
+        console.error("[Coach] Save error:", saveError);
+        // Non-fatal — return results anyway
+      }
+
+      console.log("[Coach] Analysis complete for user:", userId);
+      res.json({
+        analysis: parsed,
+        afterImageUrl,
+      });
+    } catch (error) {
+      console.error("[Coach] analyzeSpace error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
+
+/**
+ * createCheckout — HTTP endpoint for Stripe checkout session creation.
+ * Creates a Stripe Checkout session for Pro subscription.
+ */
+exports.createCheckout = onRequest(async (req, res) => {
+  setCorsHeaders(req, res);
+
+  if (req.method === "OPTIONS") {
+    res.status(204).send("");
+    return;
+  }
+
+  if (req.method !== "POST") {
+    res.status(405).json({ error: "Method not allowed" });
+    return;
+  }
+
+  const { billingCycle, userId } = req.body;
+
+  if (!userId) {
+    res.status(400).json({ error: "Missing userId" });
+    return;
+  }
+
+  // Placeholder — Stripe integration requires STRIPE_SECRET_KEY
+  // and price IDs to be configured. Return a placeholder response.
+  console.log("[Checkout] Request for", billingCycle, "from user:", userId);
+  res.status(501).json({
+    error: "Stripe checkout not yet configured. Set up STRIPE_SECRET_KEY and price IDs.",
+  });
+});
