@@ -967,12 +967,11 @@
             width: 26px;
             height: 26px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #a8e6cf, #88d8b0);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 13px;
             flex-shrink: 0;
+            overflow: hidden;
         }
 
         .tidy-name {
@@ -3917,7 +3916,7 @@
                 <!-- Home screen -->
                 <div id="coachHome">
                     <div class="coach-header">
-                        <h2>&#10024; AI Coach Tidy</h2>
+                        <h2 style="display:flex; align-items:center; gap:8px;"><img src="/images/tidy-coach.png" alt="Tidy" style="width:28px; height:28px; border-radius:50%; object-fit:cover;" /><span>AI Coach Tidy</span></h2>
                         <div class="coach-usage-pill" id="coachUsagePill">
                             <span class="usage-dot"></span>
                             <span id="coachUsageText">4 of 4 left</span>
@@ -3949,7 +3948,7 @@
                         <div class="coach-limit-title">You've used all 4 free analyses</div>
                         <div class="coach-limit-bar"></div>
                         <div class="coach-limit-text">4/4 used &middot; Resets next month</div>
-                        <button class="coach-upgrade-btn" onclick="openPaywall()">&#10024; Upgrade to Pro</button>
+                        <button class="coach-upgrade-btn" onclick="openPaywall()"><img src="/images/tidy-coach.png" alt="" style="width:20px; height:20px; border-radius:50%; object-fit:cover; vertical-align:middle; margin-right:4px;" />Upgrade to Pro</button>
                     </div>
                 </div>
 
@@ -4005,6 +4004,7 @@
         <div class="coach-paywall-overlay" id="coachPaywall">
             <button class="coach-paywall-close" onclick="closePaywall()">&times;</button>
             <div class="coach-paywall-header">
+                <img src="/images/tidy-coach.png" alt="Tidy" style="width:64px; height:64px; border-radius:50%; object-fit:cover; margin-bottom:12px;" />
                 <div class="coach-paywall-title">Your Space Transformed</div>
                 <div class="coach-paywall-subtitle">Upload a messy space. Watch it become calm.</div>
             </div>
@@ -4223,7 +4223,7 @@
             </button>
 
             <button class="nav-item" onclick="switchTab('coach')" data-tab="coach">
-                <div class="nav-icon">&#10024;</div>
+                <div class="nav-icon"><img src="/images/tidy-coach.png" alt="Coach" style="width:24px; height:24px; border-radius:50%; object-fit:cover;" /></div>
                 <div class="nav-label">Coach</div>
             </button>
 
@@ -6326,7 +6326,7 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
                 return `
                     <div class="comment tidy-comment">
                         <div class="tidy-comment-header">
-                            <div class="tidy-avatar">🏠</div>
+                            <div class="tidy-avatar"><img src="/images/tidy-coach.png" alt="Tidy" style="width:26px; height:26px; border-radius:50%; object-fit:cover;" /></div>
                             <span class="tidy-name">Tidy</span>
                             <span class="tidy-badge">AI COACH</span>
                             <span class="tidy-comment-time">${timeStr}</span>
