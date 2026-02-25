@@ -36,32 +36,13 @@ const ALLOWED_ORIGINS = [
   "http://localhost:3000",
 ];
 
-function setCorsHeaders(req, res) {
-  const origin = req.headers.origin;
-  if (ALLOWED_ORIGINS.includes(origin)) {
-    res.set("Access-Control-Allow-Origin", origin);
-  } else {
-    res.set("Access-Control-Allow-Origin", ALLOWED_ORIGINS[0]);
-  }
-  res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.set("Access-Control-Allow-Headers", "Content-Type");
-  res.set("Access-Control-Max-Age", "3600");
-}
-
 /**
  * generateEncouragement — HTTP endpoint called via fetch from the frontend.
  * Returns a one-sentence AI encouragement message after an item is decluttered.
  */
 exports.generateEncouragement = onRequest(
-  { secrets: [anthropicApiKey] },
+  { secrets: [anthropicApiKey], cors: ALLOWED_ORIGINS },
   async (req, res) => {
-    setCorsHeaders(req, res);
-
-    if (req.method === "OPTIONS") {
-      res.status(204).send("");
-      return;
-    }
-
     if (req.method !== "POST") {
       res.status(405).json({ error: "Method not allowed" });
       return;
@@ -460,15 +441,9 @@ exports.analyzeSpace = onRequest(
     secrets: [anthropicApiKey, openaiApiKey],
     timeoutSeconds: 120,
     memory: "512MiB",
+    cors: ALLOWED_ORIGINS,
   },
   async (req, res) => {
-    setCorsHeaders(req, res);
-
-    if (req.method === "OPTIONS") {
-      res.status(204).send("");
-      return;
-    }
-
     if (req.method !== "POST") {
       res.status(405).json({ error: "Method not allowed" });
       return;
@@ -670,14 +645,7 @@ Rules for steps:
  * createCheckout — HTTP endpoint for Stripe checkout session creation.
  * Creates a Stripe Checkout session for Pro subscription.
  */
-exports.createCheckout = onRequest(async (req, res) => {
-  setCorsHeaders(req, res);
-
-  if (req.method === "OPTIONS") {
-    res.status(204).send("");
-    return;
-  }
-
+exports.createCheckout = onRequest({ cors: ALLOWED_ORIGINS }, async (req, res) => {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method not allowed" });
     return;
