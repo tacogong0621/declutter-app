@@ -3680,20 +3680,15 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             if (profileName) profileName.textContent = userName || 'User';
             if (profileProvider) profileProvider.textContent = provider === 'google' ? 'Google' : '';
 
-            // Set avatar: default person icon in circle
-            if (profileAvatar) {
-                profileAvatar.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>';
-            // Show profile photo or initials
+            // Set avatar: profile photo or default person icon
             if (profileAvatar) {
                 if (userProfilePhotoURL) {
-                    profileAvatar.textContent = '';
+                    profileAvatar.innerHTML = '';
                     profileAvatar.style.backgroundImage = `url(${userProfilePhotoURL})`;
                     profileAvatar.style.fontSize = '28px';
                 } else {
-                    const initials = (userName || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-                    profileAvatar.textContent = initials;
+                    profileAvatar.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>';
                     profileAvatar.style.backgroundImage = 'none';
-                    profileAvatar.style.fontSize = '28px';
                 }
             }
         }
