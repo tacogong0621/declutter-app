@@ -4033,12 +4033,67 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             return `${diffDay}d`;
         }
 
+        // --- Tidy AI Coach: Helper functions for context gathering ---
+        function getMostFrequent(items, field) {
+            const counts = {};
+            items.forEach(item => {
+                const val = item[field];
+                if (val) counts[val] = (counts[val] || 0) + 1;
+            });
+            let maxKey = null, maxCount = 0;
+            for (const [key, count] of Object.entries(counts)) {
+                if (count > maxCount) { maxCount = count; maxKey = key; }
+            }
+            return maxKey;
+        }
+
+        function getItemsThisWeek(items) {
+            const now = new Date();
+            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+            return items.filter(item => {
+                const created = item.createdAt?.toDate ? item.createdAt.toDate() : new Date(item.createdAt);
+                return created >= weekAgo;
+            }).length;
+        }
+
+        function formatRecentItemsList(recentItems) {
+            return recentItems.map(item => {
+                const created = item.createdAt?.toDate ? item.createdAt.toDate() : new Date(item.createdAt);
+                const daysAgo = Math.floor((Date.now() - created.getTime()) / (1000 * 60 * 60 * 24));
+                const spaceName = getSpaceDisplayName(item.space);
+                const categoryName = getCategoryName(item.category);
+                return `  - "${item.name}" (${categoryName}, ${spaceName}, ${daysAgo === 0 ? 'today' : daysAgo + 'd ago'})`;
+            }).join('\n');
+        }
+
         async function generateTidyComment(itemData) {
             console.log('[Tidy] generateTidyComment called', itemData.name);
             try {
-                const itemsQuery = query(collection(db, 'items'), where('userId', '==', currentUserId));
+                // Fetch all user items for context
+                const itemsQuery = query(
+                    collection(db, 'items'),
+                    where('userId', '==', currentUserId),
+                    orderBy('createdAt', 'desc')
+                );
                 const itemsSnapshot = await getDocs(itemsQuery);
-                const totalItems = itemsSnapshot.size;
+                const allItems = itemsSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                const totalItems = allItems.length;
+
+                // Recent items (last 7)
+                const recentItems = allItems.slice(0, 7);
+                const recentItemsList = formatRecentItemsList(recentItems);
+
+                // Pattern detection
+                const topSpace = getMostFrequent(recentItems, 'space');
+                const topCategory = getMostFrequent(recentItems, 'category');
+                const itemsThisWeek = getItemsThisWeek(allItems);
+                const topSpaceName = topSpace ? getSpaceDisplayName(topSpace) : 'N/A';
+                const topCategoryName = topCategory ? getCategoryName(topCategory) : 'N/A';
+
+                // User context
+                const userVision = dreamVisionText || '';
+                const currentStreak = userStreak || 0;
+                const totalPoints = totalScore || 0;
 
                 const spaceName = getSpaceDisplayName(itemData.space);
                 const categoryName = getCategoryName(itemData.category);
@@ -4046,50 +4101,84 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
 
                 let prompt;
                 if (hasBA) {
-                    prompt = `You are "Tidy", a warm and encouraging AI decluttering coach in a decluttering app called "Declutter Daily".
+                    prompt = `You are "Tidy", a warm and encouraging AI decluttering coach.
 
-A user just decluttered with before & after photos:
+USER'S VISION: "${userVision}"
+This is their personal goal — reference it naturally when relevant, don't force it.
+
+USER'S HISTORY:
+- Total items decluttered: ${totalItems}
+- Current streak: ${currentStreak} days
+- Total points: ${totalPoints}
+- Items this week: ${itemsThisWeek}
+- Most cleared space lately: ${topSpaceName}
+- Most cleared category lately: ${topCategoryName}
+- Recent items:
+${recentItemsList}
+
+JUST NOW they decluttered WITH before & after photos:
 - Item: ${itemData.name}
 - Category: ${categoryName}
 - Space: ${spaceName}
 - Points earned: ${itemData.points} + 30 bonus for B&A
-- Current streak: ${userStreak} days
-- Total items decluttered: ${totalItems}
 
-Write a short, encouraging comment with ONE practical tip (2-3 sentences max).
+Write a personalized, encouraging comment with ONE practical maintenance tip (2-3 sentences max).
 
 Rules:
-- First sentence: celebrate the transformation and their effort
-- Second/third sentence: give ONE practical tip for MAINTAINING the cleared space using what they already have
-- Tips should be about HABITS and ORGANIZATION with existing items — NEVER about buying new things
-- Good tips: "one in one out rule", rearranging by frequency of use, weekly reset habit, folding methods, keeping surfaces clear, grouping similar items together
+- First: celebrate their effort, connecting to their vision or history
+- Then: give ONE tip for MAINTAINING the cleared space using HABITS, not products
+- Good tips: "one in one out rule", rearranging by frequency of use, weekly 5-min reset, folding methods, keeping surfaces clear, grouping similar items
 - NEVER suggest buying storage bins, containers, organizers, shelves, or ANY product
 - NEVER recommend shopping or purchases — this is a minimalism app
+- Connect to their VISION when it feels natural (e.g., if vision is about kids playing freely and they cleared kids room toys, mention it)
+- Notice PATTERNS (e.g., "You've been on a kitchen streak this week!" or "3rd clothing item — closet must be feeling spacious!")
+- Celebrate MILESTONES (every 5 items, streak milestones at 3/7/14/30 days, point milestones at 50/100/200/500)
+- Reference their HISTORY naturally (e.g., "After the pantry yesterday, now the kitchen — you're conquering the whole first floor!")
 - Use 1 emoji max
-- Match the user's language: if the item name is in Korean, respond in Korean. If in English, respond in English.
-- Keep it natural, like a supportive friend — not a corporate bot`;
-                } else {
-                    prompt = `You are "Tidy", a warm and encouraging AI decluttering coach in a decluttering app called "Declutter Daily".
+- Match the user's language: Korean item name → Korean response. English → English.
+- Keep it natural, like a supportive friend who knows them well
+- NEVER be generic. ALWAYS reference something specific about THIS person.
 
-A user just decluttered the following:
+BAD: "Space looks great! Try to keep it organized."
+GOOD: "옷장 3번째 정리! 아이들이 자유롭게 뛰어놀 수 있는 집에 한 발짝 더 가까워졌어요 👏 행거 간격을 주먹 하나로 유지하면 이 상태 오래 갈 거예요!"`;
+                } else {
+                    prompt = `You are "Tidy", a warm and encouraging AI decluttering coach.
+
+USER'S VISION: "${userVision}"
+This is their personal goal — reference it naturally when relevant, don't force it.
+
+USER'S HISTORY:
+- Total items decluttered: ${totalItems}
+- Current streak: ${currentStreak} days
+- Total points: ${totalPoints}
+- Items this week: ${itemsThisWeek}
+- Most cleared space lately: ${topSpaceName}
+- Most cleared category lately: ${topCategoryName}
+- Recent items:
+${recentItemsList}
+
+JUST NOW they decluttered:
 - Item: ${itemData.name}
 - Category: ${categoryName}
 - Space: ${spaceName}
 - Points earned: ${itemData.points}
-- Current streak: ${userStreak} days
-- Total items decluttered: ${totalItems}
 
-Write a short, warm, encouraging comment (2-3 sentences max).
+Write a short, personalized comment (2-3 sentences max).
 
 Rules:
-- Be genuinely encouraging and specific to what they decluttered
-- Mention their streak or milestone if impressive (3+ days, 10+ items, etc.)
+- Connect to their VISION when it feels natural (e.g., if vision is about kids playing freely and they cleared kids room toys, mention it)
+- Notice PATTERNS (e.g., "You've been on a kitchen streak this week!" or "3rd clothing item — closet must be feeling spacious!")
+- Celebrate MILESTONES (every 5 items, streak milestones at 3/7/14/30 days, point milestones at 50/100/200/500)
+- Reference their HISTORY naturally (e.g., "After the pantry yesterday, now the kitchen — you're conquering the whole first floor!")
 - Use 1 emoji max
-- Match the user's language: if the item name is in Korean, respond in Korean. If in English, respond in English.
-- Do NOT suggest buying anything (no storage bins, organizers, containers, etc.)
-- Do NOT recommend products or shopping links
+- Match the user's language: Korean item name → Korean response. English → English.
+- Do NOT suggest buying anything — NEVER recommend products, storage bins, organizers, etc.
 - Do NOT give practical tips or suggestions — just encourage and celebrate
-- Keep it natural, like a supportive friend — not a corporate bot`;
+- Keep it natural, like a supportive friend who knows them well
+- NEVER be generic. ALWAYS reference something specific about THIS person.
+
+BAD (generic): "Great job decluttering! Keep it up!"
+GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개째 — 모든 것이 제자리에 있는 집, 점점 가까워지고 있어요!"`;
                 }
 
                 console.log('[Tidy] Calling Cloud Function...');
