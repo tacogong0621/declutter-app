@@ -3543,7 +3543,6 @@
                                     <polyline points="16 6 12 2 8 6"/>
                                     <line x1="12" y1="2" x2="12" y2="15"/>
                                 </svg>
-                                Share
                             </button>
                         </div>
                     </div>
@@ -3570,7 +3569,6 @@
             <div class="share-preview-grid" id="sharePreviewGrid"></div>
             <div class="share-summary">
                 <div class="share-summary-title" id="shareSummaryTitle"></div>
-                <div class="share-summary-points" id="shareSummaryPoints"></div>
             </div>
             <button class="share-ig-btn" onclick="shareToInstagram()">Share to Instagram</button>
             <button class="share-more-btn" onclick="shareMore()">More options</button>
@@ -5845,7 +5843,6 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
                         <div class="grid-overlay">
                             <div class="grid-item-name">${item.name}</div>
                         </div>
-                        <div class="grid-points-badge">+${item.points || 0}</div>
                         <div class="grid-check">${isSelected ? '&#10003;' : ''}</div>
                     </div>
                 `;
@@ -5919,8 +5916,6 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
 
             document.getElementById('shareSummaryTitle').textContent =
                 `I decluttered ${selected.length} item${selected.length > 1 ? 's' : ''} with Declutter Daily!`;
-            document.getElementById('shareSummaryPoints').textContent =
-                `${totalPoints} points earned`;
 
             document.getElementById('shareSheetOverlay').classList.add('active');
             document.getElementById('shareSheet').style.display = 'block';
@@ -5973,14 +5968,26 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
             roundRect(ctx, gridPad - 4, gridTop - 4, gridWidth + 8, gridHeight + 8, gridRadius);
             ctx.fill();
 
-            // Load images
+            // Load images via fetch to avoid CORS canvas tainting
             const images = await Promise.all(selected.map(item => {
-                return new Promise((resolve) => {
-                    const img = new Image();
-                    img.crossOrigin = 'anonymous';
-                    img.onload = () => resolve(img);
-                    img.onerror = () => resolve(null);
-                    img.src = item.image;
+                return new Promise(async (resolve) => {
+                    try {
+                        const response = await fetch(item.image);
+                        const blob = await response.blob();
+                        const blobUrl = URL.createObjectURL(blob);
+                        const img = new Image();
+                        img.onload = () => {
+                            URL.revokeObjectURL(blobUrl);
+                            resolve(img);
+                        };
+                        img.onerror = () => {
+                            URL.revokeObjectURL(blobUrl);
+                            resolve(null);
+                        };
+                        img.src = blobUrl;
+                    } catch (e) {
+                        resolve(null);
+                    }
                 });
             }));
 
@@ -6013,10 +6020,6 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
             ctx.font = 'bold 44px -apple-system, BlinkMacSystemFont, sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText(`I decluttered ${selected.length} item${selected.length > 1 ? 's' : ''}!`, 540, bottomY);
-
-            ctx.fillStyle = '#4CAF50';
-            ctx.font = 'bold 36px -apple-system, BlinkMacSystemFont, sans-serif';
-            ctx.fillText(`${totalPoints} points earned`, 540, bottomY + 55);
 
             // App URL at bottom
             ctx.fillStyle = '#BBB';
