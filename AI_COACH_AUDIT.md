@@ -18,10 +18,10 @@
 
 | Component | Location |
 |-----------|----------|
-| Backend Cloud Function | `functions/index.js` lines 102-158 |
-| Frontend caller | `index.html` `generateTidyComment()` |
+| Backend Cloud Function | `functions/index.js` — Firestore `onDocumentCreated` trigger |
+| Frontend caller | Automatic via Firestore trigger (no client-side call needed) |
 | Helper functions | `getMostFrequent()`, `getItemsThisWeek()`, `formatRecentItemsList()` |
-| API call trigger | Non-blocking, after item add in `addItem()` |
+| API call trigger | Firestore trigger fires on item creation; `onSnapshot` updates feed |
 | Firestore storage | Saved to item document `comments` array |
 | Feed display | `renderComment()` function |
 | CSS styling | `.tidy-comment`, `.tidy-avatar`, `.tidy-badge` classes |
@@ -35,12 +35,14 @@
 - **Recent items (last 7)** — with names, categories, spaces, days ago
 - **Pattern detection**: Most frequent space, most frequent category, items this week
 - **Current item details**: name, category, space, points, B&A status
+- **User's note** — acknowledged naturally when present (empathize with emotions, respond to their voice)
 
 ### Prompt Variants
 - **With Before & After photos**: Celebration + vision/history connection + ONE practical maintenance tip (habits only, no products)
 - **Without B&A photos**: Personalized encouragement referencing vision, patterns, milestones, and history
 
 ### Personalization Rules Enforced in Prompts
+- **Note-aware**: Reads and responds to user's optional note naturally (empathizes with emotions, acknowledges effort)
 - **Vision-aware**: References user's dream vision when natural
 - **Pattern-aware**: Notices streaks in spaces/categories (e.g., "kitchen streak this week!")
 - **Milestone-aware**: Celebrates every 5 items, streak milestones (3/7/14/30 days), point milestones (50/100/200/500)
