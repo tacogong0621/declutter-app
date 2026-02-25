@@ -8,6 +8,25 @@ const { initializeApp } = require("firebase-admin/app");
 initializeApp();
 const firestoreDb = getFirestore();
 
+// Detect image media type from base64 string (magic bytes)
+function getMediaType(base64String) {
+  if (base64String.startsWith("data:")) {
+    const match = base64String.match(/^data:(image\/\w+);base64,/);
+    if (match) return match[1];
+    base64String = base64String.split(",")[1];
+  }
+  if (base64String.startsWith("/9j/")) return "image/jpeg";
+  if (base64String.startsWith("iVBOR")) return "image/png";
+  if (base64String.startsWith("R0lGOD")) return "image/gif";
+  if (base64String.startsWith("UklGR")) return "image/webp";
+  return "image/jpeg";
+}
+
+// Strip data URL prefix if present, returning raw base64
+function stripDataUrlPrefix(base64String) {
+  return base64String.includes(",") ? base64String.split(",")[1] : base64String;
+}
+
 const anthropicApiKey = defineSecret("ANTHROPIC_API_KEY");
 const openaiApiKey = defineSecret("OPENAI_API_KEY");
 
@@ -493,6 +512,8 @@ Rules for steps:
     try {
       // STEP 1: Claude API — analyze the photo
       console.log("[Coach] Analyzing space for user:", userId);
+      const detectedMediaType = getMediaType(imageBase64);
+      const rawBase64 = stripDataUrlPrefix(imageBase64);
       const analysisResponse = await fetch(
         "https://api.anthropic.com/v1/messages",
         {
@@ -513,8 +534,8 @@ Rules for steps:
                     type: "image",
                     source: {
                       type: "base64",
-                      media_type: "image/jpeg",
-                      data: imageBase64,
+                      media_type: detectedMediaType,
+                      data: rawBase64,
                     },
                   },
                   {
@@ -607,13 +628,14 @@ Rules for steps:
 
       // STEP 5: Save before photo to Storage
       try {
-        const beforeBuffer = Buffer.from(imageBase64, "base64");
+        const beforeBuffer = Buffer.from(rawBase64, "base64");
         const bucket = getStorage().bucket();
         const timestamp = Date.now();
-        const beforePath = `coach/${userId}/${timestamp}_before.jpg`;
+        const ext = detectedMediaType === "image/png" ? "png" : "jpg";
+        const beforePath = `coach/${userId}/${timestamp}_before.${ext}`;
         const beforeFile = bucket.file(beforePath);
         await beforeFile.save(beforeBuffer, {
-          contentType: "image/jpeg",
+          contentType: detectedMediaType,
           metadata: { cacheControl: "public,max-age=31536000" },
         });
         await beforeFile.makePublic();
