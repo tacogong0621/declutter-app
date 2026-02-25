@@ -1515,148 +1515,587 @@
         }
 
 
-        /* Space Bingo Styles */
-        .bingo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .bingo-cell {
-            aspect-ratio: 1;
-            border-radius: 12px;
+        /* AI Coach Tidy Styles */
+        .coach-header {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            background: #F5F5F5;
-            border: 1px solid #E5E5E5;
-            cursor: pointer;
-            transition: all 0.2s;
-            padding: 8px;
-            position: relative;
+            margin-bottom: 16px;
         }
 
-        .bingo-cell.completed {
-            background: #1C1C1E;
-            border-color: #1C1C1E;
-            color: #FFFFFF;
-        }
-
-        .bingo-cell .cell-emoji {
-            font-size: 24px;
-            margin-bottom: 2px;
-        }
-
-        .bingo-cell .cell-name {
-            font-size: 11px;
-            font-weight: 600;
-            color: #6B6B6B;
-            text-align: center;
-        }
-
-        .bingo-cell.completed .cell-name {
-            color: #FFFFFF;
-        }
-
-        .bingo-cell .cell-count {
-            font-size: 10px;
-            color: #B0B0B0;
-            margin-top: 2px;
-        }
-
-        .bingo-cell.completed .cell-count {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .bingo-cell .cell-progress {
-            width: 80%;
-            height: 4px;
-            background: #E5E5E5;
-            border-radius: 2px;
-            margin-top: 4px;
-            overflow: hidden;
-        }
-
-        .bingo-cell.completed .cell-progress {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .bingo-cell .cell-progress-bar {
-            height: 100%;
-            background: #1C1C1E;
-            border-radius: 2px;
-            transition: width 0.3s;
-        }
-
-        .bingo-cell.completed .cell-progress-bar {
-            background: #FFFFFF;
-        }
-
-        .bingo-lines-info {
-            background: #FAFAFA;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            text-align: center;
-            border: 1px solid #E5E5E5;
-        }
-
-        .bingo-lines-info .line-count {
-            font-size: 20px;
+        .coach-header h2 {
+            font-size: 18px;
             font-weight: 700;
             color: #1C1C1E;
         }
 
-        .bingo-lines-info .line-label {
+        .coach-usage-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #F0FAF0;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #2D8B2D;
+        }
+
+        .coach-usage-pill.low {
+            background: #FFF0F0;
+            color: #D32F2F;
+        }
+
+        .coach-usage-pill .usage-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #2D8B2D;
+        }
+
+        .coach-usage-pill.low .usage-dot {
+            background: #D32F2F;
+        }
+
+        .coach-upload-area {
+            border: 2px dashed #D0D0D0;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+            background: #FAFAFA;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coach-upload-area:active {
+            background: #F0F0F0;
+            border-color: #B0B0B0;
+        }
+
+        .coach-upload-area.has-photo {
+            padding: 0;
+            border-style: solid;
+            border-color: #E0E0E0;
+        }
+
+        .coach-upload-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #6B6B6B;
+        }
+
+        .coach-upload-subtext {
+            font-size: 12px;
+            color: #B0B0B0;
+            margin-top: 4px;
+        }
+
+        .coach-preview-img {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            border-radius: 14px;
+            display: block;
+        }
+
+        .coach-tap-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .coach-analyze-btn {
+            width: 100%;
+            padding: 14px;
+            background: #1C1C1E;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: opacity 0.2s;
+            margin-bottom: 8px;
+        }
+
+        .coach-analyze-btn:active {
+            opacity: 0.8;
+        }
+
+        .coach-analyze-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .coach-upgrade-link {
+            text-align: center;
+            font-size: 11px;
+            color: #bbb;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .coach-examples-link {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .coach-examples-content {
+            display: none;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #6B6B6B;
+            line-height: 1.6;
+        }
+
+        .coach-analyzing {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .coach-spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid #E0E0E0;
+            border-top-color: #1C1C1E;
+            border-radius: 50%;
+            animation: coachSpin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes coachSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .coach-analyzing-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1C1C1E;
+            margin-bottom: 4px;
+        }
+
+        .coach-analyzing-sub {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .coach-result {
+            display: none;
+        }
+
+        .coach-result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .coach-back-btn {
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1C1C1E;
+            cursor: pointer;
+            padding: 4px 0;
+            font-family: inherit;
+        }
+
+        .coach-photos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .coach-photo-card {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            background: #F0F0F0;
+        }
+
+        .coach-photo-card img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            display: block;
+        }
+
+        .coach-photo-label {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .coach-analysis-card {
+            background: #F8F8F8;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .coach-avatar-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .coach-avatar {
+            font-size: 24px;
+        }
+
+        .coach-badge {
+            background: #1C1C1E;
+            color: white;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .coach-encouragement {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1C1C1E;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .coach-steps {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .coach-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #ECECEC;
+        }
+
+        .coach-step:last-child {
+            border-bottom: none;
+        }
+
+        .coach-step-num {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #1C1C1E;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .coach-step-text {
+            font-size: 13px;
+            color: #333;
+            flex: 1;
+            line-height: 1.4;
+        }
+
+        .coach-step-time {
+            font-size: 11px;
+            color: #999;
+            white-space: nowrap;
+            margin-top: 2px;
+        }
+
+        .coach-total-time {
+            text-align: right;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1C1C1E;
+            margin-top: 8px;
+        }
+
+        .coach-tip-card {
+            background: #FFFBEB;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .coach-tip-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .coach-tip-text {
+            font-size: 13px;
+            color: #7A6C00;
+            line-height: 1.5;
+        }
+
+        .coach-start-btn {
+            width: 100%;
+            padding: 14px;
+            background: #1C1C1E;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: opacity 0.2s;
+        }
+
+        .coach-start-btn:active {
+            opacity: 0.8;
+        }
+
+        .coach-limit-reached {
+            display: none;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .coach-limit-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .coach-limit-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1C1C1E;
+            margin-bottom: 8px;
+        }
+
+        .coach-limit-bar {
+            width: 100%;
+            height: 6px;
+            background: #D32F2F;
+            border-radius: 3px;
+            margin-bottom: 6px;
+        }
+
+        .coach-limit-text {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .coach-upgrade-btn {
+            width: 100%;
+            padding: 14px;
+            background: #1C1C1E;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .coach-paywall-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 300;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .coach-paywall-overlay.show {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .coach-paywall-close {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 301;
+        }
+
+        .coach-paywall-header {
+            padding: 60px 24px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .coach-paywall-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .coach-paywall-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .coach-paywall-card {
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 28px 24px 40px;
+            flex: 1;
+        }
+
+        .coach-paywall-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px;
+        }
+
+        .coach-paywall-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .coach-paywall-features li .feature-icon {
+            font-size: 20px;
+        }
+
+        .coach-billing-toggle {
+            display: flex;
+            background: #F0F0F0;
+            border-radius: 12px;
+            padding: 3px;
+            margin-bottom: 20px;
+        }
+
+        .coach-billing-btn {
+            flex: 1;
+            padding: 10px 4px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            font-size: 13px;
+            font-weight: 600;
+            color: #999;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .coach-billing-btn.active {
+            background: white;
+            color: #1C1C1E;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .coach-billing-save {
+            background: #2D8B2D;
+            color: white;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 4px;
+        }
+
+        .coach-billing-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .coach-billing-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1C1C1E;
+        }
+
+        .coach-billing-period {
+            font-size: 14px;
+            color: #999;
+            margin-left: 2px;
+        }
+
+        .coach-billing-detail {
             font-size: 12px;
             color: #B0B0B0;
             margin-top: 2px;
         }
 
-        .bingo-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
-        .bingo-stat {
-            background: #1C1C1E;
-            padding: 8px 6px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .bingo-stat .stat-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: #FFFFFF;
-        }
-
-        .bingo-stat .stat-label {
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 2px;
-        }
-
-        .bingo-reset-btn {
+        .coach-paywall-cta {
             width: 100%;
-            padding: 10px;
+            padding: 16px;
             background: #1C1C1E;
             color: #FFFFFF;
             border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
-            display: none;
-            transition: opacity 0.2s;
+            font-family: inherit;
+            margin-bottom: 16px;
         }
 
-        .bingo-reset-btn:hover {
+        .coach-paywall-cta:active {
             opacity: 0.85;
+        }
+
+        .coach-paywall-footer {
+            text-align: center;
+            font-size: 12px;
+            color: #B0B0B0;
+        }
+
+        .coach-paywall-footer a {
+            color: #999;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .coach-paywall-footer .footer-note {
+            margin-top: 6px;
         }
 
         .space-hint {
@@ -2278,50 +2717,385 @@
 
         /* ===== Feed Tab B&A Styles ===== */
 
-        /* Feed Filter Tabs */
-        .feed-filters {
+        /* Feed 3-Tab Segment Control */
+        .feed-segment {
             display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
+            background: #e8e8e8;
+            border-radius: 12px;
+            padding: 3px;
+            margin-bottom: 12px;
         }
 
-        .feed-filter-btn {
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: 1.5px solid #E5E5E5;
-            background: white;
-            color: #6B6B6B;
-            font-size: 13px;
-            font-weight: 600;
+        .feed-segment-btn {
+            flex: 1;
+            padding: 8px 4px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            color: #999;
+            font-size: 12px;
+            font-weight: 700;
             cursor: pointer;
             font-family: inherit;
             transition: all 0.2s ease;
+            text-align: center;
+            white-space: nowrap;
         }
 
-        .feed-filter-btn.active {
+        .feed-segment-btn.seg-ba {
+            flex: 1.4;
+        }
+
+        .feed-segment-btn.active {
+            background: white;
+            color: #1C1C1E;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Feed tab content areas */
+        .feed-tab-content {
+            display: none;
+        }
+
+        .feed-tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* You Tab — Stats Bar */
+        .you-stats-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+            border: 1px solid #E5E5E5;
+        }
+
+        .you-stats-left {
+            display: flex;
+            gap: 20px;
+        }
+
+        .you-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .you-stat-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1C1C1E;
+            line-height: 1.2;
+        }
+
+        .you-stat-value.points {
+            color: #4CAF50;
+        }
+
+        .you-stat-label {
+            font-size: 9px;
+            color: #999;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .you-share-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
             background: #1C1C1E;
             color: white;
-            border-color: #1C1C1E;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
         }
 
-        .feed-filter-btn.ba-filter.active {
-            background: linear-gradient(135deg, #43A047, #66BB6A);
-            border-color: #43A047;
+        .you-share-btn:active {
+            opacity: 0.8;
+        }
+
+        /* You Tab — Share Mode Buttons */
+        .you-share-mode-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .you-share-mode-bar .cancel-btn {
+            background: white;
+            color: #1C1C1E;
+            border: 1.5px solid #E5E5E5;
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .you-share-mode-bar .share-count-btn {
+            background: #1C1C1E;
             color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
         }
 
-        .feed-filter-count {
-            display: inline-flex;
+        .you-share-mode-bar .share-count-btn.disabled {
+            background: #ccc;
+            color: #999;
+            pointer-events: none;
+        }
+
+        .you-share-helper {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* You Tab — Grid */
+        .you-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .you-grid-cell {
+            aspect-ratio: 1 / 1;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            background: #f0f0f0;
+        }
+
+        .you-grid-cell img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .you-grid-cell .grid-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 4px 6px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.6));
+        }
+
+        .you-grid-cell .grid-item-name {
+            font-size: 9px;
+            color: white;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .you-grid-cell .grid-points-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        /* Selection mode */
+        .you-grid-cell.selectable {
+            transition: opacity 0.15s;
+        }
+
+        .you-grid-cell.selectable:not(.selected) {
+            opacity: 0.5;
+        }
+
+        .you-grid-cell.selected {
+            opacity: 1;
+        }
+
+        .you-grid-cell .grid-check {
+            display: none;
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #1C1C1E;
+            color: white;
+            font-size: 12px;
             align-items: center;
             justify-content: center;
-            min-width: 18px;
-            height: 18px;
-            padding: 0 5px;
-            border-radius: 9px;
-            background: rgba(255,255,255,0.3);
-            font-size: 11px;
+            z-index: 2;
+        }
+
+        .you-grid-cell.selectable .grid-check {
+            display: flex;
+            background: rgba(255,255,255,0.4);
+            border: 2px solid white;
+        }
+
+        .you-grid-cell.selected .grid-check {
+            display: flex;
+            background: #1C1C1E;
+            border: 2px solid #1C1C1E;
+        }
+
+        /* Share Bottom Sheet */
+        .share-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 300;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .share-overlay.active {
+            display: block;
+        }
+
+        .share-sheet {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 24px 20px 40px;
+            z-index: 301;
+            animation: slideUp 0.3s ease;
+        }
+
+        .share-sheet-handle {
+            width: 36px;
+            height: 4px;
+            background: #ddd;
+            border-radius: 2px;
+            margin: 0 auto 16px;
+        }
+
+        .share-preview-grid {
+            display: grid;
+            gap: 4px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .share-preview-grid img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+        }
+
+        .share-summary {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .share-summary-title {
+            font-size: 16px;
             font-weight: 700;
-            margin-left: 5px;
+            color: #1C1C1E;
+            margin-bottom: 4px;
+        }
+
+        .share-summary-points {
+            font-size: 14px;
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        .share-ig-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #833AB4, #E1306C, #F77737);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            margin-bottom: 10px;
+        }
+
+        .share-ig-btn:active {
+            opacity: 0.9;
+        }
+
+        .share-more-btn {
+            width: 100%;
+            padding: 14px;
+            background: white;
+            color: #1C1C1E;
+            border: 1.5px solid #E5E5E5;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            margin-bottom: 10px;
+        }
+
+        .share-save-btn {
+            width: 100%;
+            padding: 14px;
+            background: #F5F5F5;
+            color: #1C1C1E;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(100%); }
+            to { transform: translateX(-50%) translateY(0); }
+        }
+
+        /* You tab empty state */
+        .you-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .you-empty .empty-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
         }
 
         /* B&A Compact Card — collapsed looks like normal card */
@@ -3138,52 +3912,198 @@
                 </div>
             </div>
 
-        <div id="bingoTab" class="tab-content">
+        <div id="coachTab" class="tab-content">
             <div class="card">
-                <h2 style="margin-bottom: 10px; color: #1C1C1E; font-weight: 600;">Space Bingo</h2>
-                <p style="color: #6B6B6B; margin-bottom: 10px; text-align: center; font-size: 13px;">Declutter 10 items per space for bingo! Complete lines for bonus!</p>
+                <!-- Home screen -->
+                <div id="coachHome">
+                    <div class="coach-header">
+                        <h2>&#10024; AI Coach Tidy</h2>
+                        <div class="coach-usage-pill" id="coachUsagePill">
+                            <span class="usage-dot"></span>
+                            <span id="coachUsageText">4 of 4 left</span>
+                        </div>
+                    </div>
 
-                <div class="bingo-stats">
-                    <div class="bingo-stat">
-                        <div class="stat-value" id="bingoCompleted">0</div>
-                        <div class="stat-label">Spaces Done</div>
+                    <div class="coach-upload-area" id="coachUploadArea" onclick="document.getElementById('coachFileInput').click()">
+                        <div id="coachUploadPrompt">
+                            <div class="coach-upload-text">Upload a messy space</div>
+                            <div class="coach-upload-subtext">Take a photo or choose from gallery</div>
+                        </div>
+                        <img id="coachPreviewImg" class="coach-preview-img" style="display:none;">
+                        <div class="coach-tap-overlay" id="coachTapOverlay" style="display:none;">Tap to change</div>
                     </div>
-                    <div class="bingo-stat">
-                        <div class="stat-value" id="bingoLines">0</div>
-                        <div class="stat-label">Bingo Lines</div>
+                    <input type="file" id="coachFileInput" accept="image/*" style="display:none;" onchange="handleCoachPhoto(event)">
+
+                    <button class="coach-analyze-btn" id="coachAnalyzeBtn" disabled onclick="analyzeSpace()">Analyze &amp; Transform</button>
+
+                    <div class="coach-upgrade-link" id="coachUpgradeLink" onclick="openPaywall()">&#10024; Upgrade for unlimited analyses</div>
+
+                    <div class="coach-examples-link" id="coachExamplesToggle" onclick="toggleCoachExamples()">Example transformations</div>
+                    <div class="coach-examples-content" id="coachExamplesContent">
+                        Upload a photo of any cluttered space — kitchen counter, desk, closet, garage — and get a personalized step-by-step decluttering plan with an AI-generated visualization of your space, tidied up.
                     </div>
-                    <div class="bingo-stat">
-                        <div class="stat-value" id="bingoPoints">0</div>
-                        <div class="stat-label">Bingo Points</div>
+
+                    <!-- Limit reached state -->
+                    <div class="coach-limit-reached" id="coachLimitReached">
+                        <div class="coach-limit-icon">&#128274;</div>
+                        <div class="coach-limit-title">You've used all 4 free analyses</div>
+                        <div class="coach-limit-bar"></div>
+                        <div class="coach-limit-text">4/4 used &middot; Resets next month</div>
+                        <button class="coach-upgrade-btn" onclick="openPaywall()">&#10024; Upgrade to Pro</button>
                     </div>
                 </div>
 
-                <div class="bingo-grid" id="bingoGrid"></div>
-
-                <div class="bingo-lines-info" id="bingoLinesInfo">
-                    <div class="line-count" id="bingoLineCount">0 / 8 Lines</div>
-                    <div class="line-label">3 Horizontal + 3 Vertical + 2 Diagonal</div>
+                <!-- Analyzing screen -->
+                <div class="coach-analyzing" id="coachAnalyzing">
+                    <div class="coach-spinner"></div>
+                    <div class="coach-analyzing-text">Analyzing your space...</div>
+                    <div class="coach-analyzing-sub">This takes a few seconds</div>
                 </div>
 
-                <button class="bingo-reset-btn" id="bingoResetBtn">New Round</button>
+                <!-- Result screen -->
+                <div class="coach-result" id="coachResult">
+                    <div class="coach-result-header">
+                        <button class="coach-back-btn" onclick="resetCoach()">&larr; New analysis</button>
+                        <div class="coach-usage-pill" id="coachUsagePillResult">
+                            <span class="usage-dot"></span>
+                            <span id="coachUsageTextResult">3 of 4 left</span>
+                        </div>
+                    </div>
+
+                    <div class="coach-photos">
+                        <div class="coach-photo-card">
+                            <img id="coachBeforeImg" src="" alt="Before">
+                            <div class="coach-photo-label">Before</div>
+                        </div>
+                        <div class="coach-photo-card">
+                            <img id="coachAfterImg" src="" alt="After (AI)">
+                            <div class="coach-photo-label">After (AI)</div>
+                        </div>
+                    </div>
+
+                    <div class="coach-analysis-card">
+                        <div class="coach-avatar-row">
+                            <span class="coach-avatar">&#127968;</span>
+                            <span class="coach-badge">AI COACH</span>
+                        </div>
+                        <div class="coach-encouragement" id="coachEncouragement"></div>
+                        <ol class="coach-steps" id="coachSteps"></ol>
+                        <div class="coach-total-time" id="coachTotalTime"></div>
+                    </div>
+
+                    <div class="coach-tip-card">
+                        <span class="coach-tip-icon">&#128161;</span>
+                        <div class="coach-tip-text" id="coachTipText"></div>
+                    </div>
+
+                    <button class="coach-start-btn" onclick="resetCoach()">Start Decluttering</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coach Paywall Overlay -->
+        <div class="coach-paywall-overlay" id="coachPaywall">
+            <button class="coach-paywall-close" onclick="closePaywall()">&times;</button>
+            <div class="coach-paywall-header">
+                <div class="coach-paywall-title">Your Space Transformed</div>
+                <div class="coach-paywall-subtitle">Upload a messy space. Watch it become calm.</div>
+            </div>
+            <div class="coach-paywall-card">
+                <ul class="coach-paywall-features">
+                    <li><span class="feature-icon">&#128248;</span> AI-generated after photo</li>
+                    <li><span class="feature-icon">&#128506;</span> Personalized declutter roadmap</li>
+                    <li><span class="feature-icon">&#10024;</span> Unlimited space resets</li>
+                    <li><span class="feature-icon">&#127807;</span> Simple maintenance coaching</li>
+                </ul>
+
+                <div class="coach-billing-toggle" id="coachBillingToggle">
+                    <button class="coach-billing-btn active" data-cycle="yearly" onclick="switchBilling('yearly')">Yearly <span class="coach-billing-save">Save 37%</span></button>
+                    <button class="coach-billing-btn" data-cycle="monthly" onclick="switchBilling('monthly')">Monthly</button>
+                </div>
+
+                <div class="coach-billing-info">
+                    <div><span class="coach-billing-price" id="coachBillingPrice">$29.99</span><span class="coach-billing-period" id="coachBillingPeriod">/year</span></div>
+                    <div class="coach-billing-detail" id="coachBillingDetail">$2.50/mo</div>
+                </div>
+
+                <button class="coach-paywall-cta" id="coachPaywallCta" onclick="startSubscription()">Start My Transformation &mdash; $29.99/year</button>
+
+                <div class="coach-paywall-footer">
+                    <a onclick="restorePurchase()">Restore purchase</a>
+                    <div class="footer-note">Cancel anytime &middot; Secure payment via Stripe</div>
+                </div>
             </div>
         </div>
 
         <div id="historyTab" class="tab-content">
             <div class="card">
-                <!-- Feed Filter Tabs -->
-                <div class="feed-filters">
-                    <button class="feed-filter-btn active" id="filterAll" onclick="setFeedFilter('all')">All</button>
-                    <button class="feed-filter-btn ba-filter" id="filterBA" onclick="setFeedFilter('ba')">&#10024; Before &amp; After <span class="feed-filter-count" id="baFilterCount">0</span></button>
+                <!-- 3-Tab Segment Control -->
+                <div class="feed-segment">
+                    <button class="feed-segment-btn active" id="segAll" onclick="setFeedFilter('all')">All</button>
+                    <button class="feed-segment-btn" id="segYou" onclick="setFeedFilter('you')">You</button>
+                    <button class="feed-segment-btn seg-ba" id="segBA" onclick="setFeedFilter('ba')">Before &amp; After</button>
                 </div>
 
-                <div class="item-list" id="itemList">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                        Loading...
+                <!-- All Tab Content -->
+                <div class="feed-tab-content active" id="feedContentAll">
+                    <div class="item-list" id="itemList">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            Loading...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- You Tab Content -->
+                <div class="feed-tab-content" id="feedContentYou">
+                    <div class="you-stats-bar" id="youStatsBar">
+                        <div class="you-stats-left">
+                            <div class="you-stat">
+                                <div class="you-stat-value" id="youItemCount">0</div>
+                                <div class="you-stat-label">ITEMS</div>
+                            </div>
+                            <div class="you-stat">
+                                <div class="you-stat-value points" id="youPointsCount">0</div>
+                                <div class="you-stat-label">POINTS</div>
+                            </div>
+                        </div>
+                        <div id="youShareActions">
+                            <button class="you-share-btn" id="youShareBtn" onclick="toggleYouShareMode()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/>
+                                    <polyline points="16 6 12 2 8 6"/>
+                                    <line x1="12" y1="2" x2="12" y2="15"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="youShareHelper" class="you-share-helper" style="display:none;">Select up to 9 items to share</div>
+                    <div class="you-grid" id="youGrid"></div>
+                </div>
+
+                <!-- Before & After Tab Content -->
+                <div class="feed-tab-content" id="feedContentBA">
+                    <div class="item-list" id="baItemList">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            Loading...
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Share Bottom Sheet -->
+        <div class="share-overlay" id="shareSheetOverlay" onclick="closeShareSheet()"></div>
+        <div class="share-sheet" id="shareSheet" style="display:none;">
+            <div class="share-sheet-handle"></div>
+            <div class="share-preview-grid" id="sharePreviewGrid"></div>
+            <div class="share-summary">
+                <div class="share-summary-title" id="shareSummaryTitle"></div>
+            </div>
+            <button class="share-ig-btn" onclick="shareToInstagram()">Share to Instagram</button>
+            <button class="share-more-btn" onclick="shareMore()">More options</button>
+            <button class="share-save-btn" onclick="saveShareImage()">Save image to gallery</button>
         </div>
 
         <div class="tab-content" id="calendarTab">
@@ -3302,9 +4222,9 @@
                 <div class="nav-label">Let Go</div>
             </button>
 
-            <button class="nav-item" onclick="switchTab('bingo')" data-tab="bingo">
-                <div class="nav-icon">🎲</div>
-                <div class="nav-label">Bingo</div>
+            <button class="nav-item" onclick="switchTab('coach')" data-tab="coach">
+                <div class="nav-icon">&#10024;</div>
+                <div class="nav-label">Coach</div>
             </button>
 
             <button class="nav-item" onclick="switchTab('feed')" data-tab="feed">
@@ -3390,7 +4310,12 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         let userProfilePhotoURL = localStorage.getItem('userProfilePhotoURL') || '';
         let userStreak = 0;
         let userBadges = [];
-        let bingoProgress = {};
+        // Coach state
+        let coachPhotoBase64 = '';
+        let coachPhotoFile = null;
+        let coachUsageCount = 0;
+        let coachUsageMonth = '';
+        let coachBillingCycle = 'yearly';
 
         // Before & After state
         let baEnabled = false;
@@ -3399,94 +4324,338 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         let currentFeedFilter = 'all';
         let allFeedItems = [];
 
-        const bingoSpaces = [
-            { key: 'kitchen_space', name: 'Kitchen', emoji: '🍳' },
-            { key: 'bathroom', name: 'Bathroom', emoji: '🚿' },
-            { key: 'bedroom', name: 'Bedroom', emoji: '🛏️' },
-            { key: 'living', name: 'Living Room', emoji: '🛋️' },
-            { key: 'kids_room', name: 'Kids Room', emoji: '🧒' },
-            { key: 'closet', name: 'Closet', emoji: '👔' },
-            { key: 'office', name: 'Office', emoji: '💻' },
-            { key: 'garage', name: 'Garage', emoji: '🔧' },
-            { key: 'pantry', name: 'Pantry', emoji: '🥫' }
-        ];
-
-        const bingoLines = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8],
-            [0, 3, 6], [1, 4, 7], [2, 5, 8],
-            [0, 4, 8], [2, 4, 6]
-        ];
+        const spaceNames = {
+            'kitchen_space': 'Kitchen',
+            'bathroom': 'Bathroom',
+            'bedroom': 'Bedroom',
+            'living': 'Living Room',
+            'kids_room': 'Kids Room',
+            'closet': 'Closet',
+            'office': 'Office',
+            'garage': 'Garage',
+            'pantry': 'Pantry'
+        };
 
         function getSpaceName(spaceKey) {
-            const space = bingoSpaces.find(s => s.key === spaceKey);
-            return space ? space.name : spaceKey;
-        }
-
-        function countBingoLines() {
-            let count = 0;
-            for (const line of bingoLines) {
-                const allComplete = line.every(i => (bingoProgress[bingoSpaces[i].key] || 0) >= 10);
-                if (allComplete) count++;
-            }
-            return count;
-        }
-
-        function countCompletedSpaces() {
-            return bingoSpaces.filter(s => (bingoProgress[s.key] || 0) >= 10).length;
-        }
-
-        function renderBingoGrid() {
-            const grid = document.getElementById('bingoGrid');
-            if (!grid) return;
-
-            const completedCount = countCompletedSpaces();
-            const lineCount = countBingoLines();
-            const bingoPointsEarned = completedCount * 100 + lineCount * 500 + (completedCount === 9 ? 3000 : 0);
-
-            document.getElementById('bingoCompleted').textContent = completedCount;
-            document.getElementById('bingoLines').textContent = lineCount;
-            document.getElementById('bingoPoints').textContent = bingoPointsEarned;
-            document.getElementById('bingoLineCount').textContent = `${lineCount} / 8 Lines`;
-
-            const resetBtn = document.getElementById('bingoResetBtn');
-            resetBtn.style.display = completedCount === 9 ? 'block' : 'none';
-
-            grid.innerHTML = bingoSpaces.map(space => {
-                const count = bingoProgress[space.key] || 0;
-                const isComplete = count >= 10;
-                const percent = Math.min(100, (count / 10) * 100);
-
-                return `
-                    <div class="bingo-cell ${isComplete ? 'completed' : ''}">
-                        <div class="cell-emoji">${space.emoji}</div>
-                        <div class="cell-name">${space.name}</div>
-                        <div class="cell-count">${count} / 10</div>
-                        <div class="cell-progress">
-                            <div class="cell-progress-bar" style="width: ${percent}%"></div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            return spaceNames[spaceKey] || spaceKey;
         }
 
         function updateSpaceHint() {
             const spaceSelect = document.getElementById('itemSpace');
             const hint = document.getElementById('spaceHint');
-            const spaceKey = spaceSelect.value;
-
-            if (spaceKey) {
-                const count = bingoProgress[spaceKey] || 0;
-                const space = bingoSpaces.find(s => s.key === spaceKey);
-                if (count >= 10) {
-                    hint.textContent = `${space.name}: Complete! Bingo achieved!`;
-                } else {
-                    const remaining = 10 - count;
-                    hint.textContent = `${space.name}: ${count}/10 - ${remaining} more`;
-                }
+            if (spaceSelect.value) {
+                hint.textContent = getSpaceName(spaceSelect.value);
                 hint.style.display = 'block';
             } else {
                 hint.style.display = 'none';
             }
+        }
+
+        // --- AI Coach Tidy Functions ---
+
+        function handleCoachPhoto(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            coachPhotoFile = file;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Compress/resize to max 800px wide
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxWidth = 800;
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > maxWidth) {
+                        h = Math.round(h * maxWidth / w);
+                        w = maxWidth;
+                    }
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    coachPhotoBase64 = dataUrl.split(',')[1];
+
+                    // Show preview
+                    const previewImg = document.getElementById('coachPreviewImg');
+                    previewImg.src = dataUrl;
+                    previewImg.style.display = 'block';
+                    document.getElementById('coachUploadPrompt').style.display = 'none';
+                    document.getElementById('coachTapOverlay').style.display = 'block';
+                    document.getElementById('coachUploadArea').classList.add('has-photo');
+                    document.getElementById('coachAnalyzeBtn').disabled = false;
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function loadCoachUsage() {
+            if (!currentUserId) return;
+            try {
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                if (!userSnapshot.empty) {
+                    const userData = userSnapshot.docs[0].data();
+                    const usage = userData.coachUsage || {};
+                    const currentMonth = new Date().toISOString().slice(0, 7);
+
+                    if (usage.month === currentMonth) {
+                        coachUsageCount = usage.count || 0;
+                    } else {
+                        coachUsageCount = 0;
+                    }
+                    coachUsageMonth = currentMonth;
+
+                    // Check subscription
+                    const sub = userData.subscription || {};
+                    const isPro = sub.status === 'active';
+
+                    updateCoachUsageUI(isPro);
+                }
+            } catch (error) {
+                console.error('Coach usage load failed:', error);
+            }
+        }
+
+        function updateCoachUsageUI(isPro) {
+            const remaining = isPro ? 999 : Math.max(0, 4 - coachUsageCount);
+            const usageText = isPro ? 'Pro — Unlimited' : `${remaining} of 4 left`;
+            const isLow = !isPro && remaining <= 1;
+
+            // Update both pills (home + result)
+            ['coachUsagePill', 'coachUsagePillResult'].forEach(id => {
+                const pill = document.getElementById(id);
+                if (pill) {
+                    pill.classList.toggle('low', isLow);
+                }
+            });
+            ['coachUsageText', 'coachUsageTextResult'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = usageText;
+            });
+
+            // Show/hide limit reached
+            const canAnalyze = isPro || remaining > 0;
+            const limitEl = document.getElementById('coachLimitReached');
+            const homeEl = document.getElementById('coachHome');
+            const uploadArea = document.getElementById('coachUploadArea');
+            const analyzeBtn = document.getElementById('coachAnalyzeBtn');
+            const upgradeLink = document.getElementById('coachUpgradeLink');
+            const examplesToggle = document.getElementById('coachExamplesToggle');
+
+            if (!canAnalyze) {
+                limitEl.style.display = 'block';
+                uploadArea.style.display = 'none';
+                analyzeBtn.style.display = 'none';
+                upgradeLink.style.display = 'none';
+                examplesToggle.style.display = 'none';
+            } else {
+                limitEl.style.display = 'none';
+                uploadArea.style.display = '';
+                analyzeBtn.style.display = '';
+                upgradeLink.style.display = isPro ? 'none' : '';
+                examplesToggle.style.display = '';
+            }
+        }
+
+        async function analyzeSpace() {
+            if (!coachPhotoBase64) return;
+
+            const analyzeBtn = document.getElementById('coachAnalyzeBtn');
+            analyzeBtn.disabled = true;
+
+            // Show analyzing screen
+            document.getElementById('coachHome').style.display = 'none';
+            document.getElementById('coachAnalyzing').style.display = 'block';
+            document.getElementById('coachResult').style.display = 'none';
+
+            try {
+                // Get user vision for context
+                let userVision = '';
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                if (!userSnapshot.empty) {
+                    userVision = userSnapshot.docs[0].data().dreamVision || '';
+                }
+
+                // Call Cloud Function
+                const response = await fetch('https://us-central1-declutter-challenge-94366.cloudfunctions.net/analyzeSpace', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        imageBase64: coachPhotoBase64,
+                        userId: currentUserId,
+                        userVision: userVision
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Analysis failed');
+                }
+
+                const result = await response.json();
+
+                // Increment usage
+                coachUsageCount++;
+                if (!userSnapshot.empty) {
+                    const userDoc = userSnapshot.docs[0];
+                    await updateDoc(doc(db, 'users', userDoc.id), {
+                        coachUsage: {
+                            month: coachUsageMonth || new Date().toISOString().slice(0, 7),
+                            count: coachUsageCount
+                        }
+                    });
+                }
+
+                // Render result
+                renderCoachResult(result);
+
+            } catch (error) {
+                console.error('Analysis error:', error);
+                alert('Analysis failed. Please try again.');
+                document.getElementById('coachHome').style.display = '';
+                document.getElementById('coachAnalyzing').style.display = 'none';
+                analyzeBtn.disabled = false;
+            }
+        }
+
+        function renderCoachResult(result) {
+            const analysis = result.analysis;
+
+            // Set before image
+            document.getElementById('coachBeforeImg').src = 'data:image/jpeg;base64,' + coachPhotoBase64;
+
+            // Set after image (might not exist if DALL-E failed)
+            const afterImg = document.getElementById('coachAfterImg');
+            if (result.afterImageUrl) {
+                afterImg.src = result.afterImageUrl;
+                afterImg.style.display = 'block';
+            } else {
+                afterImg.style.display = 'none';
+            }
+
+            // Encouragement
+            document.getElementById('coachEncouragement').textContent = analysis.encouragement || '';
+
+            // Steps
+            const stepsEl = document.getElementById('coachSteps');
+            stepsEl.innerHTML = (analysis.steps || []).map((step, i) => `
+                <li class="coach-step">
+                    <span class="coach-step-num">${i + 1}</span>
+                    <span class="coach-step-text">${step.text}</span>
+                    <span class="coach-step-time">${step.minutes}m</span>
+                </li>
+            `).join('');
+
+            // Total time
+            document.getElementById('coachTotalTime').textContent =
+                `Total: ~${analysis.totalMinutes || 0} minutes`;
+
+            // Tip
+            document.getElementById('coachTipText').textContent = analysis.mainTip || '';
+
+            // Update usage UI
+            const userQuery2 = query(collection(db, 'users'), where('userId', '==', currentUserId));
+            getDocs(userQuery2).then(snap => {
+                if (!snap.empty) {
+                    const sub = snap.docs[0].data().subscription || {};
+                    updateCoachUsageUI(sub.status === 'active');
+                }
+            });
+
+            // Show result screen
+            document.getElementById('coachAnalyzing').style.display = 'none';
+            document.getElementById('coachResult').style.display = 'block';
+        }
+
+        function resetCoach() {
+            coachPhotoBase64 = '';
+            coachPhotoFile = null;
+
+            document.getElementById('coachHome').style.display = '';
+            document.getElementById('coachAnalyzing').style.display = 'none';
+            document.getElementById('coachResult').style.display = 'none';
+
+            // Reset upload area
+            document.getElementById('coachPreviewImg').style.display = 'none';
+            document.getElementById('coachUploadPrompt').style.display = '';
+            document.getElementById('coachTapOverlay').style.display = 'none';
+            document.getElementById('coachUploadArea').classList.remove('has-photo');
+            document.getElementById('coachAnalyzeBtn').disabled = true;
+            document.getElementById('coachFileInput').value = '';
+
+            loadCoachUsage();
+        }
+
+        function toggleCoachExamples() {
+            const content = document.getElementById('coachExamplesContent');
+            content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // --- Paywall Functions ---
+
+        function openPaywall() {
+            document.getElementById('coachPaywall').classList.add('show');
+            switchBilling('yearly');
+        }
+
+        function closePaywall() {
+            document.getElementById('coachPaywall').classList.remove('show');
+        }
+
+        function switchBilling(cycle) {
+            coachBillingCycle = cycle;
+            document.querySelectorAll('.coach-billing-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.cycle === cycle);
+            });
+
+            const priceEl = document.getElementById('coachBillingPrice');
+            const periodEl = document.getElementById('coachBillingPeriod');
+            const detailEl = document.getElementById('coachBillingDetail');
+            const ctaEl = document.getElementById('coachPaywallCta');
+
+            if (cycle === 'yearly') {
+                priceEl.textContent = '$29.99';
+                periodEl.textContent = '/year';
+                detailEl.textContent = '$2.50/mo';
+                ctaEl.innerHTML = 'Start My Transformation &mdash; $29.99/year';
+            } else {
+                priceEl.textContent = '$3.99';
+                periodEl.textContent = '/month';
+                detailEl.textContent = '$47.88/year';
+                ctaEl.innerHTML = 'Start My Transformation &mdash; $3.99/month';
+            }
+        }
+
+        async function startSubscription() {
+            try {
+                const response = await fetch('https://us-central1-declutter-challenge-94366.cloudfunctions.net/createCheckout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        billingCycle: coachBillingCycle,
+                        userId: currentUserId
+                    })
+                });
+                const data = await response.json();
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    alert('Unable to start checkout. Please try again.');
+                }
+            } catch (error) {
+                console.error('Subscription error:', error);
+                alert('Unable to start checkout. Please try again.');
+            }
+        }
+
+        function restorePurchase() {
+            alert('Checking your subscription status...');
+            loadCoachUsage();
+            closePaywall();
         }
 
         function showAchievement(title, subtitle, points) {
@@ -3543,88 +4712,6 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             }
         }
 
-        async function loadBingoProgress() {
-            try {
-                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
-                const userSnapshot = await getDocs(userQuery);
-
-                if (!userSnapshot.empty) {
-                    const userData = userSnapshot.docs[0].data();
-                    bingoProgress = userData.bingoProgress || {};
-                } else {
-                    bingoProgress = {};
-                }
-                renderBingoGrid();
-                updateSpaceHint();
-            } catch (error) {
-                console.error('Bingo progress load failed:', error);
-            }
-        }
-
-        async function updateBingoProgress(spaceKey) {
-            const oldCount = bingoProgress[spaceKey] || 0;
-            const oldLines = countBingoLines();
-            const oldCompleted = countCompletedSpaces();
-
-            bingoProgress[spaceKey] = oldCount + 1;
-            const newCount = bingoProgress[spaceKey];
-
-            try {
-                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
-                const userSnapshot = await getDocs(userQuery);
-
-                if (!userSnapshot.empty) {
-                    const userDoc = userSnapshot.docs[0];
-                    await updateDoc(doc(db, 'users', userDoc.id), {
-                        bingoProgress: bingoProgress
-                    });
-                }
-            } catch (error) {
-                console.error('Bingo progress update failed:', error);
-            }
-
-            if (newCount === 10) {
-                const spaceName = getSpaceName(spaceKey);
-                let bonusPoints = 100;
-                totalScore += bonusPoints;
-
-                await saveBonusPoints(bonusPoints);
-
-                const newLines = countBingoLines();
-                const linesEarned = newLines - oldLines;
-                if (linesEarned > 0) {
-                    const lineBonus = linesEarned * 500;
-                    totalScore += lineBonus;
-                    bonusPoints += lineBonus;
-                    await saveBonusPoints(lineBonus);
-                }
-
-                const newCompleted = countCompletedSpaces();
-                if (newCompleted === 9 && oldCompleted < 9) {
-                    const allBonus = 3000;
-                    totalScore += allBonus;
-                    bonusPoints += allBonus;
-                    await saveBonusPoints(allBonus);
-                }
-
-                document.getElementById('totalScore').textContent = totalScore;
-                updateHeaderStats();
-
-                setTimeout(() => {
-                    if (newCompleted === 9 && oldCompleted < 9) {
-                        showAchievement('Bingo All Clear!', 'All 9 spaces completed!', bonusPoints);
-                    } else if (linesEarned > 0) {
-                        showAchievement('Bingo!', `${spaceName} done + ${linesEarned} line bingo!`, bonusPoints);
-                    } else {
-                        showAchievement('Space Complete!', `${spaceName} 10 items decluttered!`, bonusPoints);
-                    }
-                }, 500);
-            }
-
-            renderBingoGrid();
-            updateSpaceHint();
-        }
-
         async function saveBonusPoints(points) {
             try {
                 const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
@@ -3638,25 +4725,6 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             } catch (error) {
                 console.error('Bonus points save failed:', error);
             }
-        }
-
-        async function resetBingo() {
-            if (!confirm('Reset bingo? All progress will be cleared.')) return;
-
-            bingoProgress = {};
-            try {
-                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
-                const userSnapshot = await getDocs(userQuery);
-                if (!userSnapshot.empty) {
-                    const userDoc = userSnapshot.docs[0];
-                    await updateDoc(doc(db, 'users', userDoc.id), {
-                        bingoProgress: {}
-                    });
-                }
-            } catch (error) {
-                console.error('Bingo reset failed:', error);
-            }
-            renderBingoGrid();
         }
 
         function showLoginScreen() {
@@ -3678,17 +4746,15 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             if (profileName) profileName.textContent = userName || 'User';
             if (profileProvider) profileProvider.textContent = provider === 'google' ? 'Google' : '';
 
-            // Show profile photo or initials
+            // Set avatar: profile photo or default person icon
             if (profileAvatar) {
                 if (userProfilePhotoURL) {
-                    profileAvatar.textContent = '';
+                    profileAvatar.innerHTML = '';
                     profileAvatar.style.backgroundImage = `url(${userProfilePhotoURL})`;
                     profileAvatar.style.fontSize = '28px';
                 } else {
-                    const initials = (userName || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-                    profileAvatar.textContent = initials;
+                    profileAvatar.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>';
                     profileAvatar.style.backgroundImage = 'none';
-                    profileAvatar.style.fontSize = '28px';
                 }
             }
         }
@@ -3947,7 +5013,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                         streak: 0,
                         lastDeclutterDate: null,
                         badges: [],
-                        bingoProgress: {},
+                        coachUsage: { month: '', count: 0 },
                         createdAt: serverTimestamp(),
                         lastActive: serverTimestamp()
                     });
@@ -4016,8 +5082,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         }
 
         function getSpaceDisplayName(spaceKey) {
-            const space = bingoSpaces.find(s => s.key === spaceKey);
-            return space ? space.name : spaceKey;
+            return spaceNames[spaceKey] || spaceKey;
         }
 
         function getRelativeTime(date) {
@@ -4102,6 +5167,10 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                 const spaceName = getSpaceDisplayName(itemData.space);
                 const categoryName = getCategoryName(itemData.category);
                 const hasBA = itemData.hasBeforeAfter;
+                const note = itemData.note && itemData.note.trim() ? itemData.note.trim() : '';
+                const noteLine = note
+                    ? `- User's note: "${note}"`
+                    : `- User's note: (empty)`;
 
                 let prompt;
                 if (hasBA) {
@@ -4125,10 +5194,14 @@ JUST NOW they decluttered WITH before & after photos:
 - Category: ${categoryName}
 - Space: ${spaceName}
 - Points earned: ${itemData.points} + 30 bonus for B&A
+${noteLine}
 
 Write a personalized, encouraging comment with ONE practical maintenance tip (2-3 sentences max).
 
 Rules:
+- If the user left a NOTE, acknowledge it naturally (e.g., if they wrote "took me 2 hours!" recognize the effort. If they wrote "남편이 도와줬어요" mention the teamwork)
+- The note is the user's voice — respond like a friend who actually read what they wrote
+- If the note is empty, ignore it
 - First: celebrate their effort, connecting to their vision or history
 - Then: give ONE tip for MAINTAINING the cleared space using HABITS, not products
 - Good tips: "one in one out rule", rearranging by frequency of use, weekly 5-min reset, folding methods, keeping surfaces clear, grouping similar items
@@ -4144,7 +5217,9 @@ Rules:
 - NEVER be generic. ALWAYS reference something specific about THIS person.
 
 BAD: "Space looks great! Try to keep it organized."
-GOOD: "옷장 3번째 정리! 아이들이 자유롭게 뛰어놀 수 있는 집에 한 발짝 더 가까워졌어요 👏 행거 간격을 주먹 하나로 유지하면 이 상태 오래 갈 거예요!"`;
+BAD (ignores note): User writes "2시간 걸렸어요 ㅠㅠ" → "Nice B&A! Keep it clean!"
+GOOD: "옷장 3번째 정리! 아이들이 자유롭게 뛰어놀 수 있는 집에 한 발짝 더 가까워졌어요 👏 행거 간격을 주먹 하나로 유지하면 이 상태 오래 갈 거예요!"
+GOOD (reads note): User writes "남편이랑 같이 했어요!" → "둘이 함께 하니까 더 뿌듯하죠! 팀워크 최고 👏 매주 같은 시간에 10분씩 함께 정리하면 이 깔끔함이 계속 유지될 거예요!"`;
                 } else {
                     prompt = `You are "Tidy", a warm and encouraging AI decluttering coach.
 
@@ -4166,10 +5241,14 @@ JUST NOW they decluttered:
 - Category: ${categoryName}
 - Space: ${spaceName}
 - Points earned: ${itemData.points}
+${noteLine}
 
 Write a short, personalized comment (2-3 sentences max).
 
 Rules:
+- If the user left a NOTE, acknowledge it naturally (e.g., if they wrote "finally letting go of this!" respond to that emotion. If they wrote "이거 버리기 아까웠는데" empathize with the difficulty)
+- The note is the user's voice — respond like a friend who actually read what they wrote
+- If the note is empty, ignore it
 - Connect to their VISION when it feels natural (e.g., if vision is about kids playing freely and they cleared kids room toys, mention it)
 - Notice PATTERNS (e.g., "You've been on a kitchen streak this week!" or "3rd clothing item — closet must be feeling spacious!")
 - Celebrate MILESTONES (every 5 items, streak milestones at 3/7/14/30 days, point milestones at 50/100/200/500)
@@ -4182,7 +5261,9 @@ Rules:
 - NEVER be generic. ALWAYS reference something specific about THIS person.
 
 BAD (generic): "Great job decluttering! Keep it up!"
-GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개째 — 모든 것이 제자리에 있는 집, 점점 가까워지고 있어요!"`;
+BAD (ignores note): User writes "이거 진짜 고민 많이 했어" → "Great declutter! You're doing amazing!"
+GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개째 — 모든 것이 제자리에 있는 집, 점점 가까워지고 있어요!"
+GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → "아이의 추억이 담긴 옷이라 쉽지 않았을 텐데, 정말 대단해요. 추억은 마음속에 남아있으니까요 🤍"`;
                 }
 
                 console.log('[Tidy] Calling Cloud Function with prompt length:', prompt.length);
@@ -4205,7 +5286,6 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
                 return null;
             }
         }
-        // Tidy AI Coach comment generation is handled by Firestore onCreate trigger in Cloud Functions.
 
         async function calculateStreak() {
             try {
@@ -4936,39 +6016,15 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
                 totalScore += points;
                 await updateUserScore();
                 await calculateStreak();
-                await updateBingoProgress(space);
 
                 playTrashSound();
                 playSuccessSound();
 
                 const aiMessage = await generateAIEncouragement(name, category, points, totalScore, userStreak);
 
-                // Start Tidy AI Coach comment generation (non-blocking)
-                // This kicks off the fetch BEFORE alert() blocks the event loop
-                const tidyPromise = generateTidyComment(itemData);
-                tidyPromise.then(async (tidyText) => {
-                    console.log('[Tidy] generateTidyComment result:', tidyText ? 'got text' : 'null');
-                    if (tidyText) {
-                        try {
-                            await updateDoc(itemDocRef, {
-                                comments: arrayUnion({
-                                    userName: 'Tidy',
-                                    authorAvatar: '🏠',
-                                    isAI: true,
-                                    text: tidyText,
-                                    createdAt: new Date().toISOString()
-                                })
-                            });
-                            console.log('[Tidy] Comment saved to Firestore');
-                        } catch (err) {
-                            console.error('[Tidy] Failed to save comment:', err);
-                        }
-                    }
-                }).catch(err => {
-                    console.error('[Tidy] Unhandled error in comment pipeline:', err);
-                });
-                // Tidy AI Coach comment is now generated automatically via
-                // Firestore onCreate trigger — no client-side call needed.
+                // Tidy AI Coach comment is generated automatically via
+                // Firestore onCreate trigger (generateTidyComment in Cloud Functions).
+                // The onSnapshot listener will pick up the comment and re-render the feed.
 
                 // Reset form
                 document.getElementById('itemName').value = '';
@@ -5141,36 +6197,14 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
 
                 await deleteDoc(doc(db, 'items', itemDocId));
 
-                // --- Revert bingo progress ---
-                let bingoBonusToSubtract = 0;
-                if (itemSpace && (bingoProgress[itemSpace] || 0) > 0) {
-                    const oldCompleted = countCompletedSpaces();
-                    const oldLines = countBingoLines();
-
-                    bingoProgress[itemSpace] = Math.max(0, (bingoProgress[itemSpace] || 0) - 1);
-
-                    const newCompleted = countCompletedSpaces();
-                    const newLines = countBingoLines();
-
-                    // Calculate lost bingo bonuses
-                    const lostSpaces = oldCompleted - newCompleted;
-                    const lostLines = oldLines - newLines;
-                    const lostAllClear = (oldCompleted === 9 && newCompleted < 9) ? 1 : 0;
-                    bingoBonusToSubtract = lostSpaces * 100 + lostLines * 500 + lostAllClear * 3000;
-
-                    renderBingoGrid();
-                    updateSpaceHint();
-                }
-
-                // --- Update user score, item count, bingo, and streak ---
+                // --- Update user score, item count, and streak ---
                 const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
                 const userSnapshot = await getDocs(userQuery);
 
                 if (!userSnapshot.empty) {
                     const userDoc = userSnapshot.docs[0];
                     const userData = userDoc.data();
-                    const totalToSubtract = itemPoints + bingoBonusToSubtract;
-                    const newScore = Math.max(0, (userData.score || 0) - totalToSubtract);
+                    const newScore = Math.max(0, (userData.score || 0) - itemPoints);
                     const newItemCount = Math.max(0, (userData.itemCount || 0) - 1);
 
                     // --- Recalculate streak ---
@@ -5227,8 +6261,7 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
                     const updateData = {
                         score: newScore,
                         itemCount: newItemCount,
-                        streak: newStreak,
-                        bingoProgress: bingoProgress
+                        streak: newStreak
                     };
                     if (newLastDeclutterDate === null) {
                         updateData.lastDeclutterDate = null;
@@ -5252,12 +6285,28 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
             }
         };
 
-        // Feed filter
+        // Feed filter — 3-tab segment (All / You / Before & After)
+        let youShareMode = false;
+        let youSelectedItems = [];
+
         window.setFeedFilter = function(filter) {
             currentFeedFilter = filter;
-            document.getElementById('filterAll').classList.toggle('active', filter === 'all');
-            document.getElementById('filterBA').classList.toggle('active', filter === 'ba');
-            renderFeedItems();
+            // Update segment buttons
+            document.getElementById('segAll').classList.toggle('active', filter === 'all');
+            document.getElementById('segYou').classList.toggle('active', filter === 'you');
+            document.getElementById('segBA').classList.toggle('active', filter === 'ba');
+            // Show/hide tab content
+            document.getElementById('feedContentAll').classList.toggle('active', filter === 'all');
+            document.getElementById('feedContentYou').classList.toggle('active', filter === 'you');
+            document.getElementById('feedContentBA').classList.toggle('active', filter === 'ba');
+
+            if (filter === 'all') {
+                renderFeedItems();
+            } else if (filter === 'you') {
+                renderYouTab();
+            } else if (filter === 'ba') {
+                renderBAItems();
+            }
         };
 
         function renderComment(c) {
@@ -5287,21 +6336,14 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
 
         function renderFeedItems() {
             const listElement = document.getElementById('itemList');
-            const items = currentFeedFilter === 'ba'
-                ? allFeedItems.filter(i => i.hasBeforeAfter)
-                : allFeedItems;
-
-            // Update B&A filter count
-            const baCount = allFeedItems.filter(i => i.hasBeforeAfter).length;
-            const filterCount = document.getElementById('baFilterCount');
-            filterCount.textContent = baCount;
+            const items = allFeedItems;
 
             if (items.length === 0) {
                 listElement.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-icon">${currentFeedFilter === 'ba' ? '📸' : '📦'}</div>
-                        <div>${currentFeedFilter === 'ba' ? 'No Before & After posts yet' : 'No items yet'}</div>
-                        <div style="font-size: 14px; margin-top: 10px;">${currentFeedFilter === 'ba' ? 'Be the first to share a transformation!' : 'Declutter your first item!'}</div>
+                        <div class="empty-icon">📦</div>
+                        <div>No items yet</div>
+                        <div style="font-size: 14px; margin-top: 10px;">Declutter your first item!</div>
                     </div>
                 `;
                 return;
@@ -5414,6 +6456,395 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
             }).join('');
         }
 
+        // ===== "You" Tab — Grid View =====
+        function renderYouTab() {
+            const myItems = allFeedItems.filter(i => i.userId === currentUserId);
+            const totalItems = myItems.length;
+            const totalPoints = myItems.reduce((sum, i) => sum + (i.points || 0), 0);
+
+            document.getElementById('youItemCount').textContent = totalItems;
+            document.getElementById('youPointsCount').textContent = totalPoints;
+
+            const grid = document.getElementById('youGrid');
+
+            if (totalItems === 0) {
+                grid.innerHTML = `
+                    <div class="you-empty" style="grid-column: 1 / -1;">
+                        <div class="empty-icon">📦</div>
+                        <div>No items yet</div>
+                        <div style="font-size: 14px; margin-top: 10px;">Declutter your first item!</div>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = myItems.map(item => {
+                const isSelected = youSelectedItems.includes(item.docId);
+                const selectableClass = youShareMode ? 'selectable' : '';
+                const selectedClass = youShareMode && isSelected ? 'selected' : '';
+                return `
+                    <div class="you-grid-cell ${selectableClass} ${selectedClass}"
+                         onclick="${youShareMode ? `toggleYouSelect('${item.docId}')` : ''}"
+                         data-id="${item.docId}">
+                        <img src="${item.image}" alt="${item.name}" loading="lazy">
+                        <div class="grid-overlay">
+                            <div class="grid-item-name">${item.name}</div>
+                        </div>
+                        <div class="grid-check">${isSelected ? '&#10003;' : ''}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Toggle share mode on You tab
+        window.toggleYouShareMode = function() {
+            youShareMode = !youShareMode;
+            youSelectedItems = [];
+            updateYouShareUI();
+            renderYouTab();
+        };
+
+        function updateYouShareUI() {
+            const actions = document.getElementById('youShareActions');
+            const helper = document.getElementById('youShareHelper');
+
+            if (youShareMode) {
+                actions.innerHTML = `
+                    <div class="you-share-mode-bar">
+                        <button class="cancel-btn" onclick="toggleYouShareMode()">Cancel</button>
+                        <button class="share-count-btn ${youSelectedItems.length === 0 ? 'disabled' : ''}"
+                                id="youShareCountBtn"
+                                onclick="openShareSheet()">Share (${youSelectedItems.length})</button>
+                    </div>
+                `;
+                helper.style.display = 'block';
+            } else {
+                actions.innerHTML = `
+                    <button class="you-share-btn" id="youShareBtn" onclick="toggleYouShareMode()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/>
+                            <polyline points="16 6 12 2 8 6"/>
+                            <line x1="12" y1="2" x2="12" y2="15"/>
+                        </svg>
+                        Share
+                    </button>
+                `;
+                helper.style.display = 'none';
+            }
+        }
+
+        // Toggle item selection in share mode (max 9)
+        window.toggleYouSelect = function(docId) {
+            const idx = youSelectedItems.indexOf(docId);
+            if (idx >= 0) {
+                youSelectedItems.splice(idx, 1);
+            } else if (youSelectedItems.length < 9) {
+                youSelectedItems.push(docId);
+            }
+            updateYouShareUI();
+            renderYouTab();
+        };
+
+        // ===== Share Bottom Sheet =====
+        window.openShareSheet = function() {
+            if (youSelectedItems.length === 0) return;
+
+            const myItems = allFeedItems.filter(i => i.userId === currentUserId);
+            const selected = youSelectedItems.map(id => myItems.find(i => i.docId === id)).filter(Boolean);
+            const totalPoints = selected.reduce((sum, i) => sum + (i.points || 0), 0);
+            const cols = Math.min(selected.length, 3);
+
+            // Preview grid
+            const previewGrid = document.getElementById('sharePreviewGrid');
+            previewGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            previewGrid.innerHTML = selected.map(item =>
+                `<img src="${item.image}" alt="${item.name}">`
+            ).join('');
+
+            document.getElementById('shareSummaryTitle').textContent =
+                `${selected.length} Item${selected.length > 1 ? 's' : ''} lighter. One a day. It adds up with Declutter Daily.`;
+
+            document.getElementById('shareSheetOverlay').classList.add('active');
+            document.getElementById('shareSheet').style.display = 'block';
+        };
+
+        window.closeShareSheet = function() {
+            document.getElementById('shareSheetOverlay').classList.remove('active');
+            document.getElementById('shareSheet').style.display = 'none';
+        };
+
+        // ===== Share Image Generation (1080×1350 Canvas) =====
+        async function generateShareImage() {
+            const myItems = allFeedItems.filter(i => i.userId === currentUserId);
+            const selected = youSelectedItems.map(id => myItems.find(i => i.docId === id)).filter(Boolean);
+            const totalPoints = selected.reduce((sum, i) => sum + (i.points || 0), 0);
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 1080;
+            canvas.height = 1350;
+            const ctx = canvas.getContext('2d');
+
+            // Background
+            ctx.fillStyle = '#FAFAFA';
+            ctx.fillRect(0, 0, 1080, 1350);
+
+            // App name at top
+            ctx.fillStyle = '#1C1C1E';
+            ctx.font = 'bold 48px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Declutter Daily', 540, 100);
+
+            // Subtitle
+            ctx.fillStyle = '#999';
+            ctx.font = '28px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText('One item at a time', 540, 145);
+
+            // Load and draw images in grid (3 cols)
+            const cols = Math.min(selected.length, 3);
+            const rows = Math.ceil(selected.length / cols);
+            const gridTop = 200;
+            const gridPad = 40;
+            const cellGap = 8;
+            const gridWidth = 1080 - gridPad * 2;
+            const cellSize = (gridWidth - (cols - 1) * cellGap) / cols;
+            const gridHeight = rows * cellSize + (rows - 1) * cellGap;
+
+            // Draw rounded rect background for grid
+            const gridRadius = 24;
+            ctx.fillStyle = '#E8E8E8';
+            roundRect(ctx, gridPad - 4, gridTop - 4, gridWidth + 8, gridHeight + 8, gridRadius);
+            ctx.fill();
+
+            // Load images with crossOrigin to prevent canvas tainting
+            const images = await Promise.all(selected.map(item => {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.crossOrigin = "anonymous";
+                    img.onload = () => resolve(img);
+                    img.onerror = () => resolve(null);
+                    img.src = item.image;
+                });
+            }));
+
+            images.forEach((img, idx) => {
+                const col = idx % cols;
+                const row = Math.floor(idx / cols);
+                const x = gridPad + col * (cellSize + cellGap);
+                const y = gridTop + row * (cellSize + cellGap);
+
+                ctx.save();
+                // Clip to rounded cell
+                roundRect(ctx, x, y, cellSize, cellSize, 4);
+                ctx.clip();
+
+                if (img) {
+                    // Draw image cover-fit
+                    const scale = Math.max(cellSize / img.width, cellSize / img.height);
+                    const sw = cellSize / scale;
+                    const sh = cellSize / scale;
+                    const sx = (img.width - sw) / 2;
+                    const sy = (img.height - sh) / 2;
+                    ctx.drawImage(img, sx, sy, sw, sh, x, y, cellSize, cellSize);
+                } else {
+                    // Fallback gray if image failed to load
+                    ctx.fillStyle = '#ddd';
+                    ctx.fillRect(x, y, cellSize, cellSize);
+                }
+                ctx.restore();
+            });
+
+            // Bottom section
+            const bottomY = gridTop + gridHeight + 60;
+
+            ctx.fillStyle = '#1C1C1E';
+            ctx.font = 'bold 44px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(`${selected.length} Item${selected.length > 1 ? 's' : ''} lighter.`, 540, bottomY);
+
+            ctx.fillStyle = '#666';
+            ctx.font = '32px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText('One a day. It adds up with Declutter Daily.', 540, bottomY + 50);
+
+            // App URL at bottom
+            ctx.fillStyle = '#BBB';
+            ctx.font = '24px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText('declutterdaily.app', 540, 1310);
+
+            return new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.9));
+        }
+
+        // Helper: draw rounded rect path
+        function roundRect(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+        }
+
+        // Share to Instagram (uses native share with file)
+        window.shareToInstagram = async function() {
+            try {
+                const blob = await generateShareImage();
+                const file = new File([blob], 'declutter-daily.jpg', { type: 'image/jpeg' });
+                const myItems = allFeedItems.filter(i => i.userId === currentUserId);
+                const count = youSelectedItems.length;
+
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'My Declutter Journey',
+                        text: `${count} Item${count > 1 ? 's' : ''} lighter. One a day. It adds up with Declutter Daily.`,
+                    });
+                } else {
+                    // Fallback: download
+                    await saveShareImageFromBlob(blob);
+                    alert('Image saved! You can now share it to Instagram manually.');
+                }
+                closeShareSheet();
+            } catch (err) {
+                if (err.name !== 'AbortError') console.error('Share failed:', err);
+            }
+        };
+
+        // More options (native share sheet)
+        window.shareMore = async function() {
+            try {
+                const blob = await generateShareImage();
+                const file = new File([blob], 'declutter-daily.jpg', { type: 'image/jpeg' });
+                const count = youSelectedItems.length;
+
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'My Declutter Journey',
+                        text: `${count} Item${count > 1 ? 's' : ''} lighter. One a day. It adds up with Declutter Daily.`,
+                    });
+                } else {
+                    await saveShareImageFromBlob(blob);
+                    alert('Image saved! Share it from your gallery.');
+                }
+                closeShareSheet();
+            } catch (err) {
+                if (err.name !== 'AbortError') console.error('Share failed:', err);
+            }
+        };
+
+        // Save image to gallery (download)
+        window.saveShareImage = async function() {
+            try {
+                const blob = await generateShareImage();
+                await saveShareImageFromBlob(blob);
+                closeShareSheet();
+            } catch (err) {
+                console.error('Save failed:', err);
+            }
+        };
+
+        function saveShareImageFromBlob(blob) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'declutter-daily.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // ===== "Before & After" Tab =====
+        function renderBAItems() {
+            const listElement = document.getElementById('baItemList');
+            const items = allFeedItems.filter(i => i.hasBeforeAfter);
+
+            if (items.length === 0) {
+                listElement.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📸</div>
+                        <div>No Before & After posts yet</div>
+                        <div style="font-size: 14px; margin-top: 10px;">Be the first to share a transformation!</div>
+                    </div>
+                `;
+                return;
+            }
+
+            listElement.innerHTML = items.map(item => {
+                const date = item.createdAt?.toDate() || new Date();
+                const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+                const isMyItem = item.userId === currentUserId;
+                const isLiked = (item.likes || []).includes(currentUserId);
+                const likeCount = item.likeCount || 0;
+                const comments = item.comments || [];
+                const hasNote = item.note && item.note.trim();
+                const basePoints = (item.points || 0) - (item.bonusPoints || 0);
+                const feedAvatar = getUserAvatarHTML(item.userName, item.userPhotoURL, 30);
+
+                return `
+                    <div class="item ba-item" style="${isMyItem ? 'background: #FAFAFA;' : ''}">
+                        <div class="item-header">
+                            <div class="ba-thumb-wrap" onclick="toggleBASlider('ba_${item.id}')">
+                                <img src="${item.image}" alt="${item.name}" class="item-image">
+                                <div class="ba-thumb-badge">
+                                    <span class="ba-photo-badge-icon"><span class="half-warm"></span><span class="half-green"></span></span>
+                                    B&A
+                                </div>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-name">${item.name} <span class="ba-badge">B&A</span></div>
+                                <div class="item-date" style="display:flex;align-items:center;gap:6px;">${feedAvatar} ${item.userName || 'Anonymous'} &bull; ${dateStr}</div>
+                                ${hasNote ? `<div class="item-note">"${item.note}"</div>` : ''}
+                            </div>
+                            <div class="ba-points-display">
+                                <span class="base-pts">+${basePoints}</span>
+                                <span class="bonus-pts">+${item.bonusPoints || 30} bonus</span>
+                            </div>
+                        </div>
+                        <div class="ba-expand-section" id="ba-expand-ba_${item.id}">
+                            <div class="ba-expand-header">
+                                <span class="ba-expand-label">Before &amp; After</span>
+                                <button class="ba-expand-close" onclick="toggleBASlider('ba_${item.id}')" aria-label="Close slider">&#10005;</button>
+                            </div>
+                            <div class="ba-slider-container" id="slider-ba_${item.id}" style="--slider-pos: 80%"
+                                 onpointerdown="startSlider(event, 'ba_${item.id}')"
+                                 onpointermove="moveSlider(event, 'ba_${item.id}')"
+                                 onpointerup="endSlider(event, 'ba_${item.id}')">
+                                <img src="${item.beforePhotoURL}" alt="Cluttered" class="ba-slider-before">
+                                <img src="${item.afterPhotoURL}" alt="Cleared" class="ba-slider-after">
+                                <div class="ba-slider-divider"></div>
+                                <div class="ba-slider-handle">&#9664; &#9654;</div>
+                                <div class="ba-slider-label left" id="label-left-ba_${item.id}">CLUTTERED</div>
+                                <div class="ba-slider-label right" id="label-right-ba_${item.id}">CLEARED</div>
+                                <div class="ba-slider-hint" id="hint-ba_${item.id}"><span class="hint-emoji">&#128072;</span> Slide to reveal</div>
+                                <div class="ba-slider-celebration" id="celebration-ba_${item.id}">&#10024;</div>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${item.id}', '${item.docId}')">
+                                &#10084;&#65039; ${likeCount}
+                            </button>
+                            <button class="comment-btn" onclick="toggleComments('ba_${item.id}')">
+                                &#128172; ${comments.length}
+                            </button>
+                            ${isMyItem ? `<button class="delete-btn" onclick="deleteItem('${item.docId}', '${item.userId}', ${item.points})">&#128465;&#65039; Delete</button>` : ''}
+                        </div>
+                        <div class="comments-section" id="comments-ba_${item.id}">
+                            ${comments.map(c => renderComment(c)).join('')}
+                            <div class="comment-input">
+                                <input type="text" id="comment-input-ba_${item.id}" placeholder="Add comment...">
+                                <button onclick="addComment('ba_${item.id}', '${item.docId}')">Post</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
         // Interactive Slider Logic (unified for feed and popup)
         const activeSliders = {};
         function getSliderElement(id) {
@@ -5509,7 +6940,14 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
                     updateHeaderStats();
 
                     allFeedItems = items;
-                    renderFeedItems();
+                    // Render the currently active feed sub-tab
+                    if (currentFeedFilter === 'you') {
+                        renderYouTab();
+                    } else if (currentFeedFilter === 'ba') {
+                        renderBAItems();
+                    } else {
+                        renderFeedItems();
+                    }
                 });
             } catch (error) {
                 console.error('Items load failed:', error);
@@ -5611,7 +7049,7 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
             // Map tab names to tab element IDs
             const tabMap = {
                 'add': 'addTab',
-                'bingo': 'bingoTab',
+                'coach': 'coachTab',
                 'feed': 'historyTab',
                 'history': 'historyTab',
                 'calendar': 'calendarTab',
@@ -5636,7 +7074,7 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
 
             // Update specific tab content if needed
             if (tab === 'add') updateSpaceHint();
-            if (tab === 'bingo') loadBingoProgress();
+            if (tab === 'coach') loadCoachUsage();
             if (tab === 'feed' || tab === 'history') loadMyItems();
             if (tab === 'calendar') renderCalendar();
             if (tab === 'leaderboard') loadLeaderboard();
@@ -5644,7 +7082,6 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
 
         document.getElementById('itemSpace').addEventListener('change', updateSpaceHint);
         document.getElementById('achievementOverlay').addEventListener('click', hideAchievement);
-        document.getElementById('bingoResetBtn').addEventListener('click', resetBingo);
 
         let currentCalendarYear = 2026;
         let currentCalendarMonth = 1;
@@ -5973,6 +7410,7 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
                 if (i < recentItems.length && recentItems[i].image) {
                     try {
                         const img = new Image();
+                        img.crossOrigin = "anonymous";
                         img.src = recentItems[i].image;
                         await new Promise(resolve => {
                             img.onload = () => {
@@ -6371,7 +7809,6 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
                 const userData = userSnapshot.docs[0].data();
                 userStreak = userData.streak || 0;
                 userBadges = userData.badges || [];
-                bingoProgress = userData.bingoProgress || {};
 
                 // Load profile photo URL
                 if (userData.photoURL) {
@@ -6392,7 +7829,6 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
 
                 updateHeaderStats();
                 renderBadges();
-                renderBingoGrid();
 
                 // Load dream vision
                 renderDreamVision(userData.dreamVision || '');

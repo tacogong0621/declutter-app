@@ -1515,148 +1515,587 @@
         }
 
 
-        /* Space Bingo Styles */
-        .bingo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .bingo-cell {
-            aspect-ratio: 1;
-            border-radius: 12px;
+        /* AI Coach Tidy Styles */
+        .coach-header {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            background: #F5F5F5;
-            border: 1px solid #E5E5E5;
-            cursor: pointer;
-            transition: all 0.2s;
-            padding: 8px;
-            position: relative;
+            margin-bottom: 16px;
         }
 
-        .bingo-cell.completed {
-            background: #1C1C1E;
-            border-color: #1C1C1E;
-            color: #FFFFFF;
-        }
-
-        .bingo-cell .cell-emoji {
-            font-size: 24px;
-            margin-bottom: 2px;
-        }
-
-        .bingo-cell .cell-name {
-            font-size: 11px;
-            font-weight: 600;
-            color: #6B6B6B;
-            text-align: center;
-        }
-
-        .bingo-cell.completed .cell-name {
-            color: #FFFFFF;
-        }
-
-        .bingo-cell .cell-count {
-            font-size: 10px;
-            color: #B0B0B0;
-            margin-top: 2px;
-        }
-
-        .bingo-cell.completed .cell-count {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .bingo-cell .cell-progress {
-            width: 80%;
-            height: 4px;
-            background: #E5E5E5;
-            border-radius: 2px;
-            margin-top: 4px;
-            overflow: hidden;
-        }
-
-        .bingo-cell.completed .cell-progress {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .bingo-cell .cell-progress-bar {
-            height: 100%;
-            background: #1C1C1E;
-            border-radius: 2px;
-            transition: width 0.3s;
-        }
-
-        .bingo-cell.completed .cell-progress-bar {
-            background: #FFFFFF;
-        }
-
-        .bingo-lines-info {
-            background: #FAFAFA;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            text-align: center;
-            border: 1px solid #E5E5E5;
-        }
-
-        .bingo-lines-info .line-count {
-            font-size: 20px;
+        .coach-header h2 {
+            font-size: 18px;
             font-weight: 700;
             color: #1C1C1E;
         }
 
-        .bingo-lines-info .line-label {
+        .coach-usage-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #F0FAF0;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #2D8B2D;
+        }
+
+        .coach-usage-pill.low {
+            background: #FFF0F0;
+            color: #D32F2F;
+        }
+
+        .coach-usage-pill .usage-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #2D8B2D;
+        }
+
+        .coach-usage-pill.low .usage-dot {
+            background: #D32F2F;
+        }
+
+        .coach-upload-area {
+            border: 2px dashed #D0D0D0;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+            background: #FAFAFA;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coach-upload-area:active {
+            background: #F0F0F0;
+            border-color: #B0B0B0;
+        }
+
+        .coach-upload-area.has-photo {
+            padding: 0;
+            border-style: solid;
+            border-color: #E0E0E0;
+        }
+
+        .coach-upload-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #6B6B6B;
+        }
+
+        .coach-upload-subtext {
+            font-size: 12px;
+            color: #B0B0B0;
+            margin-top: 4px;
+        }
+
+        .coach-preview-img {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            border-radius: 14px;
+            display: block;
+        }
+
+        .coach-tap-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .coach-analyze-btn {
+            width: 100%;
+            padding: 14px;
+            background: #1C1C1E;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: opacity 0.2s;
+            margin-bottom: 8px;
+        }
+
+        .coach-analyze-btn:active {
+            opacity: 0.8;
+        }
+
+        .coach-analyze-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .coach-upgrade-link {
+            text-align: center;
+            font-size: 11px;
+            color: #bbb;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .coach-examples-link {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .coach-examples-content {
+            display: none;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #6B6B6B;
+            line-height: 1.6;
+        }
+
+        .coach-analyzing {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .coach-spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid #E0E0E0;
+            border-top-color: #1C1C1E;
+            border-radius: 50%;
+            animation: coachSpin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes coachSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .coach-analyzing-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1C1C1E;
+            margin-bottom: 4px;
+        }
+
+        .coach-analyzing-sub {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .coach-result {
+            display: none;
+        }
+
+        .coach-result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .coach-back-btn {
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1C1C1E;
+            cursor: pointer;
+            padding: 4px 0;
+            font-family: inherit;
+        }
+
+        .coach-photos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .coach-photo-card {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            background: #F0F0F0;
+        }
+
+        .coach-photo-card img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            display: block;
+        }
+
+        .coach-photo-label {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .coach-analysis-card {
+            background: #F8F8F8;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .coach-avatar-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .coach-avatar {
+            font-size: 24px;
+        }
+
+        .coach-badge {
+            background: #1C1C1E;
+            color: white;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .coach-encouragement {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1C1C1E;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .coach-steps {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .coach-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #ECECEC;
+        }
+
+        .coach-step:last-child {
+            border-bottom: none;
+        }
+
+        .coach-step-num {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #1C1C1E;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .coach-step-text {
+            font-size: 13px;
+            color: #333;
+            flex: 1;
+            line-height: 1.4;
+        }
+
+        .coach-step-time {
+            font-size: 11px;
+            color: #999;
+            white-space: nowrap;
+            margin-top: 2px;
+        }
+
+        .coach-total-time {
+            text-align: right;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1C1C1E;
+            margin-top: 8px;
+        }
+
+        .coach-tip-card {
+            background: #FFFBEB;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .coach-tip-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .coach-tip-text {
+            font-size: 13px;
+            color: #7A6C00;
+            line-height: 1.5;
+        }
+
+        .coach-start-btn {
+            width: 100%;
+            padding: 14px;
+            background: #1C1C1E;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: opacity 0.2s;
+        }
+
+        .coach-start-btn:active {
+            opacity: 0.8;
+        }
+
+        .coach-limit-reached {
+            display: none;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .coach-limit-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .coach-limit-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1C1C1E;
+            margin-bottom: 8px;
+        }
+
+        .coach-limit-bar {
+            width: 100%;
+            height: 6px;
+            background: #D32F2F;
+            border-radius: 3px;
+            margin-bottom: 6px;
+        }
+
+        .coach-limit-text {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .coach-upgrade-btn {
+            width: 100%;
+            padding: 14px;
+            background: #1C1C1E;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .coach-paywall-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 300;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .coach-paywall-overlay.show {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .coach-paywall-close {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 301;
+        }
+
+        .coach-paywall-header {
+            padding: 60px 24px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .coach-paywall-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .coach-paywall-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .coach-paywall-card {
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 28px 24px 40px;
+            flex: 1;
+        }
+
+        .coach-paywall-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px;
+        }
+
+        .coach-paywall-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .coach-paywall-features li .feature-icon {
+            font-size: 20px;
+        }
+
+        .coach-billing-toggle {
+            display: flex;
+            background: #F0F0F0;
+            border-radius: 12px;
+            padding: 3px;
+            margin-bottom: 20px;
+        }
+
+        .coach-billing-btn {
+            flex: 1;
+            padding: 10px 4px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            font-size: 13px;
+            font-weight: 600;
+            color: #999;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .coach-billing-btn.active {
+            background: white;
+            color: #1C1C1E;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .coach-billing-save {
+            background: #2D8B2D;
+            color: white;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 4px;
+        }
+
+        .coach-billing-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .coach-billing-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1C1C1E;
+        }
+
+        .coach-billing-period {
+            font-size: 14px;
+            color: #999;
+            margin-left: 2px;
+        }
+
+        .coach-billing-detail {
             font-size: 12px;
             color: #B0B0B0;
             margin-top: 2px;
         }
 
-        .bingo-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
-        .bingo-stat {
-            background: #1C1C1E;
-            padding: 8px 6px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .bingo-stat .stat-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: #FFFFFF;
-        }
-
-        .bingo-stat .stat-label {
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 2px;
-        }
-
-        .bingo-reset-btn {
+        .coach-paywall-cta {
             width: 100%;
-            padding: 10px;
+            padding: 16px;
             background: #1C1C1E;
             color: #FFFFFF;
             border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
-            display: none;
-            transition: opacity 0.2s;
+            font-family: inherit;
+            margin-bottom: 16px;
         }
 
-        .bingo-reset-btn:hover {
+        .coach-paywall-cta:active {
             opacity: 0.85;
+        }
+
+        .coach-paywall-footer {
+            text-align: center;
+            font-size: 12px;
+            color: #B0B0B0;
+        }
+
+        .coach-paywall-footer a {
+            color: #999;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .coach-paywall-footer .footer-note {
+            margin-top: 6px;
         }
 
         .space-hint {
@@ -3473,34 +3912,126 @@
                 </div>
             </div>
 
-        <div id="bingoTab" class="tab-content">
+        <div id="coachTab" class="tab-content">
             <div class="card">
-                <h2 style="margin-bottom: 10px; color: #1C1C1E; font-weight: 600;">Space Bingo</h2>
-                <p style="color: #6B6B6B; margin-bottom: 10px; text-align: center; font-size: 13px;">Declutter 10 items per space for bingo! Complete lines for bonus!</p>
+                <!-- Home screen -->
+                <div id="coachHome">
+                    <div class="coach-header">
+                        <h2>&#10024; AI Coach Tidy</h2>
+                        <div class="coach-usage-pill" id="coachUsagePill">
+                            <span class="usage-dot"></span>
+                            <span id="coachUsageText">4 of 4 left</span>
+                        </div>
+                    </div>
 
-                <div class="bingo-stats">
-                    <div class="bingo-stat">
-                        <div class="stat-value" id="bingoCompleted">0</div>
-                        <div class="stat-label">Spaces Done</div>
+                    <div class="coach-upload-area" id="coachUploadArea" onclick="document.getElementById('coachFileInput').click()">
+                        <div id="coachUploadPrompt">
+                            <div class="coach-upload-text">Upload a messy space</div>
+                            <div class="coach-upload-subtext">Take a photo or choose from gallery</div>
+                        </div>
+                        <img id="coachPreviewImg" class="coach-preview-img" style="display:none;">
+                        <div class="coach-tap-overlay" id="coachTapOverlay" style="display:none;">Tap to change</div>
                     </div>
-                    <div class="bingo-stat">
-                        <div class="stat-value" id="bingoLines">0</div>
-                        <div class="stat-label">Bingo Lines</div>
+                    <input type="file" id="coachFileInput" accept="image/*" style="display:none;" onchange="handleCoachPhoto(event)">
+
+                    <button class="coach-analyze-btn" id="coachAnalyzeBtn" disabled onclick="analyzeSpace()">Analyze &amp; Transform</button>
+
+                    <div class="coach-upgrade-link" id="coachUpgradeLink" onclick="openPaywall()">&#10024; Upgrade for unlimited analyses</div>
+
+                    <div class="coach-examples-link" id="coachExamplesToggle" onclick="toggleCoachExamples()">Example transformations</div>
+                    <div class="coach-examples-content" id="coachExamplesContent">
+                        Upload a photo of any cluttered space — kitchen counter, desk, closet, garage — and get a personalized step-by-step decluttering plan with an AI-generated visualization of your space, tidied up.
                     </div>
-                    <div class="bingo-stat">
-                        <div class="stat-value" id="bingoPoints">0</div>
-                        <div class="stat-label">Bingo Points</div>
+
+                    <!-- Limit reached state -->
+                    <div class="coach-limit-reached" id="coachLimitReached">
+                        <div class="coach-limit-icon">&#128274;</div>
+                        <div class="coach-limit-title">You've used all 4 free analyses</div>
+                        <div class="coach-limit-bar"></div>
+                        <div class="coach-limit-text">4/4 used &middot; Resets next month</div>
+                        <button class="coach-upgrade-btn" onclick="openPaywall()">&#10024; Upgrade to Pro</button>
                     </div>
                 </div>
 
-                <div class="bingo-grid" id="bingoGrid"></div>
-
-                <div class="bingo-lines-info" id="bingoLinesInfo">
-                    <div class="line-count" id="bingoLineCount">0 / 8 Lines</div>
-                    <div class="line-label">3 Horizontal + 3 Vertical + 2 Diagonal</div>
+                <!-- Analyzing screen -->
+                <div class="coach-analyzing" id="coachAnalyzing">
+                    <div class="coach-spinner"></div>
+                    <div class="coach-analyzing-text">Analyzing your space...</div>
+                    <div class="coach-analyzing-sub">This takes a few seconds</div>
                 </div>
 
-                <button class="bingo-reset-btn" id="bingoResetBtn">New Round</button>
+                <!-- Result screen -->
+                <div class="coach-result" id="coachResult">
+                    <div class="coach-result-header">
+                        <button class="coach-back-btn" onclick="resetCoach()">&larr; New analysis</button>
+                        <div class="coach-usage-pill" id="coachUsagePillResult">
+                            <span class="usage-dot"></span>
+                            <span id="coachUsageTextResult">3 of 4 left</span>
+                        </div>
+                    </div>
+
+                    <div class="coach-photos">
+                        <div class="coach-photo-card">
+                            <img id="coachBeforeImg" src="" alt="Before">
+                            <div class="coach-photo-label">Before</div>
+                        </div>
+                        <div class="coach-photo-card">
+                            <img id="coachAfterImg" src="" alt="After (AI)">
+                            <div class="coach-photo-label">After (AI)</div>
+                        </div>
+                    </div>
+
+                    <div class="coach-analysis-card">
+                        <div class="coach-avatar-row">
+                            <span class="coach-avatar">&#127968;</span>
+                            <span class="coach-badge">AI COACH</span>
+                        </div>
+                        <div class="coach-encouragement" id="coachEncouragement"></div>
+                        <ol class="coach-steps" id="coachSteps"></ol>
+                        <div class="coach-total-time" id="coachTotalTime"></div>
+                    </div>
+
+                    <div class="coach-tip-card">
+                        <span class="coach-tip-icon">&#128161;</span>
+                        <div class="coach-tip-text" id="coachTipText"></div>
+                    </div>
+
+                    <button class="coach-start-btn" onclick="resetCoach()">Start Decluttering</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coach Paywall Overlay -->
+        <div class="coach-paywall-overlay" id="coachPaywall">
+            <button class="coach-paywall-close" onclick="closePaywall()">&times;</button>
+            <div class="coach-paywall-header">
+                <div class="coach-paywall-title">Your Space Transformed</div>
+                <div class="coach-paywall-subtitle">Upload a messy space. Watch it become calm.</div>
+            </div>
+            <div class="coach-paywall-card">
+                <ul class="coach-paywall-features">
+                    <li><span class="feature-icon">&#128248;</span> AI-generated after photo</li>
+                    <li><span class="feature-icon">&#128506;</span> Personalized declutter roadmap</li>
+                    <li><span class="feature-icon">&#10024;</span> Unlimited space resets</li>
+                    <li><span class="feature-icon">&#127807;</span> Simple maintenance coaching</li>
+                </ul>
+
+                <div class="coach-billing-toggle" id="coachBillingToggle">
+                    <button class="coach-billing-btn active" data-cycle="yearly" onclick="switchBilling('yearly')">Yearly <span class="coach-billing-save">Save 37%</span></button>
+                    <button class="coach-billing-btn" data-cycle="monthly" onclick="switchBilling('monthly')">Monthly</button>
+                </div>
+
+                <div class="coach-billing-info">
+                    <div><span class="coach-billing-price" id="coachBillingPrice">$29.99</span><span class="coach-billing-period" id="coachBillingPeriod">/year</span></div>
+                    <div class="coach-billing-detail" id="coachBillingDetail">$2.50/mo</div>
+                </div>
+
+                <button class="coach-paywall-cta" id="coachPaywallCta" onclick="startSubscription()">Start My Transformation &mdash; $29.99/year</button>
+
+                <div class="coach-paywall-footer">
+                    <a onclick="restorePurchase()">Restore purchase</a>
+                    <div class="footer-note">Cancel anytime &middot; Secure payment via Stripe</div>
+                </div>
             </div>
         </div>
 
@@ -3691,9 +4222,9 @@
                 <div class="nav-label">Let Go</div>
             </button>
 
-            <button class="nav-item" onclick="switchTab('bingo')" data-tab="bingo">
-                <div class="nav-icon">🎲</div>
-                <div class="nav-label">Bingo</div>
+            <button class="nav-item" onclick="switchTab('coach')" data-tab="coach">
+                <div class="nav-icon">&#10024;</div>
+                <div class="nav-label">Coach</div>
             </button>
 
             <button class="nav-item" onclick="switchTab('feed')" data-tab="feed">
@@ -3779,7 +4310,12 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         let userProfilePhotoURL = localStorage.getItem('userProfilePhotoURL') || '';
         let userStreak = 0;
         let userBadges = [];
-        let bingoProgress = {};
+        // Coach state
+        let coachPhotoBase64 = '';
+        let coachPhotoFile = null;
+        let coachUsageCount = 0;
+        let coachUsageMonth = '';
+        let coachBillingCycle = 'yearly';
 
         // Before & After state
         let baEnabled = false;
@@ -3788,94 +4324,338 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         let currentFeedFilter = 'all';
         let allFeedItems = [];
 
-        const bingoSpaces = [
-            { key: 'kitchen_space', name: 'Kitchen', emoji: '🍳' },
-            { key: 'bathroom', name: 'Bathroom', emoji: '🚿' },
-            { key: 'bedroom', name: 'Bedroom', emoji: '🛏️' },
-            { key: 'living', name: 'Living Room', emoji: '🛋️' },
-            { key: 'kids_room', name: 'Kids Room', emoji: '🧒' },
-            { key: 'closet', name: 'Closet', emoji: '👔' },
-            { key: 'office', name: 'Office', emoji: '💻' },
-            { key: 'garage', name: 'Garage', emoji: '🔧' },
-            { key: 'pantry', name: 'Pantry', emoji: '🥫' }
-        ];
-
-        const bingoLines = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8],
-            [0, 3, 6], [1, 4, 7], [2, 5, 8],
-            [0, 4, 8], [2, 4, 6]
-        ];
+        const spaceNames = {
+            'kitchen_space': 'Kitchen',
+            'bathroom': 'Bathroom',
+            'bedroom': 'Bedroom',
+            'living': 'Living Room',
+            'kids_room': 'Kids Room',
+            'closet': 'Closet',
+            'office': 'Office',
+            'garage': 'Garage',
+            'pantry': 'Pantry'
+        };
 
         function getSpaceName(spaceKey) {
-            const space = bingoSpaces.find(s => s.key === spaceKey);
-            return space ? space.name : spaceKey;
-        }
-
-        function countBingoLines() {
-            let count = 0;
-            for (const line of bingoLines) {
-                const allComplete = line.every(i => (bingoProgress[bingoSpaces[i].key] || 0) >= 10);
-                if (allComplete) count++;
-            }
-            return count;
-        }
-
-        function countCompletedSpaces() {
-            return bingoSpaces.filter(s => (bingoProgress[s.key] || 0) >= 10).length;
-        }
-
-        function renderBingoGrid() {
-            const grid = document.getElementById('bingoGrid');
-            if (!grid) return;
-
-            const completedCount = countCompletedSpaces();
-            const lineCount = countBingoLines();
-            const bingoPointsEarned = completedCount * 100 + lineCount * 500 + (completedCount === 9 ? 3000 : 0);
-
-            document.getElementById('bingoCompleted').textContent = completedCount;
-            document.getElementById('bingoLines').textContent = lineCount;
-            document.getElementById('bingoPoints').textContent = bingoPointsEarned;
-            document.getElementById('bingoLineCount').textContent = `${lineCount} / 8 Lines`;
-
-            const resetBtn = document.getElementById('bingoResetBtn');
-            resetBtn.style.display = completedCount === 9 ? 'block' : 'none';
-
-            grid.innerHTML = bingoSpaces.map(space => {
-                const count = bingoProgress[space.key] || 0;
-                const isComplete = count >= 10;
-                const percent = Math.min(100, (count / 10) * 100);
-
-                return `
-                    <div class="bingo-cell ${isComplete ? 'completed' : ''}">
-                        <div class="cell-emoji">${space.emoji}</div>
-                        <div class="cell-name">${space.name}</div>
-                        <div class="cell-count">${count} / 10</div>
-                        <div class="cell-progress">
-                            <div class="cell-progress-bar" style="width: ${percent}%"></div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            return spaceNames[spaceKey] || spaceKey;
         }
 
         function updateSpaceHint() {
             const spaceSelect = document.getElementById('itemSpace');
             const hint = document.getElementById('spaceHint');
-            const spaceKey = spaceSelect.value;
-
-            if (spaceKey) {
-                const count = bingoProgress[spaceKey] || 0;
-                const space = bingoSpaces.find(s => s.key === spaceKey);
-                if (count >= 10) {
-                    hint.textContent = `${space.name}: Complete! Bingo achieved!`;
-                } else {
-                    const remaining = 10 - count;
-                    hint.textContent = `${space.name}: ${count}/10 - ${remaining} more`;
-                }
+            if (spaceSelect.value) {
+                hint.textContent = getSpaceName(spaceSelect.value);
                 hint.style.display = 'block';
             } else {
                 hint.style.display = 'none';
             }
+        }
+
+        // --- AI Coach Tidy Functions ---
+
+        function handleCoachPhoto(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            coachPhotoFile = file;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Compress/resize to max 800px wide
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxWidth = 800;
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > maxWidth) {
+                        h = Math.round(h * maxWidth / w);
+                        w = maxWidth;
+                    }
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    coachPhotoBase64 = dataUrl.split(',')[1];
+
+                    // Show preview
+                    const previewImg = document.getElementById('coachPreviewImg');
+                    previewImg.src = dataUrl;
+                    previewImg.style.display = 'block';
+                    document.getElementById('coachUploadPrompt').style.display = 'none';
+                    document.getElementById('coachTapOverlay').style.display = 'block';
+                    document.getElementById('coachUploadArea').classList.add('has-photo');
+                    document.getElementById('coachAnalyzeBtn').disabled = false;
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function loadCoachUsage() {
+            if (!currentUserId) return;
+            try {
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                if (!userSnapshot.empty) {
+                    const userData = userSnapshot.docs[0].data();
+                    const usage = userData.coachUsage || {};
+                    const currentMonth = new Date().toISOString().slice(0, 7);
+
+                    if (usage.month === currentMonth) {
+                        coachUsageCount = usage.count || 0;
+                    } else {
+                        coachUsageCount = 0;
+                    }
+                    coachUsageMonth = currentMonth;
+
+                    // Check subscription
+                    const sub = userData.subscription || {};
+                    const isPro = sub.status === 'active';
+
+                    updateCoachUsageUI(isPro);
+                }
+            } catch (error) {
+                console.error('Coach usage load failed:', error);
+            }
+        }
+
+        function updateCoachUsageUI(isPro) {
+            const remaining = isPro ? 999 : Math.max(0, 4 - coachUsageCount);
+            const usageText = isPro ? 'Pro — Unlimited' : `${remaining} of 4 left`;
+            const isLow = !isPro && remaining <= 1;
+
+            // Update both pills (home + result)
+            ['coachUsagePill', 'coachUsagePillResult'].forEach(id => {
+                const pill = document.getElementById(id);
+                if (pill) {
+                    pill.classList.toggle('low', isLow);
+                }
+            });
+            ['coachUsageText', 'coachUsageTextResult'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = usageText;
+            });
+
+            // Show/hide limit reached
+            const canAnalyze = isPro || remaining > 0;
+            const limitEl = document.getElementById('coachLimitReached');
+            const homeEl = document.getElementById('coachHome');
+            const uploadArea = document.getElementById('coachUploadArea');
+            const analyzeBtn = document.getElementById('coachAnalyzeBtn');
+            const upgradeLink = document.getElementById('coachUpgradeLink');
+            const examplesToggle = document.getElementById('coachExamplesToggle');
+
+            if (!canAnalyze) {
+                limitEl.style.display = 'block';
+                uploadArea.style.display = 'none';
+                analyzeBtn.style.display = 'none';
+                upgradeLink.style.display = 'none';
+                examplesToggle.style.display = 'none';
+            } else {
+                limitEl.style.display = 'none';
+                uploadArea.style.display = '';
+                analyzeBtn.style.display = '';
+                upgradeLink.style.display = isPro ? 'none' : '';
+                examplesToggle.style.display = '';
+            }
+        }
+
+        async function analyzeSpace() {
+            if (!coachPhotoBase64) return;
+
+            const analyzeBtn = document.getElementById('coachAnalyzeBtn');
+            analyzeBtn.disabled = true;
+
+            // Show analyzing screen
+            document.getElementById('coachHome').style.display = 'none';
+            document.getElementById('coachAnalyzing').style.display = 'block';
+            document.getElementById('coachResult').style.display = 'none';
+
+            try {
+                // Get user vision for context
+                let userVision = '';
+                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                const userSnapshot = await getDocs(userQuery);
+                if (!userSnapshot.empty) {
+                    userVision = userSnapshot.docs[0].data().dreamVision || '';
+                }
+
+                // Call Cloud Function
+                const response = await fetch('https://us-central1-declutter-challenge-94366.cloudfunctions.net/analyzeSpace', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        imageBase64: coachPhotoBase64,
+                        userId: currentUserId,
+                        userVision: userVision
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Analysis failed');
+                }
+
+                const result = await response.json();
+
+                // Increment usage
+                coachUsageCount++;
+                if (!userSnapshot.empty) {
+                    const userDoc = userSnapshot.docs[0];
+                    await updateDoc(doc(db, 'users', userDoc.id), {
+                        coachUsage: {
+                            month: coachUsageMonth || new Date().toISOString().slice(0, 7),
+                            count: coachUsageCount
+                        }
+                    });
+                }
+
+                // Render result
+                renderCoachResult(result);
+
+            } catch (error) {
+                console.error('Analysis error:', error);
+                alert('Analysis failed. Please try again.');
+                document.getElementById('coachHome').style.display = '';
+                document.getElementById('coachAnalyzing').style.display = 'none';
+                analyzeBtn.disabled = false;
+            }
+        }
+
+        function renderCoachResult(result) {
+            const analysis = result.analysis;
+
+            // Set before image
+            document.getElementById('coachBeforeImg').src = 'data:image/jpeg;base64,' + coachPhotoBase64;
+
+            // Set after image (might not exist if DALL-E failed)
+            const afterImg = document.getElementById('coachAfterImg');
+            if (result.afterImageUrl) {
+                afterImg.src = result.afterImageUrl;
+                afterImg.style.display = 'block';
+            } else {
+                afterImg.style.display = 'none';
+            }
+
+            // Encouragement
+            document.getElementById('coachEncouragement').textContent = analysis.encouragement || '';
+
+            // Steps
+            const stepsEl = document.getElementById('coachSteps');
+            stepsEl.innerHTML = (analysis.steps || []).map((step, i) => `
+                <li class="coach-step">
+                    <span class="coach-step-num">${i + 1}</span>
+                    <span class="coach-step-text">${step.text}</span>
+                    <span class="coach-step-time">${step.minutes}m</span>
+                </li>
+            `).join('');
+
+            // Total time
+            document.getElementById('coachTotalTime').textContent =
+                `Total: ~${analysis.totalMinutes || 0} minutes`;
+
+            // Tip
+            document.getElementById('coachTipText').textContent = analysis.mainTip || '';
+
+            // Update usage UI
+            const userQuery2 = query(collection(db, 'users'), where('userId', '==', currentUserId));
+            getDocs(userQuery2).then(snap => {
+                if (!snap.empty) {
+                    const sub = snap.docs[0].data().subscription || {};
+                    updateCoachUsageUI(sub.status === 'active');
+                }
+            });
+
+            // Show result screen
+            document.getElementById('coachAnalyzing').style.display = 'none';
+            document.getElementById('coachResult').style.display = 'block';
+        }
+
+        function resetCoach() {
+            coachPhotoBase64 = '';
+            coachPhotoFile = null;
+
+            document.getElementById('coachHome').style.display = '';
+            document.getElementById('coachAnalyzing').style.display = 'none';
+            document.getElementById('coachResult').style.display = 'none';
+
+            // Reset upload area
+            document.getElementById('coachPreviewImg').style.display = 'none';
+            document.getElementById('coachUploadPrompt').style.display = '';
+            document.getElementById('coachTapOverlay').style.display = 'none';
+            document.getElementById('coachUploadArea').classList.remove('has-photo');
+            document.getElementById('coachAnalyzeBtn').disabled = true;
+            document.getElementById('coachFileInput').value = '';
+
+            loadCoachUsage();
+        }
+
+        function toggleCoachExamples() {
+            const content = document.getElementById('coachExamplesContent');
+            content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // --- Paywall Functions ---
+
+        function openPaywall() {
+            document.getElementById('coachPaywall').classList.add('show');
+            switchBilling('yearly');
+        }
+
+        function closePaywall() {
+            document.getElementById('coachPaywall').classList.remove('show');
+        }
+
+        function switchBilling(cycle) {
+            coachBillingCycle = cycle;
+            document.querySelectorAll('.coach-billing-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.cycle === cycle);
+            });
+
+            const priceEl = document.getElementById('coachBillingPrice');
+            const periodEl = document.getElementById('coachBillingPeriod');
+            const detailEl = document.getElementById('coachBillingDetail');
+            const ctaEl = document.getElementById('coachPaywallCta');
+
+            if (cycle === 'yearly') {
+                priceEl.textContent = '$29.99';
+                periodEl.textContent = '/year';
+                detailEl.textContent = '$2.50/mo';
+                ctaEl.innerHTML = 'Start My Transformation &mdash; $29.99/year';
+            } else {
+                priceEl.textContent = '$3.99';
+                periodEl.textContent = '/month';
+                detailEl.textContent = '$47.88/year';
+                ctaEl.innerHTML = 'Start My Transformation &mdash; $3.99/month';
+            }
+        }
+
+        async function startSubscription() {
+            try {
+                const response = await fetch('https://us-central1-declutter-challenge-94366.cloudfunctions.net/createCheckout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        billingCycle: coachBillingCycle,
+                        userId: currentUserId
+                    })
+                });
+                const data = await response.json();
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    alert('Unable to start checkout. Please try again.');
+                }
+            } catch (error) {
+                console.error('Subscription error:', error);
+                alert('Unable to start checkout. Please try again.');
+            }
+        }
+
+        function restorePurchase() {
+            alert('Checking your subscription status...');
+            loadCoachUsage();
+            closePaywall();
         }
 
         function showAchievement(title, subtitle, points) {
@@ -3932,88 +4712,6 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             }
         }
 
-        async function loadBingoProgress() {
-            try {
-                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
-                const userSnapshot = await getDocs(userQuery);
-
-                if (!userSnapshot.empty) {
-                    const userData = userSnapshot.docs[0].data();
-                    bingoProgress = userData.bingoProgress || {};
-                } else {
-                    bingoProgress = {};
-                }
-                renderBingoGrid();
-                updateSpaceHint();
-            } catch (error) {
-                console.error('Bingo progress load failed:', error);
-            }
-        }
-
-        async function updateBingoProgress(spaceKey) {
-            const oldCount = bingoProgress[spaceKey] || 0;
-            const oldLines = countBingoLines();
-            const oldCompleted = countCompletedSpaces();
-
-            bingoProgress[spaceKey] = oldCount + 1;
-            const newCount = bingoProgress[spaceKey];
-
-            try {
-                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
-                const userSnapshot = await getDocs(userQuery);
-
-                if (!userSnapshot.empty) {
-                    const userDoc = userSnapshot.docs[0];
-                    await updateDoc(doc(db, 'users', userDoc.id), {
-                        bingoProgress: bingoProgress
-                    });
-                }
-            } catch (error) {
-                console.error('Bingo progress update failed:', error);
-            }
-
-            if (newCount === 10) {
-                const spaceName = getSpaceName(spaceKey);
-                let bonusPoints = 100;
-                totalScore += bonusPoints;
-
-                await saveBonusPoints(bonusPoints);
-
-                const newLines = countBingoLines();
-                const linesEarned = newLines - oldLines;
-                if (linesEarned > 0) {
-                    const lineBonus = linesEarned * 500;
-                    totalScore += lineBonus;
-                    bonusPoints += lineBonus;
-                    await saveBonusPoints(lineBonus);
-                }
-
-                const newCompleted = countCompletedSpaces();
-                if (newCompleted === 9 && oldCompleted < 9) {
-                    const allBonus = 3000;
-                    totalScore += allBonus;
-                    bonusPoints += allBonus;
-                    await saveBonusPoints(allBonus);
-                }
-
-                document.getElementById('totalScore').textContent = totalScore;
-                updateHeaderStats();
-
-                setTimeout(() => {
-                    if (newCompleted === 9 && oldCompleted < 9) {
-                        showAchievement('Bingo All Clear!', 'All 9 spaces completed!', bonusPoints);
-                    } else if (linesEarned > 0) {
-                        showAchievement('Bingo!', `${spaceName} done + ${linesEarned} line bingo!`, bonusPoints);
-                    } else {
-                        showAchievement('Space Complete!', `${spaceName} 10 items decluttered!`, bonusPoints);
-                    }
-                }, 500);
-            }
-
-            renderBingoGrid();
-            updateSpaceHint();
-        }
-
         async function saveBonusPoints(points) {
             try {
                 const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
@@ -4027,25 +4725,6 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             } catch (error) {
                 console.error('Bonus points save failed:', error);
             }
-        }
-
-        async function resetBingo() {
-            if (!confirm('Reset bingo? All progress will be cleared.')) return;
-
-            bingoProgress = {};
-            try {
-                const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
-                const userSnapshot = await getDocs(userQuery);
-                if (!userSnapshot.empty) {
-                    const userDoc = userSnapshot.docs[0];
-                    await updateDoc(doc(db, 'users', userDoc.id), {
-                        bingoProgress: {}
-                    });
-                }
-            } catch (error) {
-                console.error('Bingo reset failed:', error);
-            }
-            renderBingoGrid();
         }
 
         function showLoginScreen() {
@@ -4334,7 +5013,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                         streak: 0,
                         lastDeclutterDate: null,
                         badges: [],
-                        bingoProgress: {},
+                        coachUsage: { month: '', count: 0 },
                         createdAt: serverTimestamp(),
                         lastActive: serverTimestamp()
                     });
@@ -4403,8 +5082,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         }
 
         function getSpaceDisplayName(spaceKey) {
-            const space = bingoSpaces.find(s => s.key === spaceKey);
-            return space ? space.name : spaceKey;
+            return spaceNames[spaceKey] || spaceKey;
         }
 
         function getRelativeTime(date) {
@@ -5338,7 +6016,6 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
                 totalScore += points;
                 await updateUserScore();
                 await calculateStreak();
-                await updateBingoProgress(space);
 
                 playTrashSound();
                 playSuccessSound();
@@ -5520,36 +6197,14 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
 
                 await deleteDoc(doc(db, 'items', itemDocId));
 
-                // --- Revert bingo progress ---
-                let bingoBonusToSubtract = 0;
-                if (itemSpace && (bingoProgress[itemSpace] || 0) > 0) {
-                    const oldCompleted = countCompletedSpaces();
-                    const oldLines = countBingoLines();
-
-                    bingoProgress[itemSpace] = Math.max(0, (bingoProgress[itemSpace] || 0) - 1);
-
-                    const newCompleted = countCompletedSpaces();
-                    const newLines = countBingoLines();
-
-                    // Calculate lost bingo bonuses
-                    const lostSpaces = oldCompleted - newCompleted;
-                    const lostLines = oldLines - newLines;
-                    const lostAllClear = (oldCompleted === 9 && newCompleted < 9) ? 1 : 0;
-                    bingoBonusToSubtract = lostSpaces * 100 + lostLines * 500 + lostAllClear * 3000;
-
-                    renderBingoGrid();
-                    updateSpaceHint();
-                }
-
-                // --- Update user score, item count, bingo, and streak ---
+                // --- Update user score, item count, and streak ---
                 const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
                 const userSnapshot = await getDocs(userQuery);
 
                 if (!userSnapshot.empty) {
                     const userDoc = userSnapshot.docs[0];
                     const userData = userDoc.data();
-                    const totalToSubtract = itemPoints + bingoBonusToSubtract;
-                    const newScore = Math.max(0, (userData.score || 0) - totalToSubtract);
+                    const newScore = Math.max(0, (userData.score || 0) - itemPoints);
                     const newItemCount = Math.max(0, (userData.itemCount || 0) - 1);
 
                     // --- Recalculate streak ---
@@ -5606,8 +6261,7 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
                     const updateData = {
                         score: newScore,
                         itemCount: newItemCount,
-                        streak: newStreak,
-                        bingoProgress: bingoProgress
+                        streak: newStreak
                     };
                     if (newLastDeclutterDate === null) {
                         updateData.lastDeclutterDate = null;
@@ -6395,7 +7049,7 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
             // Map tab names to tab element IDs
             const tabMap = {
                 'add': 'addTab',
-                'bingo': 'bingoTab',
+                'coach': 'coachTab',
                 'feed': 'historyTab',
                 'history': 'historyTab',
                 'calendar': 'calendarTab',
@@ -6420,7 +7074,7 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
 
             // Update specific tab content if needed
             if (tab === 'add') updateSpaceHint();
-            if (tab === 'bingo') loadBingoProgress();
+            if (tab === 'coach') loadCoachUsage();
             if (tab === 'feed' || tab === 'history') loadMyItems();
             if (tab === 'calendar') renderCalendar();
             if (tab === 'leaderboard') loadLeaderboard();
@@ -6428,7 +7082,6 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
 
         document.getElementById('itemSpace').addEventListener('change', updateSpaceHint);
         document.getElementById('achievementOverlay').addEventListener('click', hideAchievement);
-        document.getElementById('bingoResetBtn').addEventListener('click', resetBingo);
 
         let currentCalendarYear = 2026;
         let currentCalendarMonth = 1;
@@ -7156,7 +7809,6 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
                 const userData = userSnapshot.docs[0].data();
                 userStreak = userData.streak || 0;
                 userBadges = userData.badges || [];
-                bingoProgress = userData.bingoProgress || {};
 
                 // Load profile photo URL
                 if (userData.photoURL) {
@@ -7177,7 +7829,6 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
 
                 updateHeaderStats();
                 renderBadges();
-                renderBingoGrid();
 
                 // Load dream vision
                 renderDreamVision(userData.dreamVision || '');
