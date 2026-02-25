@@ -4658,6 +4658,17 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             closePaywall();
         }
 
+        // Expose AI Coach functions to global scope for inline HTML event handlers
+        window.handleCoachPhoto = handleCoachPhoto;
+        window.analyzeSpace = analyzeSpace;
+        window.resetCoach = resetCoach;
+        window.toggleCoachExamples = toggleCoachExamples;
+        window.openPaywall = openPaywall;
+        window.closePaywall = closePaywall;
+        window.switchBilling = switchBilling;
+        window.startSubscription = startSubscription;
+        window.restorePurchase = restorePurchase;
+
         function showAchievement(title, subtitle, points) {
             document.getElementById('achievementTitle').textContent = title;
             document.getElementById('achievementSubtitle').textContent = subtitle;
