@@ -4966,6 +4966,8 @@ GOOD (personalized): "팬트리 이어서 주방까지! 🍳 이번 주만 5개�
                 }).catch(err => {
                     console.error('[Tidy] Unhandled error in comment pipeline:', err);
                 });
+                // Tidy AI Coach comment is now generated automatically via
+                // Firestore onCreate trigger — no client-side call needed.
 
                 // Reset form
                 document.getElementById('itemName').value = '';
