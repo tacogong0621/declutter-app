@@ -4544,6 +4544,18 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             const afterImg = document.getElementById('coachAfterImg');
             const afterCard = afterImg.closest('.coach-photo-card');
             if (result.afterImageUrl) {
+                afterImg.crossOrigin = 'anonymous';
+                afterImg.onerror = function() {
+                    console.warn('[Coach] After image failed to load, trying without crossOrigin');
+                    // Retry without crossOrigin in case of CORS issues
+                    afterImg.onerror = function() {
+                        console.error('[Coach] After image failed to load completely');
+                        afterImg.style.display = 'none';
+                        if (afterCard) afterCard.style.display = 'none';
+                    };
+                    afterImg.removeAttribute('crossorigin');
+                    afterImg.src = result.afterImageUrl;
+                };
                 afterImg.src = result.afterImageUrl;
                 afterImg.style.display = 'block';
                 if (afterCard) afterCard.style.display = '';

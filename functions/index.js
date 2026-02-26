@@ -659,8 +659,20 @@ Rules for steps:
             contentType: "image/jpeg",
             metadata: { cacheControl: "public,max-age=31536000" },
           });
-          await file.makePublic();
-          afterImageUrl = `https://storage.googleapis.com/${bucket.name}/${filePath}`;
+
+          // Try makePublic first, fall back to signed URL if it fails
+          try {
+            await file.makePublic();
+            afterImageUrl = `https://storage.googleapis.com/${bucket.name}/${filePath}`;
+          } catch (publicErr) {
+            console.warn("[Coach] makePublic failed, using signed URL:", publicErr.message);
+            const [signedUrl] = await file.getSignedUrl({
+              action: "read",
+              expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
+            });
+            afterImageUrl = signedUrl;
+          }
+          console.log("[Coach] After image URL:", afterImageUrl);
         } else {
           const dalleErr = await dalleResponse.text();
           console.error("[Coach] DALL-E error:", dalleResponse.status, dalleErr);

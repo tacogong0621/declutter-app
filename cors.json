@@ -1,7 +1,8 @@
 [
   {
-    "origin": ["https://tacogong0621.github.io"],
+    "origin": ["https://tacogong0621.github.io", "http://localhost:5000", "http://localhost:3000"],
     "method": ["GET"],
+    "responseHeader": ["Content-Type", "Content-Length", "Cache-Control"],
     "maxAgeSeconds": 3600
   }
 ]
