@@ -538,7 +538,7 @@ USER'S VISION: "${userVision || ""}"
   "totalMinutes": 8,
   "mainTip": "The 'nothing lives here' rule — this surface is for cooking, not storing. 60-second nightly sweep keeps it clear.",
   "encouragement": "About 12 items don't belong here. Clear in ~8 minutes:",
-  "imagePrompt": "A clean, minimalist kitchen island with clear granite countertop, no clutter, soft natural lighting, same kitchen layout as original photo, photorealistic, tidy and organized"
+  "imagePrompt": "Remove only the clutter items from this photo. Keep the exact same room, same camera angle, same walls, same floor, same furniture, same lighting, and same colors. Simply remove the loose items that do not belong (papers, random objects, etc.) so the surfaces are clean and clear. Do not add any new objects, do not change the room layout, do not change the style or colors."
 }
 
 Rules for steps:
@@ -547,8 +547,9 @@ Rules for steps:
 - Tips should be about HABITS, not purchases
 - Match the user's language (Korean photo context → Korean response, etc.)
 - Keep steps actionable and specific
-- The imagePrompt should describe the SAME space but clean and minimal — fewer items, not reorganized with new products
-- imagePrompt must always be in English for DALL-E compatibility`;
+- imagePrompt MUST describe an edit to the EXISTING photo — instruct to REMOVE clutter items while keeping EVERYTHING else identical (same room, same angle, same walls, same floor, same furniture, same lighting)
+- imagePrompt must NOT describe a new scene — it must be a direct instruction to clean up the original photo
+- imagePrompt must always be in English`;
 
     try {
       // STEP 1: Claude API — analyze the photo
@@ -616,58 +617,60 @@ Rules for steps:
         }
       }
 
-      // STEP 3: DALL-E — generate the "after" image (optional, requires OPENAI_API_KEY)
+      // STEP 3: OpenAI image edit — generate the "after" image by editing the original photo
       let afterImageUrl = null;
       const oaiKey = openaiApiKey.value();
       if (!oaiKey) {
-        console.log("[Coach] OPENAI_API_KEY not configured, skipping DALL-E image generation");
+        console.log("[Coach] OPENAI_API_KEY not configured, skipping image generation");
       }
       if (oaiKey) try {
-        console.log("[Coach] Generating after image with DALL-E");
-        const dalleResponse = await fetch(
-          "https://api.openai.com/v1/images/generations",
+        console.log("[Coach] Generating after image with gpt-image-1 edit");
+
+        const imageBuffer = Buffer.from(rawBase64, "base64");
+        const imageBlob = new Blob([imageBuffer], { type: detectedMediaType });
+        const ext = detectedMediaType === "image/png" ? "png" : "jpg";
+
+        const formData = new FormData();
+        formData.append("image", imageBlob, `photo.${ext}`);
+        formData.append("model", "gpt-image-1");
+        formData.append("prompt", parsed.imagePrompt || "Remove the clutter items from this photo. Keep the exact same room, angle, walls, floor, furniture, and lighting. Just make the surfaces clean and clear.");
+        formData.append("n", "1");
+        formData.append("size", "1024x1024");
+        formData.append("quality", "low");
+
+        const editResponse = await fetch(
+          "https://api.openai.com/v1/images/edits",
           {
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${oaiKey}`,
             },
-            body: JSON.stringify({
-              model: "dall-e-3",
-              prompt: parsed.imagePrompt || "A clean, minimalist room, photorealistic, tidy",
-              n: 1,
-              size: "1024x1024",
-              quality: "standard",
-            }),
+            body: formData,
           }
         );
 
-        if (dalleResponse.ok) {
-          const dalleResult = await dalleResponse.json();
-          const generatedUrl = dalleResult.data[0].url;
-
-          // STEP 4: Download and save to Firebase Storage
-          const imgResponse = await fetch(generatedUrl);
-          const imgArrayBuffer = await imgResponse.arrayBuffer();
-          const imgBuffer = Buffer.from(imgArrayBuffer);
+        if (editResponse.ok) {
+          const editResult = await editResponse.json();
+          const b64Image = editResult.data[0].b64_json;
+          const imgBuffer = Buffer.from(b64Image, "base64");
 
           const bucket = getStorage().bucket();
           const timestamp = Date.now();
-          const filePath = `coach/${userId}/${timestamp}_after.jpg`;
+          const filePath = `coach/${userId}/${timestamp}_after.png`;
           const file = bucket.file(filePath);
           await file.save(imgBuffer, {
-            contentType: "image/jpeg",
+            contentType: "image/png",
             metadata: { cacheControl: "public,max-age=31536000" },
           });
           await file.makePublic();
           afterImageUrl = `https://storage.googleapis.com/${bucket.name}/${filePath}`;
         } else {
-          const dalleErr = await dalleResponse.text();
-          console.error("[Coach] DALL-E error:", dalleResponse.status, dalleErr);
+          const editErr = await editResponse.text();
+          console.error("[Coach] Image edit error:", editResponse.status, editErr);
           // Continue without after image — analysis is still useful
         }
-      } catch (dalleError) {
-        console.error("[Coach] DALL-E generation failed:", dalleError);
+      } catch (editError) {
+        console.error("[Coach] Image edit generation failed:", editError);
         // Continue without after image
       }
 
