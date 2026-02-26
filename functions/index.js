@@ -514,31 +514,39 @@ exports.analyzeSpace = onRequest(
 
     const analysisPrompt = `You are "Tidy", an AI decluttering coach for a minimalism app.
 
-Analyze this photo of a messy space. Respond ONLY in valid JSON (no markdown, no backticks).
+Analyze this photo of a messy space. First, carefully identify ALL visible furniture and belongings. Then suggest how to ORGANIZE them in place. Respond ONLY in valid JSON (no markdown, no backticks).
 
 USER'S VISION: "${userVision || ""}"
 
 {
   "spaceName": "Kitchen Island",
+  "visibleItems": ["wooden desk", "office chair", "laptop", "stack of books", "coffee mug", "pile of clothes", "shoes on floor", "trash bag", "papers scattered on desk"],
   "itemCount": 12,
   "steps": [
-    { "text": "Mail & papers → recycle or file", "minutes": 2 },
-    { "text": "Keys, wallet → landing zone by door", "minutes": 1 }
+    { "text": "Mail & papers → stack neatly or file in existing drawer", "minutes": 2 },
+    { "text": "Clothes on chair → fold and place on shelf", "minutes": 3 },
+    { "text": "Books scattered → stand upright and group together", "minutes": 2 },
+    { "text": "Trash and wrappers → throw away", "minutes": 1 }
   ],
   "totalMinutes": 8,
-  "mainTip": "The 'nothing lives here' rule — this surface is for cooking, not storing. 60-second nightly sweep keeps it clear.",
-  "encouragement": "About 12 items don't belong here. Clear in ~8 minutes:",
-  "imagePrompt": "Remove only the clutter items from this photo. Keep the exact same room, same camera angle, same walls, same floor, same furniture, same lighting, and same colors. Simply remove the loose items that do not belong (papers, random objects, etc.) so the surfaces are clean and clear. Do not add any new objects, do not change the room layout, do not change the style or colors."
+  "mainTip": "The 'everything has a home' rule — each item gets returned to its spot. 60-second nightly reset keeps it maintained.",
+  "encouragement": "This space has great potential! About 8 minutes of organizing will transform it:",
+  "imagePrompt": "Transform this space into a tidied version. Keep ALL furniture and belongings visible in the photo — do NOT remove them. Instead: fold clothes neatly, stand books upright on the shelf, align items on surfaces into neat groups, clear papers into a tidy stack, straighten shoes by the door. Only remove obvious trash (wrappers, empty bottles, used tissues). The result should look like what a real person could achieve in 1-2 hours of cleaning — not a staged magazine photo. Keep the exact same room, same camera angle, same walls, same floor, same furniture, same lighting, and same colors. Items: wooden desk, office chair, laptop, stack of books, coffee mug, pile of clothes, shoes, papers — all must remain visible but neatly organized."
 }
 
 Rules for steps:
 - NEVER suggest buying anything (no bins, organizers, containers, shelves, products)
-- Only suggest REMOVING items or RELOCATING them to where they already belong
+- Suggest ORGANIZING items in place (fold, stack, align, group) and RELOCATING them to where they already belong
+- Only suggest REMOVING actual trash (wrappers, empty containers, used tissues)
 - Tips should be about HABITS, not purchases
 - Match the user's language (Korean photo context → Korean response, etc.)
 - Keep steps actionable and specific
-- imagePrompt MUST describe an edit to the EXISTING photo — instruct to REMOVE clutter items while keeping EVERYTHING else identical (same room, same angle, same walls, same floor, same furniture, same lighting)
-- imagePrompt must NOT describe a new scene — it must be a direct instruction to clean up the original photo
+- visibleItems MUST list ALL furniture and significant objects you can see in the photo — be thorough
+- imagePrompt MUST instruct to ORGANIZE and TIDY the existing items, NOT remove them
+- imagePrompt MUST include the list of visible items and state they must all remain in the photo
+- imagePrompt must describe the same room with same items but neatly arranged — like a realistic before/after of 1-2 hours of tidying
+- imagePrompt must NOT make the room look empty or staged — it should look achievably tidy
+- imagePrompt must keep the exact same room, angle, walls, floor, furniture, and lighting
 - imagePrompt must always be in English`;
 
     try {
@@ -557,7 +565,7 @@ Rules for steps:
           },
           body: JSON.stringify({
             model: "claude-haiku-4-5-20251001",
-            max_tokens: 500,
+            max_tokens: 800,
             messages: [
               {
                 role: "user",
@@ -623,7 +631,7 @@ Rules for steps:
         const formData = new FormData();
         formData.append("image", imageBlob, `photo.${ext}`);
         formData.append("model", "gpt-image-1");
-        formData.append("prompt", parsed.imagePrompt || "Remove the clutter items from this photo. Keep the exact same room, angle, walls, floor, furniture, and lighting. Just make the surfaces clean and clear.");
+        formData.append("prompt", parsed.imagePrompt || "Transform this space into a tidied version. Keep all furniture and belongings in place — do not remove them. Instead, fold clothes neatly, stand books upright, align items on surfaces, and organize visible clutter into logical groups. Only remove obvious trash or items that are completely out of place. The result should look like what a real person could achieve in 1-2 hours of cleaning, not a staged photoshoot. Maintain the exact same room angle, lighting, and background.");
         formData.append("n", "1");
         formData.append("size", "1024x1024");
         formData.append("quality", "low");
