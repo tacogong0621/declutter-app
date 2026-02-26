@@ -4481,7 +4481,9 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                     userVision = userSnapshot.docs[0].data().dreamVision || '';
                 }
 
-                // Call Cloud Function
+                // Call Cloud Function with timeout
+                const controller = new AbortController();
+                const fetchTimeout = setTimeout(() => controller.abort(), 90000);
                 const response = await fetch('https://us-central1-declutter-challenge-94366.cloudfunctions.net/analyzeSpace', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -4489,11 +4491,15 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                         imageBase64: coachPhotoBase64,
                         userId: currentUserId,
                         userVision: userVision
-                    })
+                    }),
+                    signal: controller.signal
                 });
+                clearTimeout(fetchTimeout);
 
                 if (!response.ok) {
-                    throw new Error('Analysis failed');
+                    const errBody = await response.text().catch(() => '');
+                    console.error('analyzeSpace response:', response.status, errBody);
+                    throw new Error('Analysis failed (' + response.status + ')');
                 }
 
                 const result = await response.json();
@@ -4515,7 +4521,13 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
 
             } catch (error) {
                 console.error('Analysis error:', error);
-                alert('Analysis failed. Please try again.');
+                let msg = 'Analysis failed. Please try again.';
+                if (error.name === 'AbortError') {
+                    msg = 'Analysis timed out. Please try again with a smaller image.';
+                } else if (error.message && error.message.includes('Failed to fetch')) {
+                    msg = 'Could not connect to the analysis service. The Cloud Function may need to be deployed. Please check Firebase deployment.';
+                }
+                alert(msg);
                 document.getElementById('coachHome').style.display = '';
                 document.getElementById('coachAnalyzing').style.display = 'none';
                 analyzeBtn.disabled = false;

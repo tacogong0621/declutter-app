@@ -550,9 +550,13 @@ Rules for steps:
         }
       }
 
-      // STEP 3: DALL-E — generate the "after" image
+      // STEP 3: DALL-E — generate the "after" image (optional, requires OPENAI_API_KEY)
       let afterImageUrl = null;
-      try {
+      const oaiKey = openaiApiKey.value();
+      if (!oaiKey) {
+        console.log("[Coach] OPENAI_API_KEY not configured, skipping DALL-E image generation");
+      }
+      if (oaiKey) try {
         console.log("[Coach] Generating after image with DALL-E");
         const dalleResponse = await fetch(
           "https://api.openai.com/v1/images/generations",
@@ -560,7 +564,7 @@ Rules for steps:
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${openaiApiKey.value()}`,
+              Authorization: `Bearer ${oaiKey}`,
             },
             body: JSON.stringify({
               model: "dall-e-3",
