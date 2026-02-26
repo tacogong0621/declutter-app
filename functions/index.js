@@ -514,40 +514,46 @@ exports.analyzeSpace = onRequest(
 
     const analysisPrompt = `You are "Tidy", an AI decluttering coach for a minimalism app.
 
-Analyze this photo of a messy space. First, carefully identify ALL visible furniture and belongings. Then suggest how to ORGANIZE them in place. Respond ONLY in valid JSON (no markdown, no backticks).
+Analyze this photo of a messy space. First, carefully list EVERY visible object (furniture, items on surfaces, items on floor, wall decorations — everything). Then suggest how to rearrange and neaten them IN PLACE. Respond ONLY in valid JSON (no markdown, no backticks).
 
 USER'S VISION: "${userVision || ""}"
 
 {
-  "spaceName": "Kitchen Island",
-  "visibleItems": ["wooden desk", "office chair", "laptop", "stack of books", "coffee mug", "pile of clothes", "shoes on floor", "trash bag", "papers scattered on desk"],
-  "itemCount": 12,
-  "steps": [
-    { "text": "Mail & papers → stack neatly or file in existing drawer", "minutes": 2 },
-    { "text": "Clothes on chair → fold and place on shelf", "minutes": 3 },
-    { "text": "Books scattered → stand upright and group together", "minutes": 2 },
-    { "text": "Trash and wrappers → throw away", "minutes": 1 }
+  "spaceName": "Bedroom",
+  "visibleItems": ["bed with rumpled blanket", "wooden bookshelf", "desk with laptop", "office chair with jacket draped over it", "stack of books on floor", "coffee mug on desk", "pile of clothes on bed", "sneakers by door", "trash wrapper on desk", "water bottle on floor", "backpack leaning on wall"],
+  "itemArrangements": [
+    "bed with blanket smoothed and pulled flat",
+    "jacket moved from chair to a hook or folded on bed corner",
+    "books stacked upright on bookshelf",
+    "coffee mug centered on desk beside laptop",
+    "clothes folded in a neat pile on bed corner",
+    "sneakers paired neatly side by side by door",
+    "water bottle standing upright on desk",
+    "backpack standing upright against wall"
   ],
-  "totalMinutes": 8,
+  "trashToRemove": ["trash wrapper on desk"],
+  "itemCount": 11,
+  "steps": [
+    { "text": "Clothes on bed → fold into a neat stack on bed corner", "minutes": 3 },
+    { "text": "Books on floor → stand upright on bookshelf", "minutes": 2 },
+    { "text": "Trash wrapper → throw away", "minutes": 1 },
+    { "text": "Sneakers → pair neatly by door", "minutes": 1 }
+  ],
+  "totalMinutes": 7,
   "mainTip": "The 'everything has a home' rule — each item gets returned to its spot. 60-second nightly reset keeps it maintained.",
-  "encouragement": "This space has great potential! About 8 minutes of organizing will transform it:",
-  "imagePrompt": "Transform this space into a tidied version. Keep ALL furniture and belongings visible in the photo — do NOT remove them. Instead: fold clothes neatly, stand books upright on the shelf, align items on surfaces into neat groups, clear papers into a tidy stack, straighten shoes by the door. Only remove obvious trash (wrappers, empty bottles, used tissues). The result should look like what a real person could achieve in 1-2 hours of cleaning — not a staged magazine photo. Keep the exact same room, same camera angle, same walls, same floor, same furniture, same lighting, and same colors. Items: wooden desk, office chair, laptop, stack of books, coffee mug, pile of clothes, shoes, papers — all must remain visible but neatly organized."
+  "encouragement": "This space has great bones! About 7 minutes of rearranging will make a huge difference:"
 }
 
 Rules for steps:
 - NEVER suggest buying anything (no bins, organizers, containers, shelves, products)
-- Suggest ORGANIZING items in place (fold, stack, align, group) and RELOCATING them to where they already belong
-- Only suggest REMOVING actual trash (wrappers, empty containers, used tissues)
+- Suggest REARRANGING items in place (fold, stack, align, group, straighten, pair) — NOT removing them
+- trashToRemove should ONLY contain actual garbage (wrappers, used tissues, empty containers) — NEVER furniture, clothes, books, decor, or personal items
 - Tips should be about HABITS, not purchases
 - Match the user's language (Korean photo context → Korean response, etc.)
 - Keep steps actionable and specific
-- visibleItems MUST list ALL furniture and significant objects you can see in the photo — be thorough
-- imagePrompt MUST instruct to ORGANIZE and TIDY the existing items, NOT remove them
-- imagePrompt MUST include the list of visible items and state they must all remain in the photo
-- imagePrompt must describe the same room with same items but neatly arranged — like a realistic before/after of 1-2 hours of tidying
-- imagePrompt must NOT make the room look empty or staged — it should look achievably tidy
-- imagePrompt must keep the exact same room, angle, walls, floor, furniture, and lighting
-- imagePrompt must always be in English`;
+- visibleItems MUST list EVERY object you can see — furniture, items on surfaces, items on floor, wall items. Be exhaustive.
+- itemArrangements MUST describe the SAME items in their neatened state — same count, same objects, just repositioned/straightened/folded
+- Do NOT include an imagePrompt field — it will be built from your visibleItems and itemArrangements automatically`;
 
     try {
       // STEP 1: Claude API — analyze the photo
@@ -615,7 +621,40 @@ Rules for steps:
         }
       }
 
-      // STEP 3: OpenAI image edit — generate the "after" image by editing the original photo
+      // STEP 3: Build the image edit prompt from visibleItems + itemArrangements
+      const items = parsed.visibleItems || [];
+      const arrangements = parsed.itemArrangements || [];
+      const trash = parsed.trashToRemove || [];
+
+      let builtImagePrompt;
+      if (items.length > 0 && arrangements.length > 0) {
+        const keepList = items.filter((i) => !trash.some((t) => i.toLowerCase().includes(t.toLowerCase().split(" ")[0])));
+        builtImagePrompt = [
+          "CRITICAL INSTRUCTION: This is a REARRANGING task, NOT a removing task.",
+          "Show the SAME room with the SAME objects — just neatly repositioned and straightened.",
+          "DO NOT erase, delete, or make any objects disappear. Every item listed below MUST remain visible.",
+          "",
+          `ITEMS THAT MUST STAY (${keepList.length} objects — all must be visible in result):`,
+          ...keepList.map((item, i) => `  ${i + 1}. ${item}`),
+          "",
+          "HOW TO REARRANGE THEM:",
+          ...arrangements.map((arr, i) => `  ${i + 1}. ${arr}`),
+          "",
+          trash.length > 0 ? `ONLY THESE may be removed (trash): ${trash.join(", ")}` : "",
+          "",
+          "RULES:",
+          "- Same room, same camera angle, same walls, same floor, same lighting, same colors.",
+          "- The number of visible objects should be approximately the SAME as the original photo.",
+          "- The room should look lived-in and realistic — like someone spent 1 hour straightening up.",
+          "- DO NOT make surfaces empty. Items stay on surfaces but get aligned and grouped.",
+          "- DO NOT make the room look like a magazine photo or a showroom.",
+          "- Realistic photo style matching the original image.",
+        ].filter(Boolean).join("\n");
+      } else {
+        builtImagePrompt = parsed.imagePrompt || null;
+      }
+
+      // STEP 4: OpenAI image edit — generate the "after" image by editing the original photo
       let afterImageUrl = null;
       const oaiKey = openaiApiKey.value();
       if (!oaiKey) {
@@ -623,18 +662,21 @@ Rules for steps:
       }
       if (oaiKey) try {
         console.log("[Coach] Generating after image with gpt-image-1 edit");
+        console.log("[Coach] Image prompt length:", (builtImagePrompt || "").length, "chars");
 
         const imageBuffer = Buffer.from(rawBase64, "base64");
         const imageBlob = new Blob([imageBuffer], { type: detectedMediaType });
         const ext = detectedMediaType === "image/png" ? "png" : "jpg";
 
+        const fallbackPrompt = "REARRANGING task — NOT a removing task. Show the exact same room with the exact same furniture and belongings, but neatly repositioned. Fold clothes into neat stacks, stand books upright, align items on surfaces into groups, pair shoes neatly. DO NOT erase or delete ANY objects — every piece of furniture and every item must remain visible. Only remove actual trash (wrappers, tissues). The room should look like someone spent 1 hour straightening up — still lived-in, not empty. Same angle, same lighting, same background. Realistic photo.";
+
         const formData = new FormData();
         formData.append("image", imageBlob, `photo.${ext}`);
         formData.append("model", "gpt-image-1");
-        formData.append("prompt", parsed.imagePrompt || "Transform this space into a tidied version. Keep all furniture and belongings in place — do not remove them. Instead, fold clothes neatly, stand books upright, align items on surfaces, and organize visible clutter into logical groups. Only remove obvious trash or items that are completely out of place. The result should look like what a real person could achieve in 1-2 hours of cleaning, not a staged photoshoot. Maintain the exact same room angle, lighting, and background.");
+        formData.append("prompt", builtImagePrompt || fallbackPrompt);
         formData.append("n", "1");
         formData.append("size", "1024x1024");
-        formData.append("quality", "low");
+        formData.append("quality", "medium");
 
         const editResponse = await fetch(
           "https://api.openai.com/v1/images/edits",
