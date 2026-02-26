@@ -438,7 +438,7 @@ exports.generateTidyComment = onDocumentCreated(
  */
 exports.analyzeSpace = onRequest(
   {
-    secrets: [anthropicApiKey],
+    secrets: [anthropicApiKey, openaiApiKey],
     timeoutSeconds: 120,
     memory: "512MiB",
     cors: ALLOWED_ORIGINS,
