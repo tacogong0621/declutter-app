@@ -193,60 +193,6 @@
             font-family: inherit;
         }
 
-        .settings-coach-face {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .settings-coach-face-preview {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #E8F5E9;
-            flex-shrink: 0;
-        }
-
-        .settings-coach-face-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .settings-coach-face-upload-btn {
-            background: #4CAF50;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 14px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            font-family: inherit;
-            transition: opacity 0.2s;
-        }
-
-        .settings-coach-face-upload-btn:active {
-            opacity: 0.8;
-        }
-
-        .settings-coach-face-reset-btn {
-            background: none;
-            border: none;
-            color: #999;
-            font-size: 11px;
-            font-weight: 500;
-            cursor: pointer;
-            font-family: inherit;
-            padding: 2px 0;
-            text-align: left;
-        }
-
-        .settings-coach-face-reset-btn:hover {
-            color: #666;
-        }
-
 
         .profile-content {
             display: flex;
@@ -3970,7 +3916,7 @@
                 <!-- Home screen -->
                 <div id="coachHome">
                     <div class="coach-header">
-                        <h2 style="display:flex; align-items:center; gap:8px;"><img class="coach-face-img" src="./images/tidy-coach.png" alt="Tidy" style="width:28px; height:28px; border-radius:50%; object-fit:cover;" /><span>AI Coach Tidy</span></h2>
+                        <h2 style="display:flex; align-items:center; gap:8px;"><img src="./images/tidy-coach.png" alt="Tidy" style="width:28px; height:28px; border-radius:50%; object-fit:cover;" /><span>AI Coach Tidy</span></h2>
                         <div class="coach-usage-pill" id="coachUsagePill">
                             <span class="usage-dot"></span>
                             <span id="coachUsageText">Unlimited</span>
@@ -4002,7 +3948,7 @@
                         <div class="coach-limit-title">You've used all free analyses</div>
                         <div class="coach-limit-bar"></div>
                         <div class="coach-limit-text">Limit reached &middot; Resets next month</div>
-                        <button class="coach-upgrade-btn" onclick="openPaywall()"><img class="coach-face-img" src="./images/tidy-coach.png" alt="" style="width:20px; height:20px; border-radius:50%; object-fit:cover; vertical-align:middle; margin-right:4px;" />Upgrade to Pro</button>
+                        <button class="coach-upgrade-btn" onclick="openPaywall()"><img src="./images/tidy-coach.png" alt="" style="width:20px; height:20px; border-radius:50%; object-fit:cover; vertical-align:middle; margin-right:4px;" />Upgrade to Pro</button>
                     </div>
                 </div>
 
@@ -4036,7 +3982,7 @@
 
                     <div class="coach-analysis-card">
                         <div class="coach-avatar-row">
-                            <img class="coach-face-img" src="./images/tidy-coach.png" alt="Tidy" style="width:32px; height:32px; border-radius:50%; object-fit:cover;" />
+                            <span class="coach-avatar">&#127968;</span>
                             <span class="coach-badge">AI COACH</span>
                         </div>
                         <div class="coach-encouragement" id="coachEncouragement"></div>
@@ -4058,7 +4004,7 @@
         <div class="coach-paywall-overlay" id="coachPaywall">
             <button class="coach-paywall-close" onclick="closePaywall()">&times;</button>
             <div class="coach-paywall-header">
-                <img class="coach-face-img" src="./images/tidy-coach.png" alt="Tidy" style="width:64px; height:64px; border-radius:50%; object-fit:cover; margin-bottom:12px;" />
+                <img src="./images/tidy-coach.png" alt="Tidy" style="width:64px; height:64px; border-radius:50%; object-fit:cover; margin-bottom:12px;" />
                 <div class="coach-paywall-title">Your Space Transformed</div>
                 <div class="coach-paywall-subtitle">Upload a messy space. Watch it become calm.</div>
             </div>
@@ -4277,7 +4223,7 @@
             </button>
 
             <button class="nav-item" onclick="switchTab('coach')" data-tab="coach">
-                <div class="nav-icon"><img class="coach-face-img" src="./images/tidy-coach.png" alt="Coach" style="width:24px; height:24px; border-radius:50%; object-fit:cover;" /></div>
+                <div class="nav-icon"><img src="./images/tidy-coach.png" alt="Coach" style="width:24px; height:24px; border-radius:50%; object-fit:cover;" /></div>
                 <div class="nav-label">Coach</div>
             </button>
 
@@ -4370,14 +4316,6 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         let coachUsageCount = 0;
         let coachUsageMonth = '';
         let coachBillingCycle = 'yearly';
-
-        // Apply custom coach face on page load
-        (function() {
-            const customFace = localStorage.getItem('customCoachFace');
-            if (customFace) {
-                document.querySelectorAll('.coach-face-img').forEach(img => { img.src = customFace; });
-            }
-        })();
 
         // Before & After state
         let baEnabled = false;
@@ -4997,12 +4935,6 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             saveBtn.style.display = 'none';
             saveBtn.textContent = 'Save';
 
-            // Refresh coach face preview
-            const coachPreview = document.getElementById('settingsCoachFacePreview');
-            if (coachPreview) coachPreview.src = getCoachFaceURL();
-            const resetBtn = document.getElementById('coachFaceResetBtn');
-            if (resetBtn) resetBtn.style.display = localStorage.getItem('customCoachFace') ? 'block' : 'none';
-
             overlay.style.display = 'block';
             sheet.style.display = 'block';
             requestAnimationFrame(() => {
@@ -5067,59 +4999,6 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         window.handleSettingsLogout = async function() {
             closeSettings();
             await handleLogout();
-        };
-
-        // Coach Face Customization
-        const DEFAULT_COACH_FACE = './images/tidy-coach.png';
-
-        window.getCoachFaceURL = function() {
-            return localStorage.getItem('customCoachFace') || DEFAULT_COACH_FACE;
-        };
-
-        window.updateAllCoachFaces = function() {
-            const url = getCoachFaceURL();
-            document.querySelectorAll('.coach-face-img').forEach(img => {
-                img.src = url;
-            });
-            const preview = document.getElementById('settingsCoachFacePreview');
-            if (preview) preview.src = url;
-            const resetBtn = document.getElementById('coachFaceResetBtn');
-            if (resetBtn) {
-                resetBtn.style.display = localStorage.getItem('customCoachFace') ? 'block' : 'none';
-            }
-        };
-
-        window.handleCoachFaceUpload = function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            if (!file.type.startsWith('image/')) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const size = 128;
-                    canvas.width = size;
-                    canvas.height = size;
-                    const ctx = canvas.getContext('2d');
-                    const scale = Math.max(size / img.width, size / img.height);
-                    const w = img.width * scale;
-                    const h = img.height * scale;
-                    ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
-                    const dataURL = canvas.toDataURL('image/png', 0.8);
-                    localStorage.setItem('customCoachFace', dataURL);
-                    updateAllCoachFaces();
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-            event.target.value = '';
-        };
-
-        window.resetCoachFace = function() {
-            localStorage.removeItem('customCoachFace');
-            updateAllCoachFaces();
         };
 
         const categoryPoints = {
@@ -6499,7 +6378,7 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
                 return `
                     <div class="comment tidy-comment">
                         <div class="tidy-comment-header">
-                            <div class="tidy-avatar"><img class="coach-face-img" src="${getCoachFaceURL()}" alt="Tidy" style="width:26px; height:26px; border-radius:50%; object-fit:cover;" /></div>
+                            <div class="tidy-avatar"><img src="./images/tidy-coach.png" alt="Tidy" style="width:26px; height:26px; border-radius:50%; object-fit:cover;" /></div>
                             <span class="tidy-name">Tidy</span>
                             <span class="tidy-badge">AI COACH</span>
                             <span class="tidy-comment-time">${timeStr}</span>
@@ -7983,7 +7862,6 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
 
         async function initApp() {
             if (!currentUserId) return;
-            updateAllCoachFaces();
             updateProfileUI();
             await updateUserProfile();
             await loadMyItems();
@@ -8066,18 +7944,6 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
         <div class="settings-section-label">Display Name</div>
         <input type="text" class="settings-name-input" id="settingsNameInput" maxlength="20" placeholder="Enter display name" oninput="onSettingsNameInput()">
         <button class="settings-save-btn" id="settingsSaveBtn" onclick="saveDisplayName()">Save</button>
-
-        <hr class="settings-divider">
-
-        <div class="settings-section-label">Coach Face</div>
-        <div class="settings-coach-face">
-            <img id="settingsCoachFacePreview" class="settings-coach-face-preview" src="./images/tidy-coach.png" alt="Tidy">
-            <div class="settings-coach-face-actions">
-                <button class="settings-coach-face-upload-btn" onclick="document.getElementById('coachFaceInput').click()">Upload Custom Face</button>
-                <button class="settings-coach-face-reset-btn" id="coachFaceResetBtn" style="display:none;" onclick="resetCoachFace()">Reset to Default</button>
-            </div>
-        </div>
-        <input type="file" id="coachFaceInput" accept="image/*" style="display:none;" onchange="handleCoachFaceUpload(event)">
 
         <hr class="settings-divider">
 
