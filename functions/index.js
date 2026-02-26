@@ -103,6 +103,63 @@ Don't copy examples - be creative.`;
   }
 );
 
+/**
+ * generateTidyCommentHTTP — HTTP endpoint for Tidy AI Coach comment.
+ * Accepts a prompt from the frontend and returns AI-generated text.
+ * This is a fallback for when the Firestore onCreate trigger doesn't fire.
+ */
+exports.generateTidyCommentHTTP = onRequest(
+  { secrets: [anthropicApiKey], cors: ALLOWED_ORIGINS },
+  async (req, res) => {
+    if (req.method !== "POST") {
+      res.status(405).json({ error: "Method not allowed" });
+      return;
+    }
+
+    const { prompt } = req.body;
+
+    if (!prompt) {
+      res.status(400).json({ error: "Missing prompt" });
+      return;
+    }
+
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": anthropicApiKey.value(),
+          "anthropic-version": "2023-06-01",
+        },
+        body: JSON.stringify({
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 200,
+          messages: [{ role: "user", content: prompt }],
+        }),
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeout);
+
+      if (!response.ok) {
+        const errBody = await response.text();
+        console.error("[TidyHTTP] Anthropic API error:", response.status, errBody);
+        res.status(502).json({ error: "AI service unavailable" });
+        return;
+      }
+
+      const data = await response.json();
+      res.json({ text: data.content[0].text.trim() });
+    } catch (error) {
+      console.error("[TidyHTTP] Error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
+
 // --- Helper functions for Tidy AI Coach context ---
 
 const CATEGORY_NAMES = {
@@ -330,17 +387,26 @@ exports.generateTidyComment = onDocumentCreated(
     console.log("[Tidy] Generating comment for item:", itemId, itemData.name);
 
     try {
-      // Fetch all user items for context
+      // Fetch all user items for context (no orderBy to avoid composite index requirement)
       const itemsSnapshot = await firestoreDb
         .collection("items")
         .where("userId", "==", itemData.userId)
-        .orderBy("createdAt", "desc")
         .get();
 
       const allItems = itemsSnapshot.docs.map((d) => ({
         id: d.id,
         ...d.data(),
       }));
+      // Sort by createdAt descending in JS (avoids Firestore composite index)
+      allItems.sort((a, b) => {
+        const aTime = a.createdAt?.toDate
+          ? a.createdAt.toDate().getTime()
+          : 0;
+        const bTime = b.createdAt?.toDate
+          ? b.createdAt.toDate().getTime()
+          : 0;
+        return bTime - aTime;
+      });
       const totalItems = allItems.length;
 
       // Recent items (last 7)
