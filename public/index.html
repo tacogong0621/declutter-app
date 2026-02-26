@@ -1567,6 +1567,11 @@
             background: #FAFAFA;
             position: relative;
             overflow: hidden;
+            min-height: 45vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .coach-upload-area:active {
@@ -1580,21 +1585,27 @@
             border-color: #E0E0E0;
         }
 
+        .coach-upload-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
         .coach-upload-text {
-            font-size: 15px;
+            font-size: 17px;
             font-weight: 600;
             color: #6B6B6B;
         }
 
         .coach-upload-subtext {
-            font-size: 12px;
+            font-size: 13px;
             color: #B0B0B0;
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
         .coach-preview-img {
             width: 100%;
-            aspect-ratio: 4/3;
+            min-height: 45vh;
             object-fit: cover;
             border-radius: 14px;
             display: block;
@@ -3925,6 +3936,7 @@
 
                     <div class="coach-upload-area" id="coachUploadArea" onclick="document.getElementById('coachFileInput').click()">
                         <div id="coachUploadPrompt">
+                            <div class="coach-upload-icon">&#128247;</div>
                             <div class="coach-upload-text">Upload a messy space</div>
                             <div class="coach-upload-subtext">Take a photo or choose from gallery</div>
                         </div>
