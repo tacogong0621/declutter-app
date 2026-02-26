@@ -1968,7 +1968,7 @@
 
         .coach-paywall-close {
             position: absolute;
-            top: 16px;
+            top: calc(env(safe-area-inset-top, 20px) + 28px);
             right: 16px;
             background: rgba(255,255,255,0.3);
             border: none;
@@ -1985,7 +1985,7 @@
         }
 
         .coach-paywall-header {
-            padding: 60px 24px 30px;
+            padding: calc(env(safe-area-inset-top, 20px) + 72px) 24px 30px;
             text-align: center;
             color: white;
         }
