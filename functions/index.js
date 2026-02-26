@@ -532,10 +532,12 @@ USER'S VISION: "${userVision || ""}"
     "backpack standing upright against wall"
   ],
   "trashToRemove": ["trash wrapper on desk"],
+  "misplacedItems": ["dirty plate that belongs in kitchen", "random shopping bag"],
   "itemCount": 11,
   "steps": [
     { "text": "Clothes on bed → fold into a neat stack on bed corner", "minutes": 3 },
     { "text": "Books on floor → stand upright on bookshelf", "minutes": 2 },
+    { "text": "Dirty plate → return to kitchen", "minutes": 1 },
     { "text": "Trash wrapper → throw away", "minutes": 1 },
     { "text": "Sneakers → pair neatly by door", "minutes": 1 }
   ],
@@ -547,7 +549,8 @@ USER'S VISION: "${userVision || ""}"
 Rules for steps:
 - NEVER suggest buying anything (no bins, organizers, containers, shelves, products)
 - Suggest REARRANGING items in place (fold, stack, align, group, straighten, pair) — NOT removing them
-- trashToRemove should ONLY contain actual garbage (wrappers, used tissues, empty containers) — NEVER furniture, clothes, books, decor, or personal items
+- trashToRemove: actual garbage (wrappers, used tissues, empty containers)
+- misplacedItems: objects that clearly do NOT belong in this type of space (e.g. dirty dishes in a bedroom, random shopping bags, shoes in the kitchen). These are items someone would carry back to their proper room. Do NOT put furniture, decor, books, electronics, or personal items that reasonably belong in this space
 - Tips should be about HABITS, not purchases
 - Match the user's language (Korean photo context → Korean response, etc.)
 - Keep steps actionable and specific
@@ -625,14 +628,17 @@ Rules for steps:
       const items = parsed.visibleItems || [];
       const arrangements = parsed.itemArrangements || [];
       const trash = parsed.trashToRemove || [];
+      const misplaced = parsed.misplacedItems || [];
+      const removable = [...trash, ...misplaced];
 
       let builtImagePrompt;
       if (items.length > 0 && arrangements.length > 0) {
-        const keepList = items.filter((i) => !trash.some((t) => i.toLowerCase().includes(t.toLowerCase().split(" ")[0])));
+        const removableLower = removable.map((r) => r.toLowerCase());
+        const keepList = items.filter((i) => !removableLower.some((r) => i.toLowerCase().includes(r.split(" ")[0])));
         builtImagePrompt = [
           "CRITICAL INSTRUCTION: This is a REARRANGING task, NOT a removing task.",
           "Show the SAME room with the SAME objects — just neatly repositioned and straightened.",
-          "DO NOT erase, delete, or make any objects disappear. Every item listed below MUST remain visible.",
+          "DO NOT erase, delete, or make any objects disappear EXCEPT the specific removable items listed below.",
           "",
           `ITEMS THAT MUST STAY (${keepList.length} objects — all must be visible in result):`,
           ...keepList.map((item, i) => `  ${i + 1}. ${item}`),
@@ -640,11 +646,11 @@ Rules for steps:
           "HOW TO REARRANGE THEM:",
           ...arrangements.map((arr, i) => `  ${i + 1}. ${arr}`),
           "",
-          trash.length > 0 ? `ONLY THESE may be removed (trash): ${trash.join(", ")}` : "",
+          removable.length > 0 ? `THESE items may be removed (trash or misplaced): ${removable.join(", ")}` : "",
           "",
           "RULES:",
           "- Same room, same camera angle, same walls, same floor, same lighting, same colors.",
-          "- The number of visible objects should be approximately the SAME as the original photo.",
+          "- The number of visible objects should be approximately the SAME as the original photo minus the removable items.",
           "- The room should look lived-in and realistic — like someone spent 1 hour straightening up.",
           "- DO NOT make surfaces empty. Items stay on surfaces but get aligned and grouped.",
           "- DO NOT make the room look like a magazine photo or a showroom.",
@@ -668,7 +674,7 @@ Rules for steps:
         const imageBlob = new Blob([imageBuffer], { type: detectedMediaType });
         const ext = detectedMediaType === "image/png" ? "png" : "jpg";
 
-        const fallbackPrompt = "REARRANGING task — NOT a removing task. Show the exact same room with the exact same furniture and belongings, but neatly repositioned. Fold clothes into neat stacks, stand books upright, align items on surfaces into groups, pair shoes neatly. DO NOT erase or delete ANY objects — every piece of furniture and every item must remain visible. Only remove actual trash (wrappers, tissues). The room should look like someone spent 1 hour straightening up — still lived-in, not empty. Same angle, same lighting, same background. Realistic photo.";
+        const fallbackPrompt = "REARRANGING task — NOT a removing task. Show the exact same room with the exact same furniture and belongings, but neatly repositioned. Fold clothes into neat stacks, stand books upright, align items on surfaces into groups, pair shoes neatly. DO NOT erase or delete ANY objects — every piece of furniture and every item must remain visible. Only remove actual trash (wrappers, tissues) and items that clearly do not belong in this type of room. The room should look like someone spent 1 hour straightening up — still lived-in, not empty. Same angle, same lighting, same background. Realistic photo.";
 
         const formData = new FormData();
         formData.append("image", imageBlob, `photo.${ext}`);
