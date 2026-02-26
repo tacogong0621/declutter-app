@@ -4542,11 +4542,14 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
 
             // Set after image (might not exist if DALL-E failed)
             const afterImg = document.getElementById('coachAfterImg');
+            const afterCard = afterImg.closest('.coach-photo-card');
             if (result.afterImageUrl) {
                 afterImg.src = result.afterImageUrl;
                 afterImg.style.display = 'block';
+                if (afterCard) afterCard.style.display = '';
             } else {
                 afterImg.style.display = 'none';
+                if (afterCard) afterCard.style.display = 'none';
             }
 
             // Encouragement
@@ -4598,6 +4601,13 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             document.getElementById('coachUploadArea').classList.remove('has-photo');
             document.getElementById('coachAnalyzeBtn').disabled = true;
             document.getElementById('coachFileInput').value = '';
+
+            // Reset after image card visibility for next analysis
+            const afterImg = document.getElementById('coachAfterImg');
+            if (afterImg) {
+                const afterCard = afterImg.closest('.coach-photo-card');
+                if (afterCard) afterCard.style.display = '';
+            }
 
             loadCoachUsage();
         }
@@ -5292,7 +5302,7 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
                 console.log('[Tidy] Calling Cloud Function with prompt length:', prompt.length);
                 const controller = new AbortController();
                 const timeout = setTimeout(() => controller.abort(), 15000);
-                const response = await fetch('https://us-central1-declutter-challenge-94366.cloudfunctions.net/generateTidyComment', {
+                const response = await fetch('https://us-central1-declutter-challenge-94366.cloudfunctions.net/generateTidyCommentHTTP', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prompt }),
@@ -6045,9 +6055,39 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
 
                 const aiMessage = await generateAIEncouragement(name, category, points, totalScore, userStreak);
 
-                // Tidy AI Coach comment is generated automatically via
-                // Firestore onCreate trigger (generateTidyComment in Cloud Functions).
-                // The onSnapshot listener will pick up the comment and re-render the feed.
+                // Tidy AI Coach comment: Firestore onCreate trigger generates it server-side,
+                // but also call client-side as fallback (in case trigger doesn't fire).
+                // The duplicate check in the trigger prevents double comments.
+                generateTidyComment(itemData).then(async (tidyText) => {
+                    if (tidyText) {
+                        try {
+                            // Check if trigger already added a comment
+                            const freshDoc = await getDocs(query(collection(db, 'items'), where('__name__', '==', itemDocRef.id)));
+                            if (!freshDoc.empty) {
+                                const freshData = freshDoc.docs[0].data();
+                                const hasAI = (freshData.comments || []).some(c => c.isAI);
+                                if (hasAI) {
+                                    console.log('[Tidy] Trigger already added comment, skipping client-side');
+                                    return;
+                                }
+                            }
+                            await updateDoc(itemDocRef, {
+                                comments: arrayUnion({
+                                    userName: 'Tidy',
+                                    authorAvatar: '🏠',
+                                    isAI: true,
+                                    text: tidyText,
+                                    createdAt: new Date().toISOString()
+                                })
+                            });
+                            console.log('[Tidy] Client-side comment saved to Firestore');
+                        } catch (err) {
+                            console.error('[Tidy] Failed to save client-side comment:', err);
+                        }
+                    }
+                }).catch(err => {
+                    console.error('[Tidy] Client-side comment generation failed:', err);
+                });
 
                 // Reset form
                 document.getElementById('itemName').value = '';
