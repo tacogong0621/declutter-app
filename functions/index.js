@@ -761,6 +761,39 @@ Rules for steps:
 );
 
 /**
+ * imageProxy — HTTP endpoint that proxies Firebase Storage images with proper CORS headers.
+ * Used by the share image generator to draw photos on canvas without tainting it.
+ */
+exports.imageProxy = onRequest(
+  { cors: ALLOWED_ORIGINS },
+  async (req, res) => {
+    const url = req.query.url;
+    if (!url || (!url.includes('firebasestorage.googleapis.com') && !url.includes('storage.googleapis.com'))) {
+      res.status(400).json({ error: "Invalid or missing image URL" });
+      return;
+    }
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        res.status(response.status).json({ error: "Failed to fetch image" });
+        return;
+      }
+
+      const contentType = response.headers.get("content-type") || "image/jpeg";
+      const buffer = Buffer.from(await response.arrayBuffer());
+
+      res.set("Content-Type", contentType);
+      res.set("Cache-Control", "public, max-age=86400");
+      res.send(buffer);
+    } catch (error) {
+      console.error("[imageProxy] Error:", error);
+      res.status(500).json({ error: "Proxy fetch failed" });
+    }
+  }
+);
+
+/**
  * createCheckout — HTTP endpoint for Stripe checkout session creation.
  * Creates a Stripe Checkout session for Pro subscription.
  */
