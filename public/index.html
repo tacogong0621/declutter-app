@@ -3919,7 +3919,7 @@
                         <h2 style="display:flex; align-items:center; gap:8px;"><img src="./images/tidy-coach.png" alt="Tidy" style="width:28px; height:28px; border-radius:50%; object-fit:cover;" /><span>AI Coach Tidy</span></h2>
                         <div class="coach-usage-pill" id="coachUsagePill">
                             <span class="usage-dot"></span>
-                            <span id="coachUsageText">4 of 4 left</span>
+                            <span id="coachUsageText">Unlimited</span>
                         </div>
                     </div>
 
@@ -3945,9 +3945,9 @@
                     <!-- Limit reached state -->
                     <div class="coach-limit-reached" id="coachLimitReached">
                         <div class="coach-limit-icon">&#128274;</div>
-                        <div class="coach-limit-title">You've used all 4 free analyses</div>
+                        <div class="coach-limit-title">You've used all free analyses</div>
                         <div class="coach-limit-bar"></div>
-                        <div class="coach-limit-text">4/4 used &middot; Resets next month</div>
+                        <div class="coach-limit-text">Limit reached &middot; Resets next month</div>
                         <button class="coach-upgrade-btn" onclick="openPaywall()"><img src="./images/tidy-coach.png" alt="" style="width:20px; height:20px; border-radius:50%; object-fit:cover; vertical-align:middle; margin-right:4px;" />Upgrade to Pro</button>
                     </div>
                 </div>
@@ -3965,7 +3965,7 @@
                         <button class="coach-back-btn" onclick="resetCoach()">&larr; New analysis</button>
                         <div class="coach-usage-pill" id="coachUsagePillResult">
                             <span class="usage-dot"></span>
-                            <span id="coachUsageTextResult">3 of 4 left</span>
+                            <span id="coachUsageTextResult">Unlimited</span>
                         </div>
                     </div>
 
@@ -4421,8 +4421,8 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         }
 
         function updateCoachUsageUI(isPro) {
-            const remaining = isPro ? 999 : Math.max(0, 4 - coachUsageCount);
-            const usageText = isPro ? 'Pro — Unlimited' : `${remaining} of 4 left`;
+            const remaining = isPro ? 999 : Math.max(0, 999999 - coachUsageCount);
+            const usageText = isPro ? 'Pro — Unlimited' : `${remaining} of 999999 left`;
             const isLow = !isPro && remaining <= 1;
 
             // Update both pills (home + result)
