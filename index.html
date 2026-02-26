@@ -6687,14 +6687,26 @@ ${recentItemsList}`;
             roundRect(ctx, gridPad - 4, gridTop - 4, gridWidth + 8, gridHeight + 8, gridRadius);
             ctx.fill();
 
-            // Load images with crossOrigin to prevent canvas tainting
+            // Load images as blobs to avoid canvas tainting from CORS/cache issues
             const images = await Promise.all(selected.map(item => {
-                return new Promise((resolve) => {
-                    const img = new Image();
-                    img.crossOrigin = "anonymous";
-                    img.onload = () => resolve(img);
-                    img.onerror = () => resolve(null);
-                    img.src = item.image;
+                return new Promise(async (resolve) => {
+                    try {
+                        const response = await fetch(item.image);
+                        const blob = await response.blob();
+                        const blobUrl = URL.createObjectURL(blob);
+                        const img = new Image();
+                        img.onload = () => {
+                            URL.revokeObjectURL(blobUrl);
+                            resolve(img);
+                        };
+                        img.onerror = () => {
+                            URL.revokeObjectURL(blobUrl);
+                            resolve(null);
+                        };
+                        img.src = blobUrl;
+                    } catch (e) {
+                        resolve(null);
+                    }
                 });
             }));
 
@@ -6764,6 +6776,7 @@ ${recentItemsList}`;
         window.shareToInstagram = async function() {
             try {
                 const blob = await generateShareImage();
+                if (!blob) { alert('이미지 생성에 실패했습니다. 다시 시도해주세요.'); return; }
                 const file = new File([blob], 'declutter-daily.jpg', { type: 'image/jpeg' });
                 const myItems = allFeedItems.filter(i => i.userId === currentUserId);
                 const count = youSelectedItems.length;
@@ -6789,6 +6802,7 @@ ${recentItemsList}`;
         window.shareMore = async function() {
             try {
                 const blob = await generateShareImage();
+                if (!blob) { alert('이미지 생성에 실패했습니다. 다시 시도해주세요.'); return; }
                 const file = new File([blob], 'declutter-daily.jpg', { type: 'image/jpeg' });
                 const count = youSelectedItems.length;
 
@@ -6812,6 +6826,7 @@ ${recentItemsList}`;
         window.saveShareImage = async function() {
             try {
                 const blob = await generateShareImage();
+                if (!blob) { alert('이미지 생성에 실패했습니다. 다시 시도해주세요.'); return; }
                 await saveShareImageFromBlob(blob);
                 closeShareSheet();
             } catch (err) {
@@ -7481,9 +7496,11 @@ ${recentItemsList}`;
                 
                 if (i < recentItems.length && recentItems[i].image) {
                     try {
+                        const response = await fetch(recentItems[i].image);
+                        const blob = await response.blob();
+                        const blobUrl = URL.createObjectURL(blob);
                         const img = new Image();
-                        img.crossOrigin = "anonymous";
-                        img.src = recentItems[i].image;
+                        img.src = blobUrl;
                         await new Promise(resolve => {
                             img.onload = () => {
                                 ctx.save();
@@ -7492,9 +7509,13 @@ ${recentItemsList}`;
                                 ctx.clip();
                                 ctx.drawImage(img, x, y, gridSize, gridSize);
                                 ctx.restore();
+                                URL.revokeObjectURL(blobUrl);
                                 resolve();
                             };
-                            img.onerror = resolve;
+                            img.onerror = () => {
+                                URL.revokeObjectURL(blobUrl);
+                                resolve();
+                            };
                         });
                     } catch (e) {
                         ctx.fillStyle = '#E5E5E5';
