@@ -190,6 +190,7 @@ const CATEGORY_NAMES = {
   food: "🥫 Food",
   toys: "🧸 Toys",
   digital: "📄 Digital Docs",
+  accessories: "👜 Accessories",
   other: "📦 Other",
 };
 
@@ -203,6 +204,7 @@ const SPACES = {
   office: "Office",
   garage: "Garage",
   pantry: "Pantry",
+  mudroom: "Mudroom",
 };
 
 function getCategoryName(category) {

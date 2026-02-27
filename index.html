@@ -3901,6 +3901,7 @@
                             <option value="food">🥫 Food (5)</option>
                             <option value="toys">🧸 Toys (5)</option>
                             <option value="digital">📄 Digital Docs (5)</option>
+                            <option value="accessories">👜 Accessories (5)</option>
                             <option value="other">📦 Other (5)</option>
                         </select>
                         <select class="category-select" id="itemSpace">
@@ -3914,6 +3915,7 @@
                             <option value="office">💻 Office</option>
                             <option value="garage">🔧 Garage</option>
                             <option value="pantry">🥫 Pantry</option>
+                            <option value="mudroom">🚪 Mudroom</option>
                         </select>
                     </div>
                     <div class="space-hint" id="spaceHint"></div>
@@ -4351,7 +4353,8 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             'closet': 'Closet',
             'office': 'Office',
             'garage': 'Garage',
-            'pantry': 'Pantry'
+            'pantry': 'Pantry',
+            'mudroom': 'Mudroom'
         };
 
         function getSpaceName(spaceKey) {
@@ -5029,6 +5032,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             'food': 5,
             'toys': 5,
             'digital': 5,
+            'accessories': 5,
             'other': 5
         };
 
@@ -5127,6 +5131,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                 food: '🥫 Food',
                 toys: '🧸 Toys',
                 digital: '📄 Digital Docs',
+                accessories: '👜 Accessories',
                 other: '📦 Other'
             };
             return categories[category] || '📦 Other';
