@@ -1,9 +1,10 @@
-const { onRequest } = require("firebase-functions/v2/https");
+const { onRequest, onCall } = require("firebase-functions/v2/https");
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 const { defineSecret } = require("firebase-functions/params");
 const { getFirestore, FieldValue } = require("firebase-admin/firestore");
 const { getStorage } = require("firebase-admin/storage");
 const { initializeApp } = require("firebase-admin/app");
+const Stripe = require("stripe");
 
 initializeApp();
 const firestoreDb = getFirestore();
@@ -29,6 +30,8 @@ function stripDataUrlPrefix(base64String) {
 
 const anthropicApiKey = defineSecret("ANTHROPIC_API_KEY");
 const openaiApiKey = defineSecret("OPENAI_API_KEY");
+const stripeSecretKey = defineSecret("STRIPE_SECRET_KEY");
+const stripeWebhookSecret = defineSecret("STRIPE_WEBHOOK_SECRET");
 
 const ALLOWED_ORIGINS = [
   "https://tacogong0621.github.io",
@@ -821,26 +824,98 @@ exports.imageProxy = onRequest(
 );
 
 /**
- * createCheckout — HTTP endpoint for Stripe checkout session creation.
- * Creates a Stripe Checkout session for Pro subscription.
+ * createCheckoutSession — Callable function for Stripe checkout session creation.
+ * Takes a "plan" parameter ("monthly" or "yearly") and returns a checkout URL.
  */
-exports.createCheckout = onRequest({ cors: ALLOWED_ORIGINS }, async (req, res) => {
-  if (req.method !== "POST") {
-    res.status(405).json({ error: "Method not allowed" });
-    return;
+exports.createCheckoutSession = onCall(
+  { secrets: [stripeSecretKey] },
+  async (request) => {
+    const uid = request.auth?.uid;
+    if (!uid) {
+      throw new Error("You must be logged in to subscribe.");
+    }
+
+    const { plan } = request.data;
+    if (!plan || !["monthly", "yearly"].includes(plan)) {
+      throw new Error("Invalid plan. Must be 'monthly' or 'yearly'.");
+    }
+
+    const priceId =
+      plan === "monthly"
+        ? "price_1T5GlkC4tMj6Xx7ujdrUx6OR"
+        : "price_1T5Gp0C4tMj6Xx7un4ie7yj2";
+
+    const stripe = new Stripe(stripeSecretKey.value());
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      payment_method_types: ["card"],
+      line_items: [{ price: priceId, quantity: 1 }],
+      success_url: "https://tacogong0621.github.io/success",
+      cancel_url: "https://tacogong0621.github.io",
+      metadata: { uid },
+    });
+
+    return { url: session.url };
   }
+);
 
-  const { billingCycle, userId } = req.body;
+/**
+ * stripeWebhook — HTTP endpoint that handles Stripe webhook events.
+ * Listens for checkout.session.completed and customer.subscription.deleted
+ * to update the user's isPremium status in Firestore.
+ */
+exports.stripeWebhook = onRequest(
+  { secrets: [stripeSecretKey, stripeWebhookSecret] },
+  async (req, res) => {
+    if (req.method !== "POST") {
+      res.status(405).send("Method not allowed");
+      return;
+    }
 
-  if (!userId) {
-    res.status(400).json({ error: "Missing userId" });
-    return;
+    const stripe = new Stripe(stripeSecretKey.value());
+    const sig = req.headers["stripe-signature"];
+
+    let event;
+    try {
+      event = stripe.webhooks.constructEvent(
+        req.rawBody,
+        sig,
+        stripeWebhookSecret.value()
+      );
+    } catch (err) {
+      console.error("[StripeWebhook] Signature verification failed:", err.message);
+      res.status(400).send(`Webhook Error: ${err.message}`);
+      return;
+    }
+
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+      const uid = session.metadata?.uid;
+      if (uid) {
+        await firestoreDb.doc(`users/${uid}`).set(
+          { isPremium: true },
+          { merge: true }
+        );
+        console.log("[StripeWebhook] Set isPremium=true for user:", uid);
+      }
+    } else if (event.type === "customer.subscription.deleted") {
+      const subscription = event.data.object;
+      // Retrieve the original checkout session to get the uid from metadata
+      const sessions = await stripe.checkout.sessions.list({
+        subscription: subscription.id,
+        limit: 1,
+      });
+      const uid = sessions.data[0]?.metadata?.uid;
+      if (uid) {
+        await firestoreDb.doc(`users/${uid}`).set(
+          { isPremium: false },
+          { merge: true }
+        );
+        console.log("[StripeWebhook] Set isPremium=false for user:", uid);
+      }
+    }
+
+    res.status(200).json({ received: true });
   }
-
-  // Placeholder — Stripe integration requires STRIPE_SECRET_KEY
-  // and price IDs to be configured. Return a placeholder response.
-  console.log("[Checkout] Request for", billingCycle, "from user:", userId);
-  res.status(501).json({
-    error: "Stripe checkout not yet configured. Set up STRIPE_SECRET_KEY and price IDs.",
-  });
-});
+);
