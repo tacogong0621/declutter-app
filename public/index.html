@@ -2108,6 +2108,254 @@
             margin-top: 6px;
         }
 
+        /* Upgrade Modal */
+        .upgrade-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 400;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .upgrade-modal-overlay.show {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .upgrade-modal-close {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 401;
+        }
+
+        .upgrade-modal-header {
+            padding: 60px 24px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .upgrade-modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .upgrade-modal-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .upgrade-modal-card {
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 28px 24px 40px;
+            flex: 1;
+        }
+
+        .upgrade-plans {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .upgrade-plan {
+            position: relative;
+            border: 2px solid #E0E0E0;
+            border-radius: 14px;
+            padding: 18px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upgrade-plan.selected {
+            border-color: #1C1C1E;
+            background: #FAFAFA;
+        }
+
+        .upgrade-plan-badge {
+            position: absolute;
+            top: -10px;
+            right: 12px;
+            background: #2D8B2D;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+        }
+
+        .upgrade-plan-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .upgrade-plan-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1C1C1E;
+        }
+
+        .upgrade-plan-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1C1C1E;
+        }
+
+        .upgrade-plan-period {
+            font-size: 13px;
+            color: #999;
+            font-weight: 400;
+        }
+
+        .upgrade-plan-detail {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .upgrade-plan-radio {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #CCC;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .upgrade-plan.selected .upgrade-plan-radio {
+            border-color: #1C1C1E;
+        }
+
+        .upgrade-plan.selected .upgrade-plan-radio::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #1C1C1E;
+        }
+
+        .upgrade-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px;
+        }
+
+        .upgrade-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .upgrade-features li .feature-icon {
+            font-size: 20px;
+        }
+
+        .upgrade-cta {
+            width: 100%;
+            padding: 16px;
+            background: #1C1C1E;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            margin-bottom: 16px;
+        }
+
+        .upgrade-cta:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .upgrade-cta:active:not(:disabled) {
+            opacity: 0.85;
+        }
+
+        .upgrade-modal-footer {
+            text-align: center;
+            font-size: 12px;
+            color: #B0B0B0;
+        }
+
+        .upgrade-modal-footer a {
+            color: #999;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .upgrade-modal-footer .footer-note {
+            margin-top: 6px;
+        }
+
+        /* Usage Limit Banner */
+        .usage-limit-banner {
+            display: none;
+            background: #FFF3E0;
+            border: 1px solid #FFE0B2;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 12px 0;
+            text-align: center;
+        }
+
+        .usage-limit-banner.show {
+            display: block;
+        }
+
+        .usage-limit-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .usage-limit-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #E65100;
+            margin-bottom: 4px;
+        }
+
+        .usage-limit-text {
+            font-size: 13px;
+            color: #BF360C;
+            margin-bottom: 12px;
+        }
+
+        .usage-limit-btn {
+            padding: 10px 24px;
+            background: #1C1C1E;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
         .space-hint {
             font-size: 12px;
             color: #1C1C1E;
@@ -3947,20 +4195,28 @@
 
                     <button class="coach-analyze-btn" id="coachAnalyzeBtn" disabled onclick="analyzeSpace()">Analyze &amp; Transform</button>
 
-                    <div class="coach-upgrade-link" id="coachUpgradeLink" onclick="openPaywall()">&#10024; Upgrade for unlimited analyses</div>
+                    <div class="coach-upgrade-link" id="coachUpgradeLink" onclick="openUpgradeModal()">&#10024; Upgrade for unlimited analyses</div>
 
                     <div class="coach-examples-link" id="coachExamplesToggle" onclick="toggleCoachExamples()">Example transformations</div>
                     <div class="coach-examples-content" id="coachExamplesContent">
                         Upload a photo of any cluttered space — kitchen counter, desk, closet, garage — and get a personalized step-by-step decluttering plan with an AI-generated visualization of your space, tidied up.
                     </div>
 
+                    <!-- Usage limit banner (shown when nearing limit) -->
+                    <div class="usage-limit-banner" id="usageLimitBanner">
+                        <div class="usage-limit-icon">&#9888;&#65039;</div>
+                        <div class="usage-limit-title" id="usageLimitTitle">You've used all 5 free analyses this month</div>
+                        <div class="usage-limit-text">Upgrade to Pro for unlimited analyses</div>
+                        <button class="usage-limit-btn" onclick="openUpgradeModal()">Upgrade to Pro</button>
+                    </div>
+
                     <!-- Limit reached state -->
                     <div class="coach-limit-reached" id="coachLimitReached">
                         <div class="coach-limit-icon">&#128274;</div>
-                        <div class="coach-limit-title">You've used all free analyses</div>
+                        <div class="coach-limit-title">You've used all 5 free analyses this month</div>
                         <div class="coach-limit-bar"></div>
-                        <div class="coach-limit-text">Limit reached &middot; Resets next month</div>
-                        <button class="coach-upgrade-btn" onclick="openPaywall()"><img src="./images/tidy-coach.png" alt="" style="width:20px; height:20px; border-radius:50%; object-fit:cover; vertical-align:middle; margin-right:4px;" />Upgrade to Pro</button>
+                        <div class="coach-limit-text">5 of 5 used &middot; Resets next month</div>
+                        <button class="coach-upgrade-btn" onclick="openUpgradeModal()">Upgrade to Pro</button>
                     </div>
                 </div>
 
@@ -4029,7 +4285,7 @@
                 </ul>
 
                 <div class="coach-billing-toggle" id="coachBillingToggle">
-                    <button class="coach-billing-btn active" data-cycle="yearly" onclick="switchBilling('yearly')">Yearly <span class="coach-billing-save">Save 37%</span></button>
+                    <button class="coach-billing-btn active" data-cycle="yearly" onclick="switchBilling('yearly')">Yearly <span class="coach-billing-save">Save 50%</span></button>
                     <button class="coach-billing-btn" data-cycle="monthly" onclick="switchBilling('monthly')">Monthly</button>
                 </div>
 
@@ -4042,6 +4298,62 @@
 
                 <div class="coach-paywall-footer">
                     <a onclick="restorePurchase()">Restore purchase</a>
+                    <div class="footer-note">Cancel anytime &middot; Secure payment via Stripe</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upgrade Modal Overlay -->
+        <div class="upgrade-modal-overlay" id="upgradeModal">
+            <button class="upgrade-modal-close" onclick="closeUpgradeModal()">&times;</button>
+            <div class="upgrade-modal-header">
+                <div class="upgrade-modal-title">Upgrade to Pro</div>
+                <div class="upgrade-modal-subtitle">Unlock unlimited analyses and premium features</div>
+            </div>
+            <div class="upgrade-modal-card">
+                <div class="upgrade-plans">
+                    <div class="upgrade-plan" id="upgradePlanYearly" onclick="selectUpgradePlan('yearly')">
+                        <div class="upgrade-plan-badge">Save 50%</div>
+                        <div class="upgrade-plan-row">
+                            <div>
+                                <div class="upgrade-plan-name">Yearly</div>
+                                <div class="upgrade-plan-detail">$2.50/mo &middot; Best value</div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="text-align:right;">
+                                    <div class="upgrade-plan-price">$29.99<span class="upgrade-plan-period">/year</span></div>
+                                </div>
+                                <div class="upgrade-plan-radio"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="upgrade-plan" id="upgradePlanMonthly" onclick="selectUpgradePlan('monthly')">
+                        <div class="upgrade-plan-row">
+                            <div>
+                                <div class="upgrade-plan-name">Monthly</div>
+                                <div class="upgrade-plan-detail">$4.99 billed monthly</div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="text-align:right;">
+                                    <div class="upgrade-plan-price">$4.99<span class="upgrade-plan-period">/month</span></div>
+                                </div>
+                                <div class="upgrade-plan-radio"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="upgrade-features">
+                    <li><span class="feature-icon">&#128248;</span> AI-generated after photo</li>
+                    <li><span class="feature-icon">&#128506;</span> Personalized declutter roadmap</li>
+                    <li><span class="feature-icon">&#10024;</span> Unlimited space analyses</li>
+                    <li><span class="feature-icon">&#127807;</span> Simple maintenance coaching</li>
+                </ul>
+
+                <button class="upgrade-cta" id="upgradeCta" onclick="handleUpgradeCheckout()">Continue &mdash; $29.99/year</button>
+
+                <div class="upgrade-modal-footer">
+                    <a onclick="restorePurchase(); closeUpgradeModal();">Restore purchase</a>
                     <div class="footer-note">Cancel anytime &middot; Secure payment via Stripe</div>
                 </div>
             </div>
@@ -4432,9 +4744,11 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             }
         }
 
+        const FREE_USAGE_LIMIT = 5;
+
         function updateCoachUsageUI(isPro) {
-            const remaining = isPro ? 999 : Math.max(0, 999999 - coachUsageCount);
-            const usageText = isPro ? 'Pro — Unlimited' : `${remaining} of 999999 left`;
+            const remaining = isPro ? 999 : Math.max(0, FREE_USAGE_LIMIT - coachUsageCount);
+            const usageText = isPro ? 'Pro — Unlimited' : `${remaining} of ${FREE_USAGE_LIMIT} left`;
             const isLow = !isPro && remaining <= 1;
 
             // Update both pills (home + result)
@@ -4452,11 +4766,11 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             // Show/hide limit reached
             const canAnalyze = isPro || remaining > 0;
             const limitEl = document.getElementById('coachLimitReached');
-            const homeEl = document.getElementById('coachHome');
             const uploadArea = document.getElementById('coachUploadArea');
             const analyzeBtn = document.getElementById('coachAnalyzeBtn');
             const upgradeLink = document.getElementById('coachUpgradeLink');
             const examplesToggle = document.getElementById('coachExamplesToggle');
+            const usageBanner = document.getElementById('usageLimitBanner');
 
             if (!canAnalyze) {
                 limitEl.style.display = 'block';
@@ -4464,12 +4778,14 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                 analyzeBtn.style.display = 'none';
                 upgradeLink.style.display = 'none';
                 examplesToggle.style.display = 'none';
+                if (usageBanner) usageBanner.classList.add('show');
             } else {
                 limitEl.style.display = 'none';
                 uploadArea.style.display = '';
                 analyzeBtn.style.display = '';
                 upgradeLink.style.display = isPro ? 'none' : '';
                 examplesToggle.style.display = '';
+                if (usageBanner) usageBanner.classList.remove('show');
             }
         }
 
@@ -4657,10 +4973,10 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                 detailEl.textContent = '$2.50/mo';
                 ctaEl.innerHTML = 'Start My Transformation &mdash; $29.99/year';
             } else {
-                priceEl.textContent = '$3.99';
+                priceEl.textContent = '$4.99';
                 periodEl.textContent = '/month';
-                detailEl.textContent = '$47.88/year';
-                ctaEl.innerHTML = 'Start My Transformation &mdash; $3.99/month';
+                detailEl.textContent = '$59.88/year';
+                ctaEl.innerHTML = 'Start My Transformation &mdash; $4.99/month';
             }
         }
 
@@ -4692,6 +5008,62 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             closePaywall();
         }
 
+        // --- Upgrade Modal Functions ---
+
+        let selectedUpgradePlan = 'yearly';
+
+        function openUpgradeModal() {
+            document.getElementById('upgradeModal').classList.add('show');
+            selectUpgradePlan('yearly');
+        }
+
+        function closeUpgradeModal() {
+            document.getElementById('upgradeModal').classList.remove('show');
+        }
+
+        function selectUpgradePlan(plan) {
+            selectedUpgradePlan = plan;
+            const yearlyEl = document.getElementById('upgradePlanYearly');
+            const monthlyEl = document.getElementById('upgradePlanMonthly');
+            const ctaEl = document.getElementById('upgradeCta');
+
+            yearlyEl.classList.toggle('selected', plan === 'yearly');
+            monthlyEl.classList.toggle('selected', plan === 'monthly');
+
+            if (plan === 'yearly') {
+                ctaEl.innerHTML = 'Continue &mdash; $29.99/year';
+            } else {
+                ctaEl.innerHTML = 'Continue &mdash; $4.99/month';
+            }
+        }
+
+        async function handleUpgradeCheckout() {
+            const ctaEl = document.getElementById('upgradeCta');
+            ctaEl.disabled = true;
+            ctaEl.textContent = 'Loading...';
+
+            try {
+                const createCheckout = httpsCallable(functions, 'createCheckoutSession');
+                const result = await createCheckout({ plan: selectedUpgradePlan });
+
+                if (result.data && result.data.url) {
+                    window.location.href = result.data.url;
+                } else {
+                    alert('Unable to start checkout. Please try again.');
+                }
+            } catch (error) {
+                console.error('Upgrade checkout error:', error);
+                alert('Unable to start checkout. Please try again.');
+            } finally {
+                ctaEl.disabled = false;
+                if (selectedUpgradePlan === 'yearly') {
+                    ctaEl.innerHTML = 'Continue &mdash; $29.99/year';
+                } else {
+                    ctaEl.innerHTML = 'Continue &mdash; $4.99/month';
+                }
+            }
+        }
+
         // Expose AI Coach functions to global scope for inline HTML event handlers
         window.handleCoachPhoto = handleCoachPhoto;
         window.analyzeSpace = analyzeSpace;
@@ -4702,6 +5074,10 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         window.switchBilling = switchBilling;
         window.startSubscription = startSubscription;
         window.restorePurchase = restorePurchase;
+        window.openUpgradeModal = openUpgradeModal;
+        window.closeUpgradeModal = closeUpgradeModal;
+        window.selectUpgradePlan = selectUpgradePlan;
+        window.handleUpgradeCheckout = handleUpgradeCheckout;
 
         function showAchievement(title, subtitle, points) {
             document.getElementById('achievementTitle').textContent = title;
