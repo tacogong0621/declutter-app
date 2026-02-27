@@ -4416,23 +4416,24 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         async function loadCoachUsage() {
             if (!currentUserId) return;
             try {
+                const UNLIMITED_UID = '8UNc6Fdlo0gEe0MHr5b237XHlWD3';
                 const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
                 const userSnapshot = await getDocs(userQuery);
                 if (!userSnapshot.empty) {
                     const userData = userSnapshot.docs[0].data();
-                    const usage = userData.coachUsage || {};
                     const currentMonth = new Date().toISOString().slice(0, 7);
+                    const lastReset = userData.lastResetMonth || '';
 
-                    if (usage.month === currentMonth) {
-                        coachUsageCount = usage.count || 0;
+                    if (lastReset === currentMonth) {
+                        coachUsageCount = userData.coachUsedThisMonth || 0;
                     } else {
                         coachUsageCount = 0;
                     }
                     coachUsageMonth = currentMonth;
 
-                    // Check subscription
+                    // Check subscription or unlimited UID
                     const sub = userData.subscription || {};
-                    const isPro = sub.status === 'active';
+                    const isPro = sub.status === 'active' || currentUserId === UNLIMITED_UID;
 
                     updateCoachUsageUI(isPro);
                 }
@@ -4442,8 +4443,9 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         }
 
         function updateCoachUsageUI(isPro) {
-            const remaining = isPro ? 999 : Math.max(0, 999999 - coachUsageCount);
-            const usageText = isPro ? 'Pro — Unlimited' : `${remaining} of 999999 left`;
+            const MONTHLY_LIMIT = 5;
+            const remaining = isPro ? 999 : Math.max(0, MONTHLY_LIMIT - coachUsageCount);
+            const usageText = isPro ? 'Unlimited' : `${remaining} of ${MONTHLY_LIMIT} left this month`;
             const isLow = !isPro && remaining <= 1;
 
             // Update both pills (home + result)
@@ -4484,6 +4486,40 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
 
         async function analyzeSpace() {
             if (!coachPhotoBase64) return;
+
+            const UNLIMITED_UID = '8UNc6Fdlo0gEe0MHr5b237XHlWD3';
+            const MONTHLY_LIMIT = 5;
+            const isUnlimited = currentUserId === UNLIMITED_UID;
+
+            // --- Usage limit check (before any API call) ---
+            if (!isUnlimited) {
+                try {
+                    const userQuery = query(collection(db, 'users'), where('userId', '==', currentUserId));
+                    const snap = await getDocs(userQuery);
+                    if (!snap.empty) {
+                        const userData = snap.docs[0].data();
+                        const currentMonth = new Date().toISOString().slice(0, 7);
+                        let usedThisMonth = userData.coachUsedThisMonth || 0;
+                        const lastReset = userData.lastResetMonth || '';
+
+                        // Reset count when the month changes
+                        if (lastReset !== currentMonth) {
+                            usedThisMonth = 0;
+                            await updateDoc(doc(db, 'users', snap.docs[0].id), {
+                                coachUsedThisMonth: 0,
+                                lastResetMonth: currentMonth
+                            });
+                        }
+
+                        if (usedThisMonth >= MONTHLY_LIMIT) {
+                            alert('You\u2019ve reached your ' + MONTHLY_LIMIT + ' free Coach Tidy uses for this month. Check back next month!');
+                            return;
+                        }
+                    }
+                } catch (limitErr) {
+                    console.error('Usage limit check failed:', limitErr);
+                }
+            }
 
             const analyzeBtn = document.getElementById('coachAnalyzeBtn');
             analyzeBtn.disabled = true;
@@ -4536,17 +4572,23 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
 
                 const result = await response.json();
 
-                // Increment usage
+                // Increment usage in Firestore
+                const currentMonth = new Date().toISOString().slice(0, 7);
                 coachUsageCount++;
                 if (!userSnapshot.empty) {
                     const userDoc = userSnapshot.docs[0];
                     await updateDoc(doc(db, 'users', userDoc.id), {
                         coachUsage: {
-                            month: coachUsageMonth || new Date().toISOString().slice(0, 7),
+                            month: coachUsageMonth || currentMonth,
                             count: coachUsageCount
-                        }
+                        },
+                        coachUsedThisMonth: increment(1),
+                        lastResetMonth: currentMonth
                     });
                 }
+
+                // Update usage UI
+                updateCoachUsageUI(isUnlimited);
 
                 // Render result
                 renderCoachResult(result);
