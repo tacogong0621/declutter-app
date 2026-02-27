@@ -842,8 +842,8 @@ exports.createCheckoutSession = onCall(
 
     const priceId =
       plan === "monthly"
-        ? "price_xxxx_monthly"
-        : "price_xxxx_yearly";
+        ? "price_1T5IWcFosVvw5kdM3O60ZCbj"
+        : "price_1T5IXMFosVvw5kdMyJvqjzid";
 
     const stripe = new Stripe(stripeSecretKey.value());
 
