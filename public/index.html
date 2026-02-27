@@ -4981,24 +4981,29 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         }
 
         async function startSubscription() {
+            const ctaEl = document.getElementById('coachPaywallCta');
+            ctaEl.disabled = true;
+            ctaEl.textContent = 'Loading...';
+
             try {
-                const response = await fetch('https://us-central1-declutter-challenge-94366.cloudfunctions.net/createCheckout', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        billingCycle: coachBillingCycle,
-                        userId: currentUserId
-                    })
-                });
-                const data = await response.json();
-                if (data.url) {
-                    window.location.href = data.url;
+                const createCheckout = httpsCallable(functions, 'createCheckoutSession');
+                const result = await createCheckout({ plan: coachBillingCycle });
+
+                if (result.data && result.data.url) {
+                    window.location.href = result.data.url;
                 } else {
                     alert('Unable to start checkout. Please try again.');
                 }
             } catch (error) {
                 console.error('Subscription error:', error);
                 alert('Unable to start checkout. Please try again.');
+            } finally {
+                ctaEl.disabled = false;
+                if (coachBillingCycle === 'yearly') {
+                    ctaEl.innerHTML = 'Start My Transformation &mdash; $29.99/year';
+                } else {
+                    ctaEl.innerHTML = 'Start My Transformation &mdash; $3.99/month';
+                }
             }
         }
 
