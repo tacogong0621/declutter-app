@@ -5106,11 +5106,11 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
             } catch (error) {
                 console.error('AI message generation failed:', error);
                 const defaultMessages = [
-                    "Great job! You're making progress step by step ✨",
-                    "Awesome! The decluttering habit is forming 💪",
-                    "Amazing! Your space and mind are getting lighter 🎈",
-                    "Well done! You're becoming a minimalist master 🌟",
-                    "Excellent! You're enjoying the decluttering process 🎯"
+                    "One less thing weighing you down ✨",
+                    "Gone — space reclaimed 💪",
+                    "Lighter already 🎈",
+                    "That took courage 🌟",
+                    "Released and free 🎯"
                 ];
                 return defaultMessages[Math.floor(Math.random() * defaultMessages.length)];
             }
@@ -5254,16 +5254,18 @@ CONTEXT RULES:
 - If a photo is provided, start by describing what you actually see before advising
 
 RESPONSE RULES:
-- Keep responses to 2-3 sentences max
-- Use 1 emoji max
+- Follow the LENGTH MODE specified in the task instruction:
+  SHORT MODE: Under 8 words + 1 emoji. Like a friend's quick text — warm, specific, not generic. React to something real: their note, the item, a pattern, a milestone. Examples of the right vibe: "Gift guilt released — proud of you 💛", "5th item this week! 🔥", "Closet breathing again ✨", "That sunk cost is gone now 🙌"
+  DETAILED MODE: 2-3 sentences max + 1 emoji. Full coaching response with specific references.
 - NEVER suggest buying storage bins, containers, organizers, shelves, or ANY product
 - NEVER recommend shopping or purchases — this is a minimalism app
 - Notice PATTERNS (e.g., "kitchen streak this week!" or "3rd clothing item")
 - Celebrate MILESTONES (every 5 items, streak at 3/7/14/30 days, points at 50/100/200/500)
 - Reference their history naturally
 - NEVER be generic — ALWAYS reference something specific about THIS person
-- If item has before & after photos: celebrate effort, then give ONE maintenance tip using HABITS (not products). Good tips: "one in one out", rearrange by frequency, weekly 5-min reset, folding methods, clear surfaces, group similar items
-- If no before & after photos: just encourage and celebrate — do NOT give tips or suggestions`;
+- If user wrote a note, SHORT MODE should react to that note specifically
+- If item has before & after photos (DETAILED MODE only): celebrate effort, then give ONE maintenance tip using HABITS (not products). Good tips: "one in one out", rearrange by frequency, weekly 5-min reset, folding methods, clear surfaces, group similar items
+- If no before & after photos (DETAILED MODE only): just encourage and celebrate — do NOT give tips or suggestions`;
 
                 // --- Build user context message ---
                 const userContext = [
@@ -5295,19 +5297,29 @@ ${recentItemsList}`;
 - Space: ${spaceName}
 - Points earned: ${itemData.points}`;
 
-                const task = hasBA
-                    ? 'Write a personalized comment with ONE practical maintenance tip (2-3 sentences max).'
-                    : 'Write a short, personalized comment (2-3 sentences max).';
+                // 80% short (<8 words), 20% detailed
+                const shortMode = Math.random() < 0.8;
+
+                let task;
+                if (shortMode) {
+                    task = `LENGTH MODE: SHORT. Write a punchy reaction UNDER 8 WORDS + 1 emoji.
+Must reference something specific: ${itemNote ? 'their note ("' + itemNote + '"), ' : ''}the item, a pattern, or a milestone.
+Do NOT be generic. React to what makes THIS declutter unique.`;
+                } else if (hasBA) {
+                    task = 'LENGTH MODE: DETAILED. Write a personalized comment with ONE practical maintenance tip (2-3 sentences max).';
+                } else {
+                    task = 'LENGTH MODE: DETAILED. Write a short, personalized comment (2-3 sentences max).';
+                }
 
                 const prompt = [userContext, historyBlock, itemBlock, task].join('\n\n');
 
-                console.log('[Tidy] Calling Cloud Function with prompt length:', prompt.length);
+                console.log('[Tidy] Calling Cloud Function with prompt length:', prompt.length, 'mode:', shortMode ? 'SHORT' : 'DETAILED');
                 const controller = new AbortController();
                 const timeout = setTimeout(() => controller.abort(), 15000);
                 const response = await fetch('https://us-central1-declutter-challenge-94366.cloudfunctions.net/generateTidyCommentHTTP', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ system: tidySystemPrompt, prompt }),
+                    body: JSON.stringify({ system: tidySystemPrompt, prompt, maxTokens: shortMode ? 60 : 200 }),
                     signal: controller.signal
                 });
                 clearTimeout(timeout);

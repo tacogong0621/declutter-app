@@ -56,21 +56,31 @@ exports.generateEncouragement = onRequest(
       return;
     }
 
-    const prompt = `User decluttered "${itemName}" (${category}) in a minimalism challenge.
+    // 80% short (<8 words), 20% detailed
+    const isShortMode = Math.random() < 0.8;
 
-Current status:
-- Points earned: ${points}
-- Total points: ${totalScore}
-- Streak: ${streak} days
-- Category stats: ${JSON.stringify(categoryCount)}
+    const shortPrompt = `User decluttered "${itemName}" (${category}).
+Status: ${points} pts earned, ${totalScore} total, streak ${streak} days, categories: ${JSON.stringify(categoryCount)}
 
-Write a short, warm encouragement message in ONE sentence. Include 1-2 emojis.
-Style: Friendly and encouraging tone, specific praise, occasional suggestions.
-Example styles:
-- "Furniture takes real commitment - amazing work! 👏"
-- "You're really good at the ${category} category! Minimalist vibes 👍"
-- "Streak day ${streak} achieved! Keep going! 🔥"
-Don't copy examples - be creative.`;
+Write a punchy encouragement in UNDER 8 WORDS. Include 1 emoji.
+MUST reference something specific: the item name, category, streak count, or a milestone.
+NEVER generic phrases like "Great job!" or "Keep it up!" — make it personal to THIS moment.
+Examples of the right vibe:
+- "Old jacket, new freedom 🧥"
+- "Streak day ${streak} — unstoppable 🔥"
+- "${totalScore} points! Minimalist mode ⚡"
+- "Kitchen breathing easier now 🍽️"
+Don't copy examples — be creative and specific to their data.`;
+
+    const detailedPrompt = `User decluttered "${itemName}" (${category}).
+Status: ${points} pts earned, ${totalScore} total, streak ${streak} days, categories: ${JSON.stringify(categoryCount)}
+
+Write a warm, personalized encouragement in 1-2 sentences. Include 1-2 emojis.
+Reference something specific: the item, a pattern in their category stats, their streak, or a points milestone.
+NOT generic — make it about THIS person's decluttering journey and data.
+Don't use cliché phrases like "Amazing!" or "Great job!".`;
+
+    const prompt = isShortMode ? shortPrompt : detailedPrompt;
 
     try {
       const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -82,7 +92,7 @@ Don't copy examples - be creative.`;
         },
         body: JSON.stringify({
           model: "claude-haiku-4-5-20251001",
-          max_tokens: 150,
+          max_tokens: isShortMode ? 60 : 150,
           messages: [{ role: "user", content: prompt }],
         }),
       });
@@ -116,7 +126,7 @@ exports.generateTidyCommentHTTP = onRequest(
       return;
     }
 
-    const { system, prompt } = req.body;
+    const { system, prompt, maxTokens } = req.body;
 
     if (!prompt) {
       res.status(400).json({ error: "Missing prompt" });
@@ -127,9 +137,12 @@ exports.generateTidyCommentHTTP = onRequest(
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 15000);
 
+      // Allow frontend to pass maxTokens (capped at 200 for safety)
+      const tokenLimit = Math.min(maxTokens || 200, 200);
+
       const apiBody = {
         model: "claude-haiku-4-5-20251001",
-        max_tokens: 200,
+        max_tokens: tokenLimit,
         messages: [{ role: "user", content: prompt }],
       };
       if (system) {
@@ -278,18 +291,20 @@ CONTEXT RULES:
 - If a photo is provided, start by describing what you actually see before advising
 
 RESPONSE RULES:
-- Keep responses to 2-3 sentences max
-- Use 1 emoji max
+- Follow the LENGTH MODE specified in the task instruction:
+  SHORT MODE: Under 8 words + 1 emoji. Like a friend's quick text — warm, specific, not generic. React to something real: their note, the item, a pattern, a milestone. Examples of the right vibe: "Gift guilt released — proud of you 💛", "5th item this week! 🔥", "Closet breathing again ✨", "That sunk cost is gone now 🙌"
+  DETAILED MODE: 2-3 sentences max + 1 emoji. Full coaching response with specific references.
 - NEVER suggest buying storage bins, containers, organizers, shelves, or ANY product
 - NEVER recommend shopping or purchases — this is a minimalism app
 - Notice PATTERNS (e.g., "kitchen streak this week!" or "3rd clothing item")
 - Celebrate MILESTONES (every 5 items, streak at 3/7/14/30 days, points at 50/100/200/500)
 - Reference their history naturally
 - NEVER be generic — ALWAYS reference something specific about THIS person
-- If item has before & after photos: celebrate effort, then give ONE maintenance tip using HABITS (not products). Good tips: "one in one out", rearrange by frequency, weekly 5-min reset, folding methods, clear surfaces, group similar items
-- If no before & after photos: just encourage and celebrate — do NOT give tips or suggestions`;
+- If user wrote a note, SHORT MODE should react to that note specifically
+- If item has before & after photos (DETAILED MODE only): celebrate effort, then give ONE maintenance tip using HABITS (not products). Good tips: "one in one out", rearrange by frequency, weekly 5-min reset, folding methods, clear surfaces, group similar items
+- If no before & after photos (DETAILED MODE only): just encourage and celebrate — do NOT give tips or suggestions`;
 
-function buildTidyUserMessage(itemData, context) {
+function buildTidyUserMessage(itemData, context, shortMode) {
   const {
     userVision,
     totalItems,
@@ -335,9 +350,16 @@ ${recentItemsList}`;
 - Space: ${spaceName}
 - Points earned: ${itemData.points}`;
 
-  const task = hasBA
-    ? "Write a personalized comment with ONE practical maintenance tip (2-3 sentences max)."
-    : "Write a short, personalized comment (2-3 sentences max).";
+  let task;
+  if (shortMode) {
+    task = `LENGTH MODE: SHORT. Write a punchy reaction UNDER 8 WORDS + 1 emoji.
+Must reference something specific: ${itemNote ? "their note (\"" + itemNote + "\"), " : ""}the item, a pattern, or a milestone.
+Do NOT be generic. React to what makes THIS declutter unique.`;
+  } else if (hasBA) {
+    task = "LENGTH MODE: DETAILED. Write a personalized comment with ONE practical maintenance tip (2-3 sentences max).";
+  } else {
+    task = "LENGTH MODE: DETAILED. Write a short, personalized comment (2-3 sentences max).";
+  }
 
   return [userContext, historyBlock, itemBlock, task].join("\n\n");
 }
@@ -427,6 +449,9 @@ exports.generateTidyComment = onDocumentCreated(
         totalPoints = userData.score || 0;
       }
 
+      // 80% short (<8 words), 20% detailed
+      const shortMode = Math.random() < 0.8;
+
       const userMessage = buildTidyUserMessage(itemData, {
         userVision,
         totalItems,
@@ -436,7 +461,7 @@ exports.generateTidyComment = onDocumentCreated(
         topSpaceName,
         topCategoryName,
         recentItemsList,
-      });
+      }, shortMode);
 
       // Call Claude API with system prompt + user context message
       const controller = new AbortController();
@@ -451,7 +476,7 @@ exports.generateTidyComment = onDocumentCreated(
         },
         body: JSON.stringify({
           model: "claude-haiku-4-5-20251001",
-          max_tokens: 200,
+          max_tokens: shortMode ? 60 : 200,
           system: TIDY_SYSTEM_PROMPT,
           messages: [{ role: "user", content: userMessage }],
         }),
