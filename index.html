@@ -4502,6 +4502,17 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                     userVision = userSnapshot.docs[0].data().dreamVision || '';
                 }
 
+                // Log coach tidy call to Firestore
+                try {
+                    await addDoc(collection(db, 'coach_logs'), {
+                        userId: currentUserId,
+                        userEmail: auth.currentUser ? auth.currentUser.email : null,
+                        createdAt: serverTimestamp()
+                    });
+                } catch (logErr) {
+                    console.error('Coach log failed:', logErr);
+                }
+
                 // Call Cloud Function with timeout
                 const controller = new AbortController();
                 const fetchTimeout = setTimeout(() => controller.abort(), 90000);
