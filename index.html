@@ -4905,10 +4905,17 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                 handleGoogleLoginSuccess(result.user);
             } catch (error) {
                 if (error.code === 'auth/popup-blocked') {
-    alert('Popup was blocked. Please allow popups and try again.');
-    btn.disabled = false;
-    btn.innerHTML = originalHTML;
-}
+                    // Fallback to redirect if popup is blocked
+                    console.warn('Popup blocked, falling back to redirect...');
+                    btn.textContent = 'Redirecting...';
+                    try {
+                        await signInWithRedirect(auth, googleProvider);
+                    } catch (redirectError) {
+                        console.error('Google login redirect failed:', redirectError);
+                        alert('Login failed. Please try again.');
+                        btn.disabled = false;
+                        btn.innerHTML = originalHTML;
+                    }
                 } else if (error.code === 'auth/cancelled-popup-request' || error.code === 'auth/popup-closed-by-user') {
                     btn.disabled = false;
                     btn.innerHTML = originalHTML;
@@ -8080,6 +8087,4 @@ Do NOT be generic. React to what makes THIS declutter unique.`;
 </body>
 
 </html>
-
-
 
