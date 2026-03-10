@@ -7245,8 +7245,8 @@ Do NOT be generic. React to what makes THIS declutter unique.`;
         document.getElementById('itemSpace').addEventListener('change', updateSpaceHint);
         document.getElementById('achievementOverlay').addEventListener('click', hideAchievement);
 
-        let currentCalendarYear = 2026;
-        let currentCalendarMonth = 1;
+        let currentCalendarYear = new Date().getFullYear();
+        let currentCalendarMonth = new Date().getMonth();
         let userItemDates = {};
 
         async function renderCalendar() {
