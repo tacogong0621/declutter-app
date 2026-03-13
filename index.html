@@ -4343,6 +4343,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         let afterPhotoURL = '';
         let currentFeedFilter = 'all';
         let allFeedItems = [];
+        let feedSnapshotUnsubscribe = null;
 
         const spaceNames = {
             'kitchen_space': 'Kitchen',
@@ -6129,7 +6130,9 @@ Do NOT be generic. React to what makes THIS declutter unique.`;
 
                 const itemDocRef = await addDoc(collection(db, 'items'), itemData);
 
-                totalScore += points;
+                // totalScore is automatically updated by the onSnapshot listener
+                // when the new item is added, so we just need to wait briefly for it
+                // and then persist the score.
                 await updateUserScore();
                 await calculateStreak();
 
@@ -7066,10 +7069,15 @@ Do NOT be generic. React to what makes THIS declutter unique.`;
         async function loadMyItems() {
             const listElement = document.getElementById('itemList');
 
-            try {
-                const itemsQuery = query(collection(db, 'items'), limit(50));
+            // Unsubscribe previous listener to prevent duplicates
+            if (feedSnapshotUnsubscribe) {
+                feedSnapshotUnsubscribe();
+            }
 
-                onSnapshot(itemsQuery, (snapshot) => {
+            try {
+                const itemsQuery = query(collection(db, 'items'), orderBy('createdAt', 'desc'), limit(50));
+
+                feedSnapshotUnsubscribe = onSnapshot(itemsQuery, (snapshot) => {
                     const items = [];
                     let myScore = 0;
                     let myItemCount = 0;
@@ -7092,8 +7100,8 @@ Do NOT be generic. React to what makes THIS declutter unique.`;
                     if (hdrItems) hdrItems.textContent = myItemCount;
 
                     items.sort((a, b) => {
-                        const dateA = a.createdAt?.toDate() || new Date(0);
-                        const dateB = b.createdAt?.toDate() || new Date(0);
+                        const dateA = a.createdAt?.toDate() || new Date();
+                        const dateB = b.createdAt?.toDate() || new Date();
                         return dateB - dateA;
                     });
 
