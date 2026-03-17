@@ -4550,28 +4550,37 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
                     console.error('Coach log failed:', logErr);
                 }
 
-                // Call Cloud Function with timeout
-                const controller = new AbortController();
-                const fetchTimeout = setTimeout(() => controller.abort(), 90000);
-                const response = await fetch('https://us-central1-declutter-challenge-94366.cloudfunctions.net/analyzeSpace', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        imageBase64: coachPhotoBase64,
-                        userId: currentUserId,
-                        userVision: userVision
-                    }),
-                    signal: controller.signal
-                });
-                clearTimeout(fetchTimeout);
+                // Call Cloud Function with timeout and 1 auto-retry
+                async function callAnalyzeAPI() {
+                    const controller = new AbortController();
+                    const fetchTimeout = setTimeout(() => controller.abort(), 90000);
+                    const resp = await fetch('https://us-central1-declutter-challenge-94366.cloudfunctions.net/analyzeSpace', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            imageBase64: coachPhotoBase64,
+                            userId: currentUserId,
+                            userVision: userVision
+                        }),
+                        signal: controller.signal
+                    });
+                    clearTimeout(fetchTimeout);
 
-                if (!response.ok) {
-                    const errBody = await response.text().catch(() => '');
-                    console.error('analyzeSpace response:', response.status, errBody);
-                    throw new Error('Analysis failed (' + response.status + ')');
+                    if (!resp.ok) {
+                        const errBody = await resp.text().catch(() => '');
+                        console.error('analyzeSpace response:', resp.status, errBody);
+                        throw new Error('Analysis failed (' + resp.status + ')');
+                    }
+                    return await resp.json();
                 }
 
-                const result = await response.json();
+                let result;
+                try {
+                    result = await callAnalyzeAPI();
+                } catch (firstErr) {
+                    console.warn('First analysis attempt failed, retrying...', firstErr);
+                    result = await callAnalyzeAPI();
+                }
 
                 // Increment usage in Firestore
                 const currentMonth = new Date().toISOString().slice(0, 7);

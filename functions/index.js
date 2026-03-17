@@ -604,7 +604,7 @@ Rules for steps:
           },
           body: JSON.stringify({
             model: "claude-haiku-4-5-20251001",
-            max_tokens: 800,
+            max_tokens: 2048,
             messages: [
               {
                 role: "user",
@@ -637,6 +637,11 @@ Rules for steps:
 
       const analysisData = await analysisResponse.json();
       const analysisText = analysisData.content[0].text;
+      const stopReason = analysisData.stop_reason;
+
+      if (stopReason === "max_tokens") {
+        console.warn("[Coach] Claude response was truncated (max_tokens reached)");
+      }
 
       // STEP 2: Parse the analysis JSON
       let parsed;
@@ -647,7 +652,13 @@ Rules for steps:
         // Try to extract JSON from the text
         const jsonMatch = analysisText.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
-          parsed = JSON.parse(jsonMatch[0]);
+          try {
+            parsed = JSON.parse(jsonMatch[0]);
+          } catch (innerParseErr) {
+            console.error("[Coach] Fallback JSON parse also failed:", innerParseErr);
+            res.status(502).json({ error: "Analysis returned invalid format" });
+            return;
+          }
         } else {
           res.status(502).json({ error: "Analysis returned invalid format" });
           return;
