@@ -4160,7 +4160,7 @@
                             <option value="basement">🏠 Basement</option>
                         </select>
                     </div>
-                    <div class="space-hint" id="spaceHint"></div>
+                    <div class="space-hint" id="spaceHint" style="display:none;"></div>
 
                     <div class="points-info" id="pointsInfo" style="display: none;">
                         Expected: <span id="expectedPoints">0</span> pts<span class="bonus-points-badge" id="bonusBadge" style="display:none">+30 bonus</span>
@@ -4168,7 +4168,7 @@
 
                     <textarea id="itemNote" placeholder="Notes (optional)" rows="2" style="margin-top:10px;font-size:13px;"></textarea>
 
-                    <button class="submit-btn" id="submitBtn" onclick="addItem()" disabled>Done!</button>
+                    <button class="submit-btn" id="submitBtn" onclick="addItem()" disabled>Let it Go!</button>
                 </div>
             </div>
 
@@ -4669,14 +4669,8 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
         }
 
         function updateSpaceHint() {
-            const spaceSelect = document.getElementById('itemSpace');
             const hint = document.getElementById('spaceHint');
-            if (spaceSelect.value) {
-                hint.textContent = getSpaceName(spaceSelect.value);
-                hint.style.display = 'block';
-            } else {
-                hint.style.display = 'none';
-            }
+            hint.style.display = 'none';
         }
 
         // --- AI Coach Tidy Functions ---
@@ -6535,7 +6529,7 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
                 console.error('Item add failed:', error);
                 alert('Upload failed! Please try again.');
             } finally {
-                submitBtn.textContent = 'Done!';
+                submitBtn.textContent = 'Let it Go!';
                 updateSubmitButton();
             }
         };
