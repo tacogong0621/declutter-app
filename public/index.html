@@ -7132,11 +7132,6 @@ GOOD (reads note): User writes "아이가 어릴때 입던건데 아깝다" → 
             ctx.font = '32px -apple-system, BlinkMacSystemFont, sans-serif';
             ctx.fillText('One a day. It adds up with Declutter Daily.', 540, bottomY + 50);
 
-            // App URL at bottom
-            ctx.fillStyle = '#BBB';
-            ctx.font = '24px -apple-system, BlinkMacSystemFont, sans-serif';
-            ctx.fillText('declutterdaily.app', 540, 1310);
-
             return new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.9));
         }
 
